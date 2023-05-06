@@ -1,0 +1,48 @@
+{
+"titles": {
+    "config": "Configuration",
+    "gameover": "On monte !"
+},
+"fields": {
+    "calcType": {
+        "+": "addition",
+        "+ x*10": "addition de dizaines",
+        "+ x": "addition d'un nombre défini",
+        "-": "soustraction",
+        "*": "multiplication",
+        "/": "division",
+        "/ int": "division entière",
+        "%": "modulo"
+    },
+    "difficulty":{
+        "1": "facile",
+        "2": "difficile"
+    },
+    "gap": {
+        "result": "résultat",
+        "firstElement": "premier élément",
+        "secondElement": "deuxième élément",
+        "randomOnTheTwoFirstElements": "1er ou 2em élément",
+        "randomOnAll": "1er, 2em ou résultat"
+    }
+},
+"columns": {
+    "calcType": "type de calcul",
+    "calcNumber": "nombre de calcul",
+    "difficulty": "difficulté (couleur)",
+    "questionDuration": "exercice",
+    "answerDuration": "affichage de la réponse",
+    "gap": "réponse cachée"
+},
+"buttons":{
+    "addExercice": "Ajouter un exercice",
+    "addGroup": "Ajouter un groupe",
+    "start": "Démarrer"
+},
+"calcCharacter": {
+        "/ int": "/",
+        "+ x*10": "+",
+        "+ x": "+",
+        "%": "/"
+}
+}

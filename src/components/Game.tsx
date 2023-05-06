@@ -1,0 +1,284 @@
+import React, { useEffect, useState } from "react";
+
+import Title from "./Title";
+import useTimer from "./useTimer";
+import ProgressBar from "./ProgressBar";
+import dictionary from "../dictionary.json"
+import lodash from "lodash";
+
+const Game = ({limits, title, setGameOver, options}) => {
+    const [currLevel, setCurrLevel] = useState(0);
+    const [showResult, setShowResult] = useState(false)
+    const rerollLimit = 1000;
+
+    const fontSize = 4
+
+    const colorsGradient = {
+        1: ['#ddcccc', "#66cc99"],
+        2: ['#ddcccc', "#bc66cc"],
+    }
+
+    const backgroundColor = '#022b40';
+
+    const [questionTimeStarted, setQuestionTimeStarted] = useState(true)
+    const [questionTimeReset, setQuestionTimeReset] = useState(false)
+    const [answerTimeReset, setAnswerTimeReset] = useState(false)
+    const [answerTimeStarted, setAnswerTimeStarted] = useState(false)
+
+    let [calculs, setCalculs] = useState([])
+
+    function getRandomInt(min, max) {
+        return Math.round(Math.random() * (max - min))+ parseInt(min);
+    }
+
+    const biggestNumberFirst = (first, second) => {
+        if(first < second){
+            [first, second] = [second, first]
+        }
+        return [first, second];
+    }
+
+    function getRandomDivisibleNumbersInRange(min, max) {
+
+        let randomNumber = 0;
+        let isPrime = true;
+
+        // If the random number is prime, generate a new random number
+        // and check again until a non-prime number is found
+        while (isPrime) {
+            randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+            isPrime = true;
+            for (let i = 2; i < randomNumber; i++) {
+            if (randomNumber % i === 0) {
+                isPrime = false;
+                break;
+            }
+            }
+        }
+
+        // Generate a random divisor of the non-prime number
+        let randomDivisor = 0;
+        while (randomDivisor === 0 || randomNumber % randomDivisor !== 0 || (randomDivisor === 1 && (Math.random()> 0.2))) {
+            randomDivisor = Math.floor(Math.random() * (randomNumber - 1)) + 1;
+
+        }
+
+        // Return both the non-prime number and its random divisor in an array
+        return [randomNumber, randomDivisor];
+      }
+
+      const numbersCombinaisonAlreadyGenerated = (numbers, calculLevel) => {
+        return !calculLevel.every((calculGroup) => calculGroup.every((curr) =>  JSON.stringify({...curr}) !== JSON.stringify({...numbers})) === true);
+      }
+
+      const getGap = (gapType) => {
+        switch(gapType){
+            case 'result':
+                return 'result';
+            case 'firstElement':
+                return 1;
+            case 'secondElement':
+                return 2;
+            case 'randomOnTheTwoFirstElements':
+                return getRandomInt(1, 2);
+            case 'randomOnAll':
+                return getRandomInt(1, 3) === 3 ? 'result' : getRandomInt(1, 2);
+            default:
+                return 'result';
+        }
+      }
+
+      const generateNumbers = ({group, limit, calculLevel, calculGroup, reroll=0}) => {
+        let numbers = {
+            1: getRandomInt(group.min, group.max),
+            2: getRandomInt(group.min, group.max),
+            result: 0,
+            gap: getGap(limit.gap),
+        }
+
+        switch(limit.calcType){
+            case '+':
+                numbers.result = numbers[1]+numbers[2]
+                break;
+            case '+ x*10':
+                numbers[2]=(Math.max(10,Math.round(getRandomInt(limit.calcSpeRange.min, limit.calcSpeRange.max)/10)*10))
+                numbers.result = numbers[1]+numbers[2]
+                break;
+            case '+ x':
+                numbers[2]=limit.calcSpeNumber
+                numbers.result = numbers[1]+numbers[2]
+                break;
+            case '-':
+                [numbers[1], numbers[2]] = biggestNumberFirst(numbers[1], numbers[2])
+                numbers.result = numbers[1] - numbers[2]
+                break;
+            case '*':
+                numbers.result = numbers[1]*numbers[2]
+                break;
+            case '/':
+                [numbers[1], numbers[2]] = biggestNumberFirst(numbers[1], numbers[2])
+                numbers.result = parseFloat((numbers[1]/numbers[2]).toFixed(2))
+                break;
+            case '%':
+                [numbers[1], numbers[2]] = biggestNumberFirst(numbers[1], numbers[2])
+                numbers.result = [Math.floor(numbers[1]/numbers[2]), numbers[1]%numbers[2]]
+                break;
+            case '/ int':
+                [numbers[1], numbers[2]] = getRandomDivisibleNumbersInRange(group.min, group.max)
+                numbers.result = numbers[1]/numbers[2]
+                break;
+            default:
+        }
+
+        if(numbersCombinaisonAlreadyGenerated(numbers, [calculGroup, ...calculLevel]) && reroll < rerollLimit){
+            return generateNumbers({...{group, limit, calculLevel,calculGroup, reroll: reroll+1}})
+        } else {
+            return numbers;
+        }
+      }
+
+      const generateCalcul = () => {
+        const newCalculs =[]
+        limits.forEach(limit => {
+          let calculLevel = [];
+          limit.groups.forEach((group)=>{
+            let calculGroup = []
+            for(let i=0; i<limit.calcNumber;i++){
+                calculGroup.push(lodash.cloneDeep(generateNumbers(lodash.cloneDeep({group, limit, calculLevel, calculGroup}))))
+            }
+            calculLevel.push(calculGroup)
+          })
+          newCalculs.push(calculLevel)
+        });
+        setCalculs(newCalculs)
+      }
+
+    useEffect(() => {
+        generateCalcul()
+    }, [])
+
+    const handleReStartAnswerTime = () => {
+        setAnswerTimeReset(true);
+        setAnswerTimeStarted(true);
+        setShowResult(true)
+    }
+
+    const handleReStartQuestionTime = () => {
+        setShowResult(false)
+        setQuestionTimeReset(true);
+        setQuestionTimeStarted(true);
+    }
+
+    function integerToLetter(integer) {
+      if (integer < 1 || integer > 26) {
+        return ' ';
+      }
+      
+      // Convert the integer to a character code by adding 64
+      var charCode = integer + 96;
+      
+      // Convert the character code to a letter
+      var letter = String.fromCharCode(charCode);
+      
+      return letter;
+    }
+
+    const handleEndAnswerTime = () => {
+        setAnswerTimeStarted(false);
+        if(currLevel >= (limits.length -1)){
+            // all exercices are over
+            setGameOver()
+        } else {
+            setCurrLevel(currLevel+1);
+            handleReStartQuestionTime();
+        }
+    }
+
+    const handleEndQuestionTime = () => {
+        setQuestionTimeStarted(false);
+        handleReStartAnswerTime()
+    }
+
+    const getGradient = (difficulty) => {
+        return 'linear-gradient(to right, '+(colorsGradient[difficulty][0] ?? colorsGradient[0][0]) +', '+(colorsGradient[difficulty][1] ?? colorsGradient[0][1])
+    }
+
+    const getModuloResultDisplay = (quotient, remainder) => {
+        return (<div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{fontSize: '0.5em'}}>quotient: {quotient}</div>
+            <div  style={{fontSize: '0.5em'}}>reste: {remainder}</div>
+        </div>)
+    }
+
+    const displayCalcElement = (currCalcul, element, showResult) => {
+      return (<div
+        style={{
+          width: element === 'result' && (limits[currLevel].calcType === '%' || limits[currLevel].calcType === '/')
+            ? '200px'
+            : '85px',
+          display: 'flex',
+          justifyContent: 'center',
+          color: currCalcul.gap === element && showResult ? '#00ff06' : '',
+          borderRadius: '15px',
+          padding: '5px',
+          marginLeft: '5px',
+        }}>
+        {currCalcul.gap !== element || showResult
+          ? <>
+              {
+                  element === 'result' && limits[currLevel].calcType === '%'
+                      ? getModuloResultDisplay(currCalcul.result[0], currCalcul.result[1])
+                      : currCalcul[element]
+              }
+          </>
+          : <>..</>
+        }
+      </div>)
+    }
+    
+    const questionTime = useTimer(limits[currLevel].questionDuration, () => {handleEndQuestionTime()}, questionTimeStarted, questionTimeReset, setQuestionTimeReset);
+    const answerTime = useTimer(limits[currLevel].answerDuration, () => {handleEndAnswerTime()}, answerTimeStarted, answerTimeReset, setAnswerTimeReset);
+
+    const barValue = questionTimeStarted
+    ? (questionTime/limits[currLevel].questionDuration)*100
+    : ((limits[currLevel].answerDuration-answerTime )/ limits[currLevel].answerDuration) *100
+    return (<div style={{width: '100%', height: '100%', backgroundColor: backgroundColor, color: '#dddddd', fontFamily: ' "Arial Rounded MT Bold", Arial, sans-serif', fontWeight: 'bold'}}>
+        {calculs.length
+            ? <div style={{width: '100%', display: 'flex', justifyContent: 'space-around', fontSize: fontSize+'em'}}>
+                {
+                    calculs[currLevel].map((calculGroup, calculGroupIndex)=>{
+                        return <div key={calculGroupIndex}>
+                            {
+                                calculGroup.map((currCalcul, index) => {
+                                  return (<div key={index} style={{display: 'flex', flexDirection: 'row', margin: '10px'}}>
+                                      {options.displayLetterId === true 
+                                        ? <div style={{width: '82px'}}>{integerToLetter(calculGroupIndex*(calculGroup.length) + (index+1))}: </div>
+                                        : null
+                                      }
+                                      <div style={{display: 'flex', flexDirection: 'row'}}>
+                                          {displayCalcElement(currCalcul, 1, showResult)}
+                                          {dictionary.calcCharacter[limits[currLevel].calcType] ?? limits[currLevel].calcType}
+                                          {displayCalcElement(currCalcul, 2, showResult)}
+                                      </div>
+                                      <div style={{display: 'flex', flexDirection: 'row'}}>
+                                        <> = </> 
+                                          {displayCalcElement(currCalcul, 'result', showResult)}
+                                          </div>
+                                  </div>)
+                                })
+                            }
+                        </div>
+                    })
+                }
+            </div>
+            : null
+        }
+        <div style={{display: 'flex', justifyContent: 'center',  width: '100%',position: 'absolute', bottom: '50px'}}>
+          <div style={{width: '100%', height: '50px', display: 'flex', justifyContent: 'center'}}>
+            <ProgressBar value={barValue}></ProgressBar>
+          </div>
+        </div>
+    </div>)
+}
+
+export default Game;
