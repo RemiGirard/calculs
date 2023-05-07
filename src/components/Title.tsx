@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Title = ({children, style}) => {
+const Title = ({children, style}: any) => {
 
     return (<h1 style={{
         width: '100%',

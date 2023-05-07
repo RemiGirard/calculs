@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useTimer = (duration = 10, callback = () => {console.log('default trigger')}, started = true, reset = false, setReset = () => {}) => {
+const useTimer = (duration = 10, callback = () => {console.log('default trigger')}, started = true, reset = false, setReset = (oneArgument: any) => {}) => {
   const [time, setTime] = useState(duration)
 
 

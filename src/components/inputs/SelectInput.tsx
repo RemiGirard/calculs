@@ -1,4 +1,4 @@
-const SelectInput = ({value, onChangeValue, choices, renderChoice, style}) => {
+const SelectInput = ({value, onChangeValue, choices, renderChoice, style}:any) => {
     return (<select
         value={value}
         onChange={(e) => onChangeValue(e.target.value)}

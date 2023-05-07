@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-
-import lodash from "lodash";
+import { useState } from "react";
 
 import './Calcul.css'
 
@@ -12,7 +10,7 @@ import Game from "./Game";
 import GameOver from "./GameOver";
 
 
-const Calcul = ({env, options = {displayLetterId: true}}) => {
+const Calcul = ({env = "prod", options = {displayLetterId: true}}) => {
   // todo: detect environment
   // console.log({NODE_ENV: process.env.NODE_ENV})
   // console.log({env: process.env.env})
@@ -58,14 +56,14 @@ const Calcul = ({env, options = {displayLetterId: true}}) => {
     }
   ];
 
-  let defaultExercice = {
+  let defaultExercice : any = {
     calcSpeRange: defaultSpeRange,
     calcSpeNumber: defaultCalcSpeNumber
   };
 
   columns.forEach((column) => defaultExercice[column.name] = column.default)
   const [exercices, setExercices] = useState([defaultExercice]);
-  const defaultExerciceUpdated = lodash.cloneDeep(exercices[exercices.length-1])
+  const defaultExerciceUpdated = structuredClone(exercices[exercices.length-1])
   const calculsTotal = exercices.reduce((acc, curr) => acc + curr.calcNumber, 0);
 
   const setGameOver = () => setCurrState('over');
@@ -87,7 +85,6 @@ const Calcul = ({env, options = {displayLetterId: true}}) => {
       </Case>
       <Case value={'started'}>
         <Game
-          title={dictionary.titles.game ?? 'game'}
           {...{
             limits: exercices,
             setGameOver,

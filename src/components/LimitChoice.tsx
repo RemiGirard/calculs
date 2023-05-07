@@ -1,16 +1,15 @@
-import React from 'react';
-import lodash from 'lodash';
-
 import Title from './Title';
-import dictionary from '../dictionary.json'
+import dictionaryTyped from '../dictionary.json'
 import Button from './buttons/Button';
 import IntInput from './inputs/IntInput';
 import SelectInput from './inputs/SelectInput';
 import { Case, Switch } from './utils/Switch';
 
-const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, columns, setGameStarted }) => {
+const dictionary:any = dictionaryTyped;
 
-  const setOneLimit = (propKeys, value) => {
+const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, columns, setGameStarted }: any) => {
+
+  const setOneLimit = (propKeys : any, value: any) => {
     let newLimits = [...exercices];
     let currentObj = newLimits;
     for (let i = 0; i < propKeys.length - 1; i++) {
@@ -21,8 +20,8 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
     setExercices(newLimits);
   }
 
-  const removeLevel = (index) => {
-    let newLimits = lodash.clone(exercices)
+  const removeLevel = (index:any) => {
+    let newLimits = structuredClone(exercices)
     newLimits.splice(index, 1)
     setExercices(newLimits)
   }
@@ -30,11 +29,11 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
     setExercices([...exercices, defaultExerciceUpdated])
   }
 
-  const removeGroup = (index) => {
-    let newLimits = lodash.cloneDeep(exercices)
+  const removeGroup = (index:any) => {
+    let newLimits = structuredClone(exercices)
     let newGroups = exercices[0].groups
     newGroups.splice(index, 1)
-    newLimits = newLimits.map((limit) => {
+    newLimits = newLimits.map((limit:any) => {
       return {
         ...limit,
         groups: newGroups,
@@ -44,11 +43,11 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
   }
 
   const addGroup = () => {
-      let newLimits = lodash.cloneDeep(exercices)
+      let newLimits = structuredClone(exercices)
       
 
-      newLimits = newLimits.map((limit) => {
-        const newGroup = lodash.cloneDeep(limit.groups[limit.groups.length-1])
+      newLimits = newLimits.map((limit:any) => {
+        const newGroup = structuredClone(limit.groups[limit.groups.length-1])
         return {
           ...limit,
           groups: [
@@ -63,23 +62,24 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
 
 
   return (<div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000303', color: '#55cc55', height: '100%'}}>
-    <Title style={{marginBottom: '50px', color: 'grey'}}>{title}</Title>
+    <Title style={{marginBottom: '50px', color: 'grey'}}>{title}build test1</Title>
     <div style={{maxWidth: '1500px',display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
       <table style={{marginBottom: '50px'}}>
         <thead>
           <tr>{
-            columns.map((column, columnIndex) => {
+            columns.map((column:any, columnIndex:any) => {
+              const columnName: "calcType"|"calcNumber"|"difficulty"|"questionDuration"|"answerDuration"|"gap" = column.name;
               return <td key={columnIndex}>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                   {column.name === 'groups'
                   ? <div style={{width: '100%',display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <div>groupes</div>
-                    <div style={{width: '100%', display: 'flex', flexDirection: 'line', justifyContent: 'space-around'}}>
+                    <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
                       {
-                        exercices[0].groups.map((group, groupIndex) => {
+                        exercices[0].groups.map((group:any, groupIndex:any) => {
                           return <div key={groupIndex} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                             <div>groupe {groupIndex+1} </div>
-                            <div style={{with: '15px', height: '15px', margin: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <div style={{width: '15px', height: '15px', margin: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                             {exercices[0].groups.length > 1
                               ? <div onClick={()=> removeGroup(groupIndex)} style={{width: '15px', height: '15px', backgroundColor: '#bbb', borderRadius: '5px', color: 'white', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>x</div>
                               : null
@@ -90,7 +90,7 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
                       }
                     </div>
                   </div>
-                  : dictionary.columns[column.name] ?? column.name
+                  : dictionary.columns[columnName] ?? column.name
                   }
                 </div>
                 </td>
@@ -98,35 +98,35 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
           }</tr>
         </thead>
         <tbody>
-          {exercices.map((element, index) => {
+          {exercices.map((element:any, index:any) => {
             return (<tr key={index}>
               {
-                columns.map((column, columnIndex) => {
+                columns.map((column:any, columnIndex:any) => {
                   return <td key={columnIndex}>
                     <Switch expression={column.field}>
                       <Case value={'int'}>
                         <IntInput
                           value={element[column.name]}
-                          onChangeValue={(value) => setOneLimit([index, column.name], value)}
+                          onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
                         />
                       </Case>
                       <Case value={'groups'}>
-                        <div style={{display: 'flex', flexDirection: 'line'}}>
+                        <div style={{display: 'flex', flexDirection: 'row'}}>
                         {
-                          element['groups'].map((group, groupIndex) => {
+                          element['groups'].map((group:any, groupIndex:any) => {
                           return <div key={groupIndex} style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-                            <div style={{display: 'flex', flexDirection: 'line', alignItems: 'center'}}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                               <div> min:</div>
                               <IntInput
                                 value={group.min}
-                                onChangeValue={(value) => setOneLimit([index, column.name, groupIndex, 'min'], value)}
+                                onChangeValue={(value:any) => setOneLimit([index, column.name, groupIndex, 'min'], value)}
                               />
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'line', alignItems: 'center'}}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                               <div>max:</div>
                               <IntInput
                                 value={group.max}
-                                onChangeValue={(value) => setOneLimit([index, column.name, groupIndex, 'max'], value)}
+                                onChangeValue={(value:any) => setOneLimit([index, column.name, groupIndex, 'max'], value)}
                               />
                             </div>
                           </div>
@@ -140,58 +140,58 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
                           <div>min:</div>
                           <IntInput
                             value={element[column.name].min}
-                            onChangeValue={(value) => setOneLimit([index, column.name, 'min'], value)}
+                            onChangeValue={(value:any) => setOneLimit([index, column.name, 'min'], value)}
                           />
                         <div>max:</div>
                         <IntInput
                           value={element[column.name].max}
-                          onChangeValue={(value) => setOneLimit([index, column.name, 'max'], value)}
+                          onChangeValue={(value:any) => setOneLimit([index, column.name, 'max'], value)}
                         />
                         </div>
                       </Case>
                       <Case value={'time'}>
-                        <div style={{display:'flex', flexDirection: 'line', alignItems: 'center', justifyContent: 'space-around'}}>
+                        <div style={{display:'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
                           <IntInput
                             value={element[column.name]}
-                            onChangeValue={(value) => setOneLimit([index, column.name], value)}
+                            onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
                           />
                           <div>secondes</div>
                           </div>
                       </Case>
                       <Case value={'number'}>
-                        <div style={{display:'flex', flexDirection: 'line', alignItems: 'center', justifyContent: 'space-around'}}>
+                        <div style={{display:'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
                           <IntInput
                             value={element[column.name]}
-                            onChangeValue={(value) => setOneLimit([index, column.name], value)}
+                            onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
                           />
                           </div>
                       </Case>
                       <Case value={'select'}>
                         <SelectInput
                           value={element[column.name]}
-                          onChangeValue={(value) => setOneLimit([index, column.name], value)}
+                          onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
                           choices={column.choices}
-                          renderChoice={(choice, choiceIndex) => <option key={choiceIndex} value={choice}>{dictionary.fields[column.name][choice] ?? choice}</option>}
+                          renderChoice={(choice:any, choiceIndex:any) => <option key={choiceIndex} value={choice}>{dictionary.fields[column.name][choice] ?? choice}</option>}
                         />
                       </Case>
                       <Case value={'calcType'}>
                         <SelectInput
                           value={element[column.name]}
-                          onChangeValue={(value) => setOneLimit([index, column.name], value)}
+                          onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
                           choices={column.choices}
-                          renderChoice={(choice, choiceIndex) => <option key={choiceIndex} value={choice}>{dictionary.fields[column.name][choice] ?? choice}</option>}
+                          renderChoice={(choice:any, choiceIndex:any) => <option key={choiceIndex} value={choice}>{dictionary.fields[column.name][choice] ?? choice}</option>}
                         />
                         {element[column.name] === '+ x*10'
                           ? <div style={{display: 'flex', alignItems: 'center'}}>
                             <div>min:</div>
                             <IntInput
                               value={element.calcSpeRange.min}
-                              onChangeValue={(value) => setOneLimit([index, 'calcSpeRange', 'min'], value)}
+                              onChangeValue={(value:any) => setOneLimit([index, 'calcSpeRange', 'min'], value)}
                             />
                             <div>max:</div>
                             <IntInput
                               value={element.calcSpeRange.max}
-                              onChangeValue={(value) => setOneLimit([index, 'calcSpeRange', 'max'], value)}
+                              onChangeValue={(value:any) => setOneLimit([index, 'calcSpeRange', 'max'], value)}
                             />
                           </div>
                           : null
@@ -201,7 +201,7 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
                             <div>nombre:</div>
                             <IntInput
                               value={element.calcSpeNumber}
-                              onChangeValue={(value) => setOneLimit([index, 'calcSpeNumber'], value)}
+                              onChangeValue={(value:any) => setOneLimit([index, 'calcSpeNumber'], value)}
                             />
                           </div>
                           : null
@@ -224,7 +224,7 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
           {dictionary.buttons.addExercice ?? 'addExercice'}
         </Button>
         <Button onClick={() => setGameStarted()} style={{ width: '25%', height: '50px', background: '#051087', color: 'white', fontSize: '1.5em', textDecoration: 'none'}}>
-          Démarrer1
+          Démarrer
         </Button>
         {/* <Link
           to={`/start`}

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import Title from "./Title";
 import useTimer from "./useTimer";
 import ProgressBar from "./ProgressBar";
-import dictionary from "../dictionary.json"
-import lodash from "lodash";
+import dictionaryTyped from "../dictionary.json"
 
-const Game = ({limits, title, setGameOver, options}) => {
+const dictionary:any = dictionaryTyped;
+
+const Game = ({limits, setGameOver, options}: any) => {
     const [currLevel, setCurrLevel] = useState(0);
     const [showResult, setShowResult] = useState(false)
     const rerollLimit = 1000;
@@ -25,20 +25,20 @@ const Game = ({limits, title, setGameOver, options}) => {
     const [answerTimeReset, setAnswerTimeReset] = useState(false)
     const [answerTimeStarted, setAnswerTimeStarted] = useState(false)
 
-    let [calculs, setCalculs] = useState([])
+    let [calculs, setCalculs]:[any, any] = useState([])
 
-    function getRandomInt(min, max) {
+    function getRandomInt(min:any, max:any) {
         return Math.round(Math.random() * (max - min))+ parseInt(min);
     }
 
-    const biggestNumberFirst = (first, second) => {
+    const biggestNumberFirst = (first:any, second:any) => {
         if(first < second){
             [first, second] = [second, first]
         }
         return [first, second];
     }
 
-    function getRandomDivisibleNumbersInRange(min, max) {
+    function getRandomDivisibleNumbersInRange(min:any, max:any) {
 
         let randomNumber = 0;
         let isPrime = true;
@@ -67,11 +67,11 @@ const Game = ({limits, title, setGameOver, options}) => {
         return [randomNumber, randomDivisor];
       }
 
-      const numbersCombinaisonAlreadyGenerated = (numbers, calculLevel) => {
-        return !calculLevel.every((calculGroup) => calculGroup.every((curr) =>  JSON.stringify({...curr}) !== JSON.stringify({...numbers})) === true);
+      const numbersCombinaisonAlreadyGenerated = (numbers:any, calculLevel:any) => {
+        return !calculLevel.every((calculGroup:any) => calculGroup.every((curr:any) =>  JSON.stringify({...curr}) !== JSON.stringify({...numbers})) === true);
       }
 
-      const getGap = (gapType) => {
+      const getGap = (gapType:any) => {
         switch(gapType){
             case 'result':
                 return 'result';
@@ -88,8 +88,8 @@ const Game = ({limits, title, setGameOver, options}) => {
         }
       }
 
-      const generateNumbers = ({group, limit, calculLevel, calculGroup, reroll=0}) => {
-        let numbers = {
+      const generateNumbers = ({group, limit, calculLevel, calculGroup, reroll=0}:any):any => {
+        let numbers:any = {
             1: getRandomInt(group.min, group.max),
             2: getRandomInt(group.min, group.max),
             result: 0,
@@ -138,13 +138,13 @@ const Game = ({limits, title, setGameOver, options}) => {
       }
 
       const generateCalcul = () => {
-        const newCalculs =[]
-        limits.forEach(limit => {
-          let calculLevel = [];
-          limit.groups.forEach((group)=>{
-            let calculGroup = []
+        const newCalculs:any =[]
+        limits.forEach((limit:any) => {
+          let calculLevel:any = [];
+          limit.groups.forEach((group:any)=>{
+            let calculGroup:any = []
             for(let i=0; i<limit.calcNumber;i++){
-                calculGroup.push(lodash.cloneDeep(generateNumbers(lodash.cloneDeep({group, limit, calculLevel, calculGroup}))))
+                calculGroup.push(structuredClone(generateNumbers(structuredClone({group, limit, calculLevel, calculGroup}))))
             }
             calculLevel.push(calculGroup)
           })
@@ -169,7 +169,7 @@ const Game = ({limits, title, setGameOver, options}) => {
         setQuestionTimeStarted(true);
     }
 
-    function integerToLetter(integer) {
+    function integerToLetter(integer:any) {
       if (integer < 1 || integer > 26) {
         return ' ';
       }
@@ -199,18 +199,14 @@ const Game = ({limits, title, setGameOver, options}) => {
         handleReStartAnswerTime()
     }
 
-    const getGradient = (difficulty) => {
-        return 'linear-gradient(to right, '+(colorsGradient[difficulty][0] ?? colorsGradient[0][0]) +', '+(colorsGradient[difficulty][1] ?? colorsGradient[0][1])
-    }
-
-    const getModuloResultDisplay = (quotient, remainder) => {
+    const getModuloResultDisplay = (quotient:any, remainder:any) => {
         return (<div style={{display: 'flex', flexDirection: 'column'}}>
             <div style={{fontSize: '0.5em'}}>quotient: {quotient}</div>
             <div  style={{fontSize: '0.5em'}}>reste: {remainder}</div>
         </div>)
     }
 
-    const displayCalcElement = (currCalcul, element, showResult) => {
+    const displayCalcElement = (currCalcul:any, element:any, showResult:any) => {
       return (<div
         style={{
           width: element === 'result' && (limits[currLevel].calcType === '%' || limits[currLevel].calcType === '/')
@@ -246,10 +242,10 @@ const Game = ({limits, title, setGameOver, options}) => {
         {calculs.length
             ? <div style={{width: '100%', display: 'flex', justifyContent: 'space-around', fontSize: fontSize+'em'}}>
                 {
-                    calculs[currLevel].map((calculGroup, calculGroupIndex)=>{
+                    calculs[currLevel].map((calculGroup:any, calculGroupIndex:any)=>{
                         return <div key={calculGroupIndex}>
                             {
-                                calculGroup.map((currCalcul, index) => {
+                                calculGroup.map((currCalcul:any, index:any) => {
                                   return (<div key={index} style={{display: 'flex', flexDirection: 'row', margin: '10px'}}>
                                       {options.displayLetterId === true 
                                         ? <div style={{width: '82px'}}>{integerToLetter(calculGroupIndex*(calculGroup.length) + (index+1))}: </div>

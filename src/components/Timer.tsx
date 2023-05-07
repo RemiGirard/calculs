@@ -1,6 +1,6 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
-const Timer = (props) => {
+const Timer = (props: any) => {
     const {initialMinute = 0,initialSeconds = 0, setShowResult} = props;
     const [ minutes, setMinutes ] = useState(initialMinute);
     const [seconds, setSeconds ] =  useState(initialSeconds);

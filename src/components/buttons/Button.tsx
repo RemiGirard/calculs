@@ -1,4 +1,4 @@
-const Button = ({children, onClick, style}) => {
+const Button = ({children, onClick, style}:any) => {
     return (<div 
         style={{
             backgroundColor: 'blue',

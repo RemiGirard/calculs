@@ -1,9 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { viteSingleFile } from "vite-plugin-singlefile"
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-  plugins: [react()],
+  plugins: [react(), viteSingleFile()],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors
@@ -11,7 +12,11 @@ export default defineConfig(async () => ({
   // tauri expects a fixed port, fail if that port is not available
   server: {
     port: 1420,
+    hmr:{
+      port: 1421,
+    },
     strictPort: true,
+    host: true,
   },
   // to make use of `TAURI_DEBUG` and other env variables
   // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
@@ -23,5 +28,8 @@ export default defineConfig(async () => ({
     minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
     // produce sourcemaps for debug builds
     sourcemap: !!process.env.TAURI_DEBUG,
+    rollupOptions:{
+      external: ['lodash']
+    }
   },
 }));

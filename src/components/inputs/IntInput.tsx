@@ -1,4 +1,4 @@
-const IntInput = ({value, onChangeValue, style}) => {
+const IntInput = ({value, onChangeValue, style}:any) => {
     return (<input
         type={'number'}
         value={value}
