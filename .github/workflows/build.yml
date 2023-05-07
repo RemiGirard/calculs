@@ -84,7 +84,7 @@ jobs:
         with:
           node-version: 'lts/*'
           cache: 'pnpm' # Set this to npm, yarn or pnpm.
-          
+
       - name: Install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: pnpm install # Change this to npm, yarn or pnpm.
@@ -100,7 +100,7 @@ jobs:
           asset_name: calcul.exe
           asset_content_type: application/vnd.microsoft.portable-executable
   publish-release:
-    needs: [create_release, build_html]
+    needs: [create_release, build_html, build_exe]
     runs-on: ubuntu-20.04
     permissions:
       contents: write
