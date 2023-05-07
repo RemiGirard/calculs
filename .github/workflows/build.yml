@@ -7,6 +7,8 @@ on:
 
 jobs:  
   build_exe:
+    permissions:
+      contents: write
     outputs:
       upload_id: ${{ steps.draft_release.outputs.id }}
       upload_url: ${{ steps.draft_release.outputs.upload_url }}
