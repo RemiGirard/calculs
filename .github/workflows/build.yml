@@ -78,7 +78,9 @@ jobs:
         with:
           workspaces: './src-tauri -> target'
 
-  
+      - name: Install pnpm
+        run: npm i -g pnpm
+
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
         with:
