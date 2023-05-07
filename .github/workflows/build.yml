@@ -18,6 +18,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Create Draft Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: mytagname1
+          release_name: myrelease1
+          draft: true
+          prerelease: false
 
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
@@ -48,13 +58,30 @@ jobs:
         run: pnpm install # Change this to npm, yarn or pnpm.
 
       - name: Build the app
-        uses: tauri-apps/tauri-action@v0
+        run: pnpm build
 
+      - name: Upload build (ubuntu only)
+        if: matrix.platform == 'ubuntu-20.04'
+        uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
-          releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
-          releaseBody: 'See the assets to download and install this version.'
-          releaseDraft: true
-          prerelease: false
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/index.html
+          asset_name: calcul.html
+          asset_content_type: text/html
+
+      - uses: eregon/publish-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
+
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # with:
+        #   tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+        #   releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+        #   releaseBody: 'See the assets to download and install this version.'
+        #   releaseDraft: true
+        #   prerelease: false
