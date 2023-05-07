@@ -33,6 +33,16 @@ jobs:
     - name: Build the app
       run: pnpm build
 
+    - name: Upload html
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./dist/index.html
+        asset_name: calcul.html
+        asset_content_type: text/html
+
   release:
     needs: [build-html]
     runs-on: ubuntu-20.04
@@ -50,15 +60,15 @@ jobs:
           draft: true
           prerelease: false
 
-      - name: add file to release
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/index.html
-          asset_name: calcul.html
-          asset_content_type: text/html
+      # - name: add file to release
+      #   uses: actions/upload-release-asset@v1.0.1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./dist/index.html
+      #     asset_name: calcul.html
+      #     asset_content_type: text/html
 
       - uses: eregon/publish-release@v1
         env:
