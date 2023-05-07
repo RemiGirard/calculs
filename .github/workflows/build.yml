@@ -6,13 +6,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  create-release:
+  create_release:
     permissions:
       contents: write
     runs-on: ubuntu-20.04
+    outputs:
+      upload_id: ${{ steps.draft_release.outputs.id }}
+      upload_url: ${{ steps.draft_release.outputs.upload_url }}
     steps:
     - name: Create Draft Release
-      id: create_release
+      id: draft_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -22,8 +25,8 @@ jobs:
         draft: true
         prerelease: false
 
-  build-html:
-    needs: [create-release]
+  build_release:
+    needs: [create_release]
     permissions:
       contents: write
     runs-on: ubuntu-20.04
@@ -55,13 +58,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ github.event.release.upload_url }}
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
         asset_path: ./dist/index.html
         asset_name: calcul.html
         asset_content_type: text/html
 
-  release:
-    needs: [build-html]
+  publish-release:
+    needs: [create_release, build_release]
     runs-on: ubuntu-20.04
     permissions:
       contents: write
@@ -91,4 +94,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          release_id: ${{ steps.create_release.outputs.id }}
+          release_id: ${{ needs.create_release.outputs.upload_id }}
