@@ -15,75 +15,74 @@ jobs:
     #     platform: [macos-latest, ubuntu-20.04, windows-latest]
     # runs-on: ${{ matrix.platform }}
     runs-on: ubuntu-20.04
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        
-      - name: Create Draft Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: mytagname1
-          release_name: myrelease1
-          draft: true
-          prerelease: false
-
-      - name: Install dependencies (ubuntu only)
-        # if: matrix.platform == 'ubuntu-20.04'
-        # You can remove libayatana-appindicator3-dev if you don't use the system tray feature.
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
-
-      - name: Rust setup
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: './src-tauri -> target'
-
-      - name: Install pnpm
-        run: npm i -g pnpm
-      - name: Sync node version and setup cache
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
-          cache: 'pnpm' # Set this to npm, yarn or pnpm.
+    - name: Checkout repository
+      uses: actions/checkout@v3
       
-
-      - name: Install frontend dependencies
-        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
-        run: pnpm install # Change this to npm, yarn or pnpm.
-
-      - name: Build the app
-        run: pnpm build
-
-      - name: Upload build (ubuntu only)
-        # if: matrix.platform == 'ubuntu-20.04'
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/index.html
-          asset_name: calcul.html
-          asset_content_type: text/html
-
-      - uses: eregon/publish-release@v1
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        release_id: ${{ steps.create_release.outputs.id }}
+        tag_name: mytagname1
+        release_name: myrelease1
+        draft: true
+        prerelease: false
 
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # with:
-        #   tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
-        #   releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
-        #   releaseBody: 'See the assets to download and install this version.'
-        #   releaseDraft: true
-        #   prerelease: false
+    - name: Install dependencies (ubuntu only)
+      # if: matrix.platform == 'ubuntu-20.04'
+      # You can remove libayatana-appindicator3-dev if you don't use the system tray feature.
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
+
+    - name: Rust setup
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Rust cache
+      uses: swatinem/rust-cache@v2
+      with:
+        workspaces: './src-tauri -> target'
+
+    - name: Install pnpm
+      run: npm i -g pnpm
+    - name: Sync node version and setup cache
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+        cache: 'pnpm' # Set this to npm, yarn or pnpm.
+    
+
+    - name: Install frontend dependencies
+      # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
+      run: pnpm install # Change this to npm, yarn or pnpm.
+
+    - name: Build the app
+      run: pnpm build
+
+    - name: Upload build (ubuntu only)
+      # if: matrix.platform == 'ubuntu-20.04'
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/index.html
+        asset_name: calcul.html
+        asset_content_type: text/html
+
+    - uses: eregon/publish-release@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      release_id: ${{ steps.create_release.outputs.id }}
+
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # with:
+      #   tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+      #   releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+      #   releaseBody: 'See the assets to download and install this version.'
+      #   releaseDraft: true
+      #   prerelease: false
