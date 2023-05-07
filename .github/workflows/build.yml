@@ -6,7 +6,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: releasename4
+        release_name: releasename3
+        draft: true
+        prerelease: false
+
   build-html:
+    needs: [create-release]
     permissions:
       contents: write
     runs-on: ubuntu-20.04
@@ -49,16 +66,16 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Create Draft Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: releasename4
-          release_name: releasename3
-          draft: true
-          prerelease: false
+      # - name: Create Draft Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: releasename4
+      #     release_name: releasename3
+      #     draft: true
+      #     prerelease: false
 
       # - name: add file to release
       #   uses: actions/upload-release-asset@v1.0.1
