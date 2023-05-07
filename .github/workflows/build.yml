@@ -25,7 +25,7 @@ jobs:
         draft: true
         prerelease: false
 
-  build_release:
+  build_html:
     needs: [create_release]
     permissions:
       contents: write
@@ -63,33 +63,40 @@ jobs:
         asset_name: calcul.html
         asset_content_type: text/html
 
+  build_exe:
+    needs: [create_release]
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install pnpm
+        run: npm i -g pnpm
+  
+      - name: Sync node version and setup cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm' # Set this to npm, yarn or pnpm.
+      - name: Install frontend dependencies
+        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
+        run: pnpm install # Change this to npm, yarn or pnpm.
+      - name: build exe
+        run: pnpm tauri build
+      - name: Upload exe
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          asset_path: ./src-tauri/target/release/app.exe
+          asset_name: calcul.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
   publish-release:
-    needs: [create_release, build_release]
+    needs: [create_release, build_html]
     runs-on: ubuntu-20.04
     permissions:
       contents: write
     steps:
-      # - name: Create Draft Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: releasename4
-      #     release_name: releasename3
-      #     draft: true
-      #     prerelease: false
-
-      # - name: add file to release
-      #   uses: actions/upload-release-asset@v1.0.1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ./dist/index.html
-      #     asset_name: calcul.html
-      #     asset_content_type: text/html
-
       - uses: eregon/publish-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
