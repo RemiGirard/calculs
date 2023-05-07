@@ -45,9 +45,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: mytagname1
-          release_name: Releasemytag2
-          draft: false
+          tag_name: releasename4
+          release_name: releasename3
+          draft: true
           prerelease: false
 
       - name: add file to release
