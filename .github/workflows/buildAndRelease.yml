@@ -1,0 +1,112 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build for ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-20.04, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.16'
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Build executable
+        run: go build -o myapp
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: myapp-${{ matrix.platform }}
+          path: ./myapp
+
+  release:
+    name: Create and publish release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.16'
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Build for Linux
+        run: GOOS=linux GOARCH=amd64 go build -o myapp-linux-amd64
+
+      - name: Build for Windows
+        runs-on: windows-latest
+        shell: bash
+        env:
+          GOARCH: amd64
+          GOOS: windows
+        run: |
+          go get -v -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo
+          go generate ./...
+          go build -v -ldflags="-H windowsgui" -o myapp-windows-amd64.exe
+
+      - name: Build for macOS
+        run: GOOS=darwin GOARCH=amd64 go build -o myapp-macos-amd64
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this release:
+            - Added new feature A
+            - Fixed issue B
+          draft: false
+          prerelease: false
+
+      - name: Upload Linux binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: myapp-linux-amd64
+          path: ./myapp-linux-amd64
+
+      - name: Upload Windows binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: myapp-windows-amd64
+          path: ./myapp-windows-amd64.exe
+
+      - name: Upload macOS binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: myapp-macos-amd64
+          path: ./myapp-macos-amd64
+
+      - name: Publish release
+        uses: actions/github-script@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const
