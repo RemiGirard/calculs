@@ -46,7 +46,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: calcul${{ github.ref_name }}
+          tag_name: calcul${{ github.ref_name }}v2
           release_name: calcul${{ github.ref_name }}
           draft: true
           prerelease: false
