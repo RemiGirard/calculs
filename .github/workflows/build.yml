@@ -1,5 +1,8 @@
-name: Release
+name: Build release files
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 jobs:  
@@ -13,9 +16,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
 
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
@@ -39,10 +39,6 @@ jobs:
         run: pnpm install # Change this to npm, yarn or pnpm.
       - name: build exe
         run: pnpm tauri build
-
-      - run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
         
       - name: Create Draft Release
         id: draft_release
