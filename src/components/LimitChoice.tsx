@@ -62,7 +62,7 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
 
 
   return (<div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000303', color: '#55cc55', height: '100%'}}>
-    <Title style={{marginBottom: '50px', color: 'grey'}}>{title} - test ci 2</Title>
+    <Title style={{marginBottom: '50px', color: 'grey'}}>{title} - test ci 3</Title>
     <div style={{maxWidth: '1500px',display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
       <table style={{marginBottom: '50px'}}>
         <thead>

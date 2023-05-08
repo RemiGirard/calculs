@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -14,3 +16,6 @@ jobs:
       - run: npm i -g pnpm
       - run: pnpm install
       - run: pnpm build
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
