@@ -1,7 +1,32 @@
-# Tauri + React + Typescript
+# Calculs
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+Generate math exercice.
 
-## Recommended IDE Setup
+Get it : [Download](https://github.com/RemiGirard/calculs/releases/download/v1.0.0/index.html)
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+![screenshot configuration](doc/asset/screenshotConfiguration01.png)
+
+![screenshot exercices](doc/asset/screenshotExercice01.png)
+
+
+## Requirement
+
+- [Docker-compose](https://docs.docker.com/compose/install/)
+
+or use directly with [pnpm](https://pnpm.io/installation) and package.json scripts (example: `pnpm dev`)
+
+## Use
+
+### dev
+
+- `docker-compose up`
+- open browser at [http://localhost:1420/]
+
+Edit files inside `src/`. Changes will be updated with HMR.
+
+### build
+
+- `docker-compose exec calculs bash`
+- `pnpm build`
+
+Unique html file will be available at `dist/index.html`
