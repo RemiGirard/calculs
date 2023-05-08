@@ -9,6 +9,8 @@ const dictionary:any = dictionaryTyped;
 
 const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, columns, setGameStarted }: any) => {
 
+  const maxGroups = 4;
+
   const setOneLimit = (propKeys : any, value: any) => {
     let newLimits = [...exercices];
     let currentObj = newLimits;
@@ -31,39 +33,40 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
 
   const removeGroup = (index:any) => {
     let newLimits = structuredClone(exercices)
-    let newGroups = exercices[0].groups
+    let newGroups = structuredClone(exercices[0].groups)
     newGroups.splice(index, 1)
     newLimits = newLimits.map((limit:any) => {
       return {
         ...limit,
-        groups: newGroups,
+        groups: structuredClone(newGroups),
       }
     })
     setExercices(newLimits)
   }
 
-  const addGroup = () => {
-      let newLimits = structuredClone(exercices)
-      
+  const isMaxGroup = exercices[0].groups.length >= maxGroups;
 
-      newLimits = newLimits.map((limit:any) => {
-        const newGroup = structuredClone(limit.groups[limit.groups.length-1])
+  const addGroup = () => {
+      let newExercices = structuredClone(exercices)
+
+      newExercices = newExercices.map((exercice:any) => {
+        const newGroup = structuredClone(exercice.groups[exercice.groups.length-1])
         return {
-          ...limit,
+          ...exercice,
           groups: [
-            ...limit.groups,
+            ...exercice.groups,
             newGroup
             ,
           ],
         }
       })
-      setExercices(newLimits)
+      setExercices(newExercices)
   }
 
 
   return (<div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000303', color: '#55cc55', height: '100%'}}>
     <Title style={{marginBottom: '50px', color: 'grey'}}>{title}</Title>
-    <div style={{maxWidth: '1500px',display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+    <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
       <table style={{marginBottom: '50px'}}>
         <thead>
           <tr>{
@@ -217,21 +220,15 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
         </tbody>
       </table>
       <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
-        <Button onClick={() => addGroup()} style={{ width: '25%', height: '50px', background: '#106610', fontSize: '1.2em'  }}>
+        <Button onClick={() => addGroup()} disable={isMaxGroup} style={{ width: '25%', height: '50px', background: '#106610', fontSize: '1.2em' }}>
           {dictionary.buttons.addGroup ?? 'addGroup'}
         </Button>
         <Button onClick={() => addLevel()} style={{ width: '25%', height: '50px', background: '#106610', fontSize: '1.2em' }}>
           {dictionary.buttons.addExercice ?? 'addExercice'}
         </Button>
-        <Button onClick={() => setGameStarted()} style={{ width: '25%', height: '50px', background: '#051087', color: 'white', fontSize: '1.5em', textDecoration: 'none'}}>
+        <Button onClick={() => setGameStarted()} style={{ width: '25%', height: '50px', background: '#051087', color: 'white', fontSize: '1.5em', textDecoration: 'none' }}>
           Démarrer
         </Button>
-        {/* <Link
-          to={`/start`}
-          style={{ width: '25%', display: 'flex', justifyContent: 'center', padding: '15px', background: '#051087', color: 'white', fontSize: '1.5em', textDecoration: 'none' }}
-          >
-            {dictionary.buttons.start ?? 'start'}
-          </Link> */}
       </div>
     </div>
   </div>)

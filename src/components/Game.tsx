@@ -6,7 +6,7 @@ import dictionaryTyped from "../dictionary.json"
 
 const dictionary:any = dictionaryTyped;
 
-const Game = ({limits, setGameOver, options}: any) => {
+const Game = ({exercices, setGameOver, config}: any) => {
     const [currLevel, setCurrLevel] = useState(0);
     const [showResult, setShowResult] = useState(false)
     const rerollLimit = 1000;
@@ -139,7 +139,7 @@ const Game = ({limits, setGameOver, options}: any) => {
 
       const generateCalcul = () => {
         const newCalculs:any =[]
-        limits.forEach((limit:any) => {
+        exercices.forEach((limit:any) => {
           let calculLevel:any = [];
           limit.groups.forEach((group:any)=>{
             let calculGroup:any = []
@@ -185,7 +185,7 @@ const Game = ({limits, setGameOver, options}: any) => {
 
     const handleEndAnswerTime = () => {
         setAnswerTimeStarted(false);
-        if(currLevel >= (limits.length -1)){
+        if(currLevel >= (exercices.length -1)){
             // all exercices are over
             setGameOver()
         } else {
@@ -209,7 +209,7 @@ const Game = ({limits, setGameOver, options}: any) => {
     const displayCalcElement = (currCalcul:any, element:any, showResult:any) => {
       return (<div
         style={{
-          width: element === 'result' && (limits[currLevel].calcType === '%' || limits[currLevel].calcType === '/')
+          width: element === 'result' && (exercices[currLevel].calcType === '%' || exercices[currLevel].calcType === '/')
             ? '200px'
             : '85px',
           display: 'flex',
@@ -222,7 +222,7 @@ const Game = ({limits, setGameOver, options}: any) => {
         {currCalcul.gap !== element || showResult
           ? <>
               {
-                  element === 'result' && limits[currLevel].calcType === '%'
+                  element === 'result' && exercices[currLevel].calcType === '%'
                       ? getModuloResultDisplay(currCalcul.result[0], currCalcul.result[1])
                       : currCalcul[element]
               }
@@ -232,12 +232,12 @@ const Game = ({limits, setGameOver, options}: any) => {
       </div>)
     }
     
-    const questionTime = useTimer(limits[currLevel].questionDuration, () => {handleEndQuestionTime()}, questionTimeStarted, questionTimeReset, setQuestionTimeReset);
-    const answerTime = useTimer(limits[currLevel].answerDuration, () => {handleEndAnswerTime()}, answerTimeStarted, answerTimeReset, setAnswerTimeReset);
+    const questionTime = useTimer(exercices[currLevel].questionDuration, () => {handleEndQuestionTime()}, questionTimeStarted, questionTimeReset, setQuestionTimeReset);
+    const answerTime = useTimer(exercices[currLevel].answerDuration, () => {handleEndAnswerTime()}, answerTimeStarted, answerTimeReset, setAnswerTimeReset);
 
     const barValue = questionTimeStarted
-    ? (questionTime/limits[currLevel].questionDuration)*100
-    : ((limits[currLevel].answerDuration-answerTime )/ limits[currLevel].answerDuration) *100
+    ? (questionTime/exercices[currLevel].questionDuration)*100
+    : ((exercices[currLevel].answerDuration-answerTime )/ exercices[currLevel].answerDuration) *100
     return (<div style={{width: '100%', height: '100%', backgroundColor: backgroundColor, color: '#dddddd', fontFamily: ' "Arial Rounded MT Bold", Arial, sans-serif', fontWeight: 'bold'}}>
         {calculs.length
             ? <div style={{width: '100%', display: 'flex', justifyContent: 'space-around', fontSize: fontSize+'em'}}>
@@ -247,13 +247,13 @@ const Game = ({limits, setGameOver, options}: any) => {
                             {
                                 calculGroup.map((currCalcul:any, index:any) => {
                                   return (<div key={index} style={{display: 'flex', flexDirection: 'row', margin: '10px'}}>
-                                      {options.displayLetterId === true 
+                                      {config.displayLetterId === true 
                                         ? <div style={{width: '82px'}}>{integerToLetter(calculGroupIndex*(calculGroup.length) + (index+1))}: </div>
                                         : null
                                       }
                                       <div style={{display: 'flex', flexDirection: 'row'}}>
                                           {displayCalcElement(currCalcul, 1, showResult)}
-                                          {dictionary.calcCharacter[limits[currLevel].calcType] ?? limits[currLevel].calcType}
+                                          {dictionary.calcCharacter[exercices[currLevel].calcType] ?? exercices[currLevel].calcType}
                                           {displayCalcElement(currCalcul, 2, showResult)}
                                       </div>
                                       <div style={{display: 'flex', flexDirection: 'row'}}>

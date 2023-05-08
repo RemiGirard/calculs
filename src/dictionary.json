@@ -1,6 +1,7 @@
 {
 "titles": {
     "config": "Configuration",
+    "generateExercices": "Génération des exercices",
     "gameover": "On monte !"
 },
 "fields": {

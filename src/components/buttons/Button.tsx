@@ -1,4 +1,4 @@
-const Button = ({children, onClick, style}:any) => {
+const Button = ({children, onClick, style= {}, disable = false}:any) => {
     return (<div 
         style={{
             backgroundColor: 'blue',
@@ -9,9 +9,14 @@ const Button = ({children, onClick, style}:any) => {
             alignItems: 'center',
             cursor: 'pointer',
             borderRadius: '5px',
-            ...style
+            ...style,
+            opacity: disable ? 0.4 : 1
         }}
-        onClick={onClick}
+        onClick={() => {
+            if(!disable){
+              onClick()
+            }
+        }}
     >
         {
         <div>{children}</div>
