@@ -26,8 +26,7 @@ Edit files inside `src/`. Changes will be updated with HMR.
 
 ### build html
 
-- `docker-compose exec calculs bash`
-- `pnpm build`
+- `docker-compose exec calculs pnpm build`
 
 Unique html file will be available at `dist/index.html`
 
