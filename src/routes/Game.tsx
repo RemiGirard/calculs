@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import useTimer from "./useTimer";
-import ProgressBar from "./ProgressBar";
-import dictionaryTyped from "../dictionary.json"
+import useTimer from '../hooks/useTimer';
+import ProgressBar from '../components/ProgressBar';
+import dictionaryTyped from '../dictionary.json'
 
 const dictionary:any = dictionaryTyped;
 
@@ -14,8 +14,8 @@ const Game = ({exercices, setGameOver, config}: any) => {
     const fontSize = 4
 
     const colorsGradient = {
-        1: ['#ddcccc', "#66cc99"],
-        2: ['#ddcccc', "#bc66cc"],
+        1: ['#ddcccc', '#66cc99'],
+        2: ['#ddcccc', '#bc66cc'],
     }
 
     const backgroundColor = '#022b40';

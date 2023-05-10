@@ -12,9 +12,10 @@ html {
 @media (min-width:1280px) {
   html {
     font-size: 16px;
-    
   }
 }
+
+
   
   table {
     border-collapse: collapse;

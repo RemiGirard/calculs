@@ -1,9 +1,9 @@
-import Title from './Title';
+import Title from '../components/Title';
 import dictionaryTyped from '../dictionary.json'
-import Button from './buttons/Button';
-import IntInput from './inputs/IntInput';
-import SelectInput from './inputs/SelectInput';
-import { Case, Switch } from './utils/Switch';
+import Button from '../components/buttons/Button';
+import IntInput from '../components/inputs/IntInput';
+import SelectInput from '../components/inputs/SelectInput';
+import { Case, Switch } from '../utils/Switch';
 
 const dictionary:any = dictionaryTyped;
 
@@ -71,7 +71,7 @@ const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, c
         <thead>
           <tr>{
             columns.map((column:any, columnIndex:any) => {
-              const columnName: "calcType"|"calcNumber"|"difficulty"|"questionDuration"|"answerDuration"|"gap" = column.name;
+              const columnName: 'calcType'|'calcNumber'|'difficulty'|'questionDuration'|'answerDuration'|'gap' = column.name;
               return <td key={columnIndex}>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                   {column.name === 'groups'

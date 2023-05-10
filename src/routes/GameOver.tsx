@@ -1,5 +1,5 @@
-import Title from "./Title";
-import Clapping from "../assets/clapping.png";
+import Title from '../components/Title';
+import Clapping from '../assets/clapping.png';
 
 const GameOver = ({ numberOfCalcul, title }: any) => {
   const steps = [...(new Array(5))].map((_, index) => {

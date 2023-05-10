@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Switch, Case } from "./utils/Switch";
-import {times} from './utils/utils';
+import { Switch, Case } from './utils/Switch';
+import { times } from './utils/utils';
 
-import dictionary from '../dictionary.json'
+import dictionary from './dictionary.json'
 
-import Config from "./Config";
-import LimitChoice from "./GenerateExercices";
-import Game from "./Game";
-import GameOver from "./GameOver";
+import Config from './routes/Config';
+import LimitChoice from './routes/GenerateExercices';
+import Game from './routes/Game';
+import GameOver from './routes/GameOver';
+import { PageName, ConfigInterface, Columns } from './Calcul.types';
 
 const Calcul = () => {
-  const [currState, setCurrState] = useState('generateExercices')
+  const [currState, setCurrState] = useState<PageName>('generateExercices');
   
-  const isDevEnv = process.env.NODE_ENV === 'development';
+  const isDevEnv:boolean = process.env.NODE_ENV === 'development';
 
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<ConfigInterface>({
     default: {
       numberOfGroup: 2,
       group: {min: 1, max: 9},
@@ -31,14 +32,11 @@ const Calcul = () => {
     displayLetterId: true,
   });
 
-  let defaultGroups: any[] = [];
-  times(config.default.numberOfGroup, () => defaultGroups.push({...config.default.group}))
-
-  const columns = [
+  const columns:Columns = [
     {
       name: 'groups',
       field: 'groups',
-      default: defaultGroups,
+      default: Array.from(new Array(config.default.numberOfGroup), () => {return {...config.default.group};}),
     }, {
       name: 'calcType',
       field: 'calcType',
