@@ -3,6 +3,7 @@ html, body, #root, #root > div{
   height:100%;
   margin: 0;
   overflow:scroll;
+  font-family: 'Helvetica';
 }
 
 html {
@@ -14,6 +15,14 @@ html {
     font-size: 16px;
   }
 }
+
+@font-face {
+  font-family: 'arial-rounded-mt-bold';
+  src: local('arial-rounded-mt-bold'), url(./assets/ARLRDBD.ttf) format('truetype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
 
 
   

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { Switch, Case } from './utils/Switch';
-import { times } from './utils/utils';
 
 import dictionary from './dictionary.json'
 

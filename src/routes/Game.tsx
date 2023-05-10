@@ -11,7 +11,7 @@ const Game = ({exercices, setGameOver, config}: any) => {
     const [showResult, setShowResult] = useState(false)
     const rerollLimit = 1000;
 
-    const fontSize = 4
+    const fontSize = 5
 
     const colorsGradient = {
         1: ['#ddcccc', '#66cc99'],
@@ -238,9 +238,9 @@ const Game = ({exercices, setGameOver, config}: any) => {
     const barValue = questionTimeStarted
     ? (questionTime/exercices[currLevel].questionDuration)*100
     : ((exercices[currLevel].answerDuration-answerTime )/ exercices[currLevel].answerDuration) *100
-    return (<div style={{width: '100%', height: '100%', backgroundColor: backgroundColor, color: '#dddddd', fontFamily: ' "Arial Rounded MT Bold", Arial, sans-serif', fontWeight: 'bold'}}>
+    return (<div style={{width: '100%', height: '100%', backgroundColor: backgroundColor, color: '#dddddd', fontFamily: 'arial-rounded-mt-bold', fontWeight: 'bold'}}>
         {calculs.length
-            ? <div style={{width: '100%', display: 'flex', justifyContent: 'space-around', fontSize: fontSize+'em'}}>
+            ? <div style={{width: '100%', height: '80%', display: 'flex', justifyContent: 'space-around', alignItems: 'center', fontSize: fontSize+'em'}}>
                 {
                     calculs[currLevel].map((calculGroup:any, calculGroupIndex:any)=>{
                         return <div key={calculGroupIndex}>
@@ -248,7 +248,7 @@ const Game = ({exercices, setGameOver, config}: any) => {
                                 calculGroup.map((currCalcul:any, index:any) => {
                                   return (<div key={index} style={{display: 'flex', flexDirection: 'row', margin: '10px'}}>
                                       {config.displayLetterId === true 
-                                        ? <div style={{width: '82px'}}>{integerToLetter(calculGroupIndex*(calculGroup.length) + (index+1))}: </div>
+                                        ? <div style={{color: '#0a4663', fontSize: '0.5em', display: 'flex', alignItems: "flex-end", marginBottom: '10px' }}>{integerToLetter(calculGroupIndex*(calculGroup.length) + (index+1))}. </div>
                                         : null
                                       }
                                       <div style={{display: 'flex', flexDirection: 'row'}}>
