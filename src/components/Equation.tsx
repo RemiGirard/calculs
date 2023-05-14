@@ -84,7 +84,6 @@ const Equation = ({
   return (<div key={index} className="fontsetter" style={{
               display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
               width: '100%', height: '100%',
-              backgroundColor: index %2 ? ( calculGroupIndex %2 ? 'red' : 'blue') : ( calculGroupIndex %2 ? 'green' : 'pink'),
               fontSize: dynamicFontSize.toString() + 'em',
               }}>
       {config.displayLetterId

@@ -257,11 +257,11 @@ const Game = ({exercices, setGameOver, config}: any) => {
                             let newAcc = structuredClone(acc);
                             newAcc[1] = newAcc[1] < curr[1].toString().length ? curr[1].toString().length : newAcc[1];
                             newAcc[2] = newAcc[2] < curr[2].toString().length ? curr[2].toString().length : newAcc[2];
-                            newAcc['result'] = newAcc['result'] < curr['result'].toString().length ? curr['result'].toString().length : newAcc['result'];
+                            newAcc['result'] = newAcc['result'] < curr['result'].toString().length ? (Array.isArray(curr['result']) ? 4 + Math.max(curr['result'][0].toString().length, curr['result'][1].toString().length)  :curr['result'].toString().length) : newAcc['result'];
                             return newAcc;
                           }, {1: 0, 2: 0, result: 0});
                         }
-                        return <div key={exerciceIndex} style={{display:'flex', flexDirection: 'column', width: (1/(calculs[currLevel].length)*100).toString()+'%', height: '100%', justifyContent: 'center'}}>
+                        return <div key={exerciceIndex} style={{display:'flex', flexDirection: 'column', width: (1/(calculs[currLevel].length)*100).toString()+'%', height: (1/(calculs[currLevel][exerciceIndex].length)*100).toString()+'%', justifyContent: 'center'}}>
                             {
                                 [...(new Array(exercices[currLevel].calcNumber))].map((currCalcul:any, index:any) => {
                                   const calculGroup = calculs[currLevel][exerciceIndex];
