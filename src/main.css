@@ -7,13 +7,7 @@ html, body, #root, #root > div{
 }
 
 html {
-  font-size: 10px;
-}
-
-@media (min-width:1280px) {
-  html {
-    font-size: 16px;
-  }
+  font-size: 16px;
 }
 
 @font-face {
@@ -97,58 +91,5 @@ html {
     font-size: 12px;
     font-weight: bold;
     transform: rotate(45deg);
-  }
-  
-  @media (max-width: 600px) {
-    table {
-      font-size: 14px;
-    }
-  
-    input[type="number"], select {
-      font-size: 14px;
-      margin-right: 5px;
-    }
-  
-    div[style*="display: flex; justify-content: center;"] {
-      font-size: 16px;
-    }
-  
-    div[style*="background: rgb(187, 21, 21)"] div {
-      font-size: 20px;
-    }
-  
-    div[style*="background: rgb(187, 187, 187)"] div {
-      font-size: 10px;
-    }
-  }
-  input[type="number"] {
-    padding: 8px 12px;
-    font-size: 16px;
-    line-height: 1.4;
-    border: 2px solid #555;
-    border-radius: 4px;
-    background-color: #444;
-    color: #fff;
-  }
-  
-  /* Styling the up and down arrows */
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    appearance: none;
-    margin: 0;
-  }
-  
-  input[type="number"]::-webkit-inner-spin-button:before,
-  input[type="number"]::-webkit-outer-spin-button:before {
-    display: block;
-    width: 16px;
-    height: 16px;
-    background-color: black;
-  }
-  
-  input[type="number"]::-webkit-inner-spin-button:hover:before,
-  input[type="number"]::-webkit-outer-spin-button:hover:before {
-    background-color: black;
   }
   
