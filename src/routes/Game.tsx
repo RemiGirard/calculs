@@ -230,7 +230,7 @@ const Game = ({exercices, setGameOver, config}: any) => {
         const heightSize = calculsTable.current.offsetHeight/calculs[currLevel][0].length;
         // maxTextLength
         const textHeight = 1
-        setDynamicFontSize(Math.min(widthSize/(updatedMaxTextLengthForListener.current*12), heightSize/(textHeight*20)))
+        setDynamicFontSize(Math.min(widthSize/(updatedMaxTextLengthForListener.current*12), heightSize/(textHeight*25)))
       }
     }
     
