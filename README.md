@@ -2,11 +2,11 @@
 
 Generate math exercice.
 
-Get it : [Download](https://github.com/RemiGirard/calculs/releases/download/v1.0.0/index.html)
+Get it : [Download](https://github.com/RemiGirard/calculs/releases/download/v1.5.1/index-1.5.1.html)
 
 ![screenshot configuration](doc/asset/screenshotConfiguration01.png)
 
-![screenshot exercices](doc/asset/screenshotExercice01.png)
+![screenshot exercices](doc/asset/screenshotExercice02.png)
 
 
 ## Requirement
