@@ -8,7 +8,7 @@ const config = {
     }],
     ['@semantic-release/github', {
       'assets': [
-        {path: 'dist/index-*.html', name: `calculs-${nextRelease.version}.html`}
+        {path: 'dist/index-*.html'}
       ]
     }],
     '@semantic-release/git',
