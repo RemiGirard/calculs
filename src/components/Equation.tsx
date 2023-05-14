@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import dictionary from '../dictionary.json'
+import dictionaryTyped from '../dictionary.json'
 
 
-const Equation = ({currCalcul, index, calculGroupIndex, calculGroup, config, showResult, calcType, updateParentTextSize, groupSizes, dynamicFontSize}) => {
-
-  
-
+const Equation = ({
+  currCalcul, index, calculGroupIndex, calculGroup, config, showResult, calcType, updateParentTextSize, groupSizes, dynamicFontSize
+}: {
+  currCalcul: any,
+  index: any,
+  calculGroupIndex: any,
+  calculGroup: any,config: any,showResult: any,calcType: '+'|'+ x*10'|'+ x'|'-'|'*'|'/'|'/ int'|'%',updateParentTextSize: any,groupSizes: any,dynamicFontSize: any}) => {
 
   useEffect(() => {
     let textCount = 0;
@@ -76,7 +79,7 @@ const Equation = ({currCalcul, index, calculGroupIndex, calculGroup, config, sho
     
     return letter;
   }
-
+  const dictionary:any = dictionaryTyped;
   
   return (<div key={index} className="fontsetter" style={{
               display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center',

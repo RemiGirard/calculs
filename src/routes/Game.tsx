@@ -220,7 +220,7 @@ const Game = ({exercices, setGameOver, config}: any) => {
       updatedMaxTextLengthForListener.current = maxTextLength;
     }, [maxTextLength])
 
-    const calculsTable = useRef<HTMLElement | null>(null);
+    const calculsTable = useRef<any>(undefined);
 
     const [dynamicFontSize, setDynamicFontSize] = useState(1);
 
