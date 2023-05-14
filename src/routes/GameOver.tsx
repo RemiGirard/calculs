@@ -2,17 +2,22 @@ import Title from '../components/Title';
 import Clapping from '../assets/clapping.png';
 
 const GameOver = ({ numberOfCalcul, title }: any) => {
-  const steps = [...(new Array(5))].map((_, index) => {
-    return Math.round((index * numberOfCalcul) / 4)
-  })
+  const steps = [
+    Math.round((0 * numberOfCalcul) / 4),
+    Math.round((2 * numberOfCalcul) / 4),
+    Math.round((3.99999 * numberOfCalcul) / 4),
+    Math.round((4 * numberOfCalcul) / 4),
+  ]
   const getAnswerLineDisplay = (first: any, second: any, score: any, isLast: any) => {
     return !isLast
       ? <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', }}>
         <div>de {first} à {Math.max(first, second - 1)} réponse{(Math.max(first, second - 1)) > 1 ? 's' : ''} juste{Math.max(first, second - 1) > 1 ? 's' : ''} : </div>
+        <div style={{width: '0.2em'}}></div>
         <div> tu montes de {score}</div>
       </div>
       : <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', }}>
         <div>plus de {first} réponse{first > 1 ? 's' : ''} juste{first > 1 ? 's' : ''} : </div>
+        <div style={{width: '0.2em'}}></div>
         <div> tu montes de {score}</div>
       </div>
   }
