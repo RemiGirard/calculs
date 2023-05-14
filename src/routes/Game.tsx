@@ -8,19 +8,19 @@ import Equation from '../components/Equation'
 const dictionary:any = dictionaryTyped;
 
 const Game = ({exercices, setGameOver, config}: any) => {
-    const [currLevel, setCurrLevel] = useState(0);
-    const [showResult, setShowResult] = useState(false)
-    const rerollLimit = 1000;
+  const rerollLimit = 1000;
+  const backgroundColor = '#022b40';
 
-    const backgroundColor = '#022b40';
+  const [currLevel, setCurrLevel] = useState(0);
+  const [showResult, setShowResult] = useState(false)
 
-    const [questionTimeStarted, setQuestionTimeStarted] = useState(true)
-    const [questionTimeReset, setQuestionTimeReset] = useState(false)
-    const [answerTimeReset, setAnswerTimeReset] = useState(false)
-    const [answerTimeStarted, setAnswerTimeStarted] = useState(false)
+  const [questionTimeStarted, setQuestionTimeStarted] = useState(true)
+  const [questionTimeReset, setQuestionTimeReset] = useState(false)
+  const [answerTimeReset, setAnswerTimeReset] = useState(false)
+  const [answerTimeStarted, setAnswerTimeStarted] = useState(false)
 
-    function getRandomInt(min:any, max:any) {
-      return Math.round(Math.random() * (max - min))+ parseInt(min);
+  function getRandomInt(min:any, max:any) {
+    return Math.round(Math.random() * (max - min))+ parseInt(min);
   }
 
   const biggestNumberFirst = (first:any, second:any) => {
@@ -299,8 +299,8 @@ const Game = ({exercices, setGameOver, config}: any) => {
                     })
                 }
             </div>
-        <div style={{display: 'flex', justifyContent: 'center',  width: '100%',position: 'absolute', bottom: '50px'}}>
-          <div style={{width: '100%', height: '50px', display: 'flex', justifyContent: 'center'}}>
+        <div style={{display: 'flex', justifyContent: 'center',  width: '100%',position: 'absolute', bottom: '5%', height: '5%'}}>
+          <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center'}}>
             <ProgressBar value={barValue}></ProgressBar>
           </div>
         </div>

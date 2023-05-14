@@ -1,6 +1,6 @@
 const ProgressBar = ({value = 0, color = '#f543e2'}) => {
     return (
-      <div style={{width: '100%', height: '30px', display: 'flex', justifyContent: 'center'}}>
+      <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center'}}>
         <div style={{
           backgroundColor: color,
           width: `${value}%`,
