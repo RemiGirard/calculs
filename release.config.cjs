@@ -5,7 +5,9 @@ const config = {
     '@semantic-release/release-notes-generator',
 
     ['@semantic-release/github', {
-      'assets': ['dist/index.html']
+      'assets': [
+        {path: 'dist/index.html', name: `calculs-${nextRelease.version}.html`}
+      ]
     }],
     '@semantic-release/git',
   ]

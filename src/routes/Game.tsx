@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import useTimer from '../hooks/useTimer';
 import ProgressBar from '../components/ProgressBar';
@@ -245,6 +245,22 @@ const Game = ({exercices, setGameOver, config}: any) => {
       }
     },[maxTextLength])
 
+    const tableSizes = useMemo(() => {
+      if(calculs && calculs[currLevel]){
+          return calculs[currLevel].map((calculGroup: any, calculGroupIndex: number)=> {
+            const groupSizes = calculGroup.reduce((acc: any, curr: any) => {
+              let newAcc = structuredClone(acc);
+              newAcc[1] = newAcc[1] < curr[1].toString().length ? curr[1].toString().length : newAcc[1];
+              newAcc[2] = newAcc[2] < curr[2].toString().length ? curr[2].toString().length : newAcc[2];
+              newAcc['result'] = newAcc['result'] < curr['result'].toString().length ? (Array.isArray(curr['result']) ? 4 + Math.max(curr['result'][0].toString().length, curr['result'][1].toString().length)  :curr['result'].toString().length) : newAcc['result'];
+              return newAcc;
+            }, {1: 1, 2: 1, result: 1});
+            return groupSizes;
+          })
+      } else {
+        return [...(new Array(exercices[currLevel].groups.length)).map(() => {return {1: 1, 2: 1, result: 1};})]
+      }
+    }, [calculs, currLevel])
 
     return (<div style={{width: '100%', height: '100%', backgroundColor: backgroundColor, color: '#dddddd',
         fontFamily: 'arial-rounded-mt-bold', fontWeight: 'bold', display: 'flex', justifyContent: 'center'}}>
@@ -274,7 +290,7 @@ const Game = ({exercices, setGameOver, config}: any) => {
                                             config={config}
                                             showResult={showResult} calcType={exercices[currLevel].calcType}
                                             updateParentTextSize={updateParentTextSize}
-                                            groupSizes={groupSizes}
+                                            groupSizes={tableSizes[exerciceIndex]}
                                             dynamicFontSize={dynamicFontSize}
                                             />:null);
                                 })
