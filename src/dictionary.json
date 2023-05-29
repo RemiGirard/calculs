@@ -1,7 +1,7 @@
 {
 "titles": {
     "config": "Configuration",
-    "generateExercices": "Génération des exercices",
+    "generateExercices": "S.M.U.C.",
     "gameover": "On monte !"
 },
 "fields": {
@@ -9,7 +9,7 @@
         "+": "addition",
         "+ x*10": "addition de dizaines",
         "+ x": "addition d'un nombre défini",
-        "-": "soustraction",
+        "-": "positiveSoustraction",
         "*": "multiplication",
         "/": "division",
         "/ int": "division entière",
@@ -25,7 +25,10 @@
         "secondElement": "deuxième élément",
         "randomOnTheTwoFirstElements": "1er ou 2em élément",
         "randomOnAll": "1er, 2em ou résultat"
-    }
+    },
+    "questionTime": "exercice",
+    "answerTime": "réponse",
+    "calcNumber": "nombre de calculs"
 },
 "columns": {
     "calcType": "type de calcul",
@@ -41,10 +44,11 @@
     "start": "Démarrer"
 },
 "calcCharacter": {
-        "/ int": "/",
-        "+ x*10": "+",
-        "+ x": "+",
-        "%": "/",
-        "*": "x"
+    "addition": "+",
+    "positiveSoustraction": "-",
+    "multiplication": "*",
+    "division": "/",
+    "intDivision": "/",
+    "modulo": "%"
 }
 }

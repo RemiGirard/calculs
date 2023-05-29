@@ -1,5 +1,5 @@
-import Title from '../components/Title';
-import Button from '../components/buttons/Button';
+import Title from '../components/molecules/Title';
+import Button from '../components/molecules/buttons/Button';
 
 const Config = ({title, setStateGenerateExercices, config, setConfig}: any) => {
   // {

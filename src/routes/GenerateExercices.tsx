@@ -1,237 +1,251 @@
-import Title from '../components/Title';
-import dictionaryTyped from '../dictionary.json'
-import Button from '../components/buttons/Button';
-import IntInput from '../components/inputs/IntInput';
-import SelectInput from '../components/inputs/SelectInput';
-import { Case, Switch } from '../utils/Switch';
+import { useEffect, useState } from "react";
 
-const dictionary:any = dictionaryTyped;
+import Input from "../components/molecules/inputs/Input";
+import ColumnInput from "../components/molecules/inputs/ColumnInput";
+import ColumnCloseCross from "../components/molecules/ColumnCloseCross";
+import BigActionButton from "../components/molecules/buttons/BigActionButton";
+import useGenerator from "../hooks/useGenerator";
+import { GenerateExercicesWrapper, Title, ColumnsConfigWrapper, ExerciceConfigWrapper, TimeConfigWrapper } from "./GenerateExercices.style";
+import { ExerciceConfig, calcTypes } from "./GenerateExercice.types";
+import Play from '../assets/Play';
+import Save from '../assets/Save';
+import Trash from '../assets/Trash';
+import colors from '../colors.json';
+import dictionary from '../dictionary.json';
+import Game from "./Game";
+import { getRatio } from "../utils/utils";
 
-const LimitChoice = ({ title, exercices, setExercices, defaultExerciceUpdated, columns, setGameStarted }: any) => {
+const isDevEnv:boolean = (process.env.NODE_ENV === 'development');
 
-  const maxGroups = 4;
-
-  const setOneLimit = (propKeys : any, value: any) => {
-    let newLimits = [...exercices];
-    let currentObj = newLimits;
-    for (let i = 0; i < propKeys.length - 1; i++) {
-      currentObj = currentObj[propKeys[i]];
-    }
-    
-    currentObj[propKeys[propKeys.length - 1]] = value;
-    setExercices(newLimits);
-  }
-
-  const removeLevel = (index:any) => {
-    let newLimits = structuredClone(exercices)
-    newLimits.splice(index, 1)
-    setExercices(newLimits)
-  }
-  const addLevel = () => {
-    setExercices([...exercices, defaultExerciceUpdated])
-  }
-
-  const removeGroup = (index:any) => {
-    let newLimits = structuredClone(exercices)
-    let newGroups = structuredClone(exercices[0].groups)
-    newGroups.splice(index, 1)
-    newLimits = newLimits.map((limit:any) => {
-      return {
-        ...limit,
-        groups: structuredClone(newGroups),
+const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) => {
+  const defaultExercice:ExerciceConfig = {
+    questionTime: isDevEnv ? 5 : 180,
+    answerTime: isDevEnv ? 5 : 60,
+    equationCount: 6,
+    columns: [{
+      type: 'addition',
+      1: {
+        type: 'range',
+        min: 1,
+        max: 9,
+      },
+      2: {
+        type: 'range',
+        min: 1,
+        max: 9,
+      },
+      answer: {
+        1: false,
+        2: false,
+        result: true,
       }
-    })
-    setExercices(newLimits)
+    },{
+      type: 'addition',
+      1: {
+        type: 'range',
+        min: 1,
+        max: 9,
+      },
+      2: {
+        type: 'range',
+        min: 1,
+        max: 9,
+      },
+      answer: {
+        1: false,
+        2: false,
+        result: true,
+      }
+    }],
+  };
+
+  const [sessionConfig, setSessionConfig] = useState<ExerciceConfig[]>([defaultExercice]);
+
+  const [exercices, generatorRequest] = useGenerator(sessionConfig);
+
+  useEffect(() => {
+    sessionConfig.forEach((exerciceConfig, index) => {
+      generatorRequest({type: 'generate exercice', exerciceIndex: index, exerciceConfig: exerciceConfig});
+    });
+  }, [sessionConfig]);
+
+  useEffect(()=> {
+    const newExercices = structuredClone(exercices);
+    setExercices(newExercices);
+  }, [exercices])
+  
+  const updateExercice = ({exerciceIndex, keyToChange, newValue}: any) => {
+    let newSessionConfig = structuredClone(sessionConfig);
+    let newExercice:any = structuredClone(newSessionConfig[exerciceIndex])
+    newExercice[keyToChange] = newValue;
+    newSessionConfig[exerciceIndex] = newExercice;
+    setSessionConfig(newSessionConfig);
+  };
+
+  const updateColumn = ({exerciceIndex, columnIndex, keyToChange, newValue}: any) => {
+    let newColumns = structuredClone(sessionConfig[exerciceIndex].columns);
+    let newColumn:any = structuredClone(sessionConfig[exerciceIndex].columns[columnIndex]);
+    newColumn[keyToChange] = newValue;
+    newColumns[columnIndex] = newColumn;
+
+    updateExercice({exerciceIndex, keyToChange: 'columns', newValue: newColumns});
+  };
+
+  const addColumn = ({exerciceIndex}: any) => {
+    let newColumns = structuredClone(sessionConfig[exerciceIndex].columns);
+    let newColumn = structuredClone(sessionConfig[exerciceIndex].columns[newColumns.length-1]);
+    newColumns = [...newColumns, newColumn];
+
+    updateExercice({exerciceIndex, keyToChange: 'columns', newValue: newColumns});
+  };
+
+  const removeColumn = ({exerciceIndex, columnIndex}: any) => {
+    let newColumns = structuredClone(sessionConfig[exerciceIndex].columns);
+    newColumns.splice(columnIndex, 1)
+
+    updateExercice({exerciceIndex, keyToChange: 'columns', newValue: newColumns});
   }
 
-  const isMaxGroup = exercices[0].groups.length >= maxGroups;
+  const addExercice = () => {
+    let newSessionConfig = structuredClone(sessionConfig);
+    let newExercice = structuredClone(newSessionConfig[newSessionConfig.length-1]);
+    newSessionConfig.push(newExercice);
 
-  const addGroup = () => {
-      let newExercices = structuredClone(exercices)
-
-      newExercices = newExercices.map((exercice:any) => {
-        const newGroup = structuredClone(exercice.groups[exercice.groups.length-1])
-        return {
-          ...exercice,
-          groups: [
-            ...exercice.groups,
-            newGroup
-            ,
-          ],
-        }
-      })
-      setExercices(newExercices)
+    setSessionConfig(newSessionConfig);
   }
 
+  const removeExercice = (exerciceIndex: number) => {
+    let newSessionConfig = structuredClone(sessionConfig);
+    newSessionConfig.splice(exerciceIndex, 1)
 
-  return (<div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000303', color: '#55cc55', height: '100%'}}>
-    <Title style={{marginBottom: '50px', color: 'grey'}}>{title}</Title>
-    <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
-      <table style={{marginBottom: '50px'}}>
-        <thead>
-          <tr>{
-            columns.map((column:any, columnIndex:any) => {
-              const columnName: 'calcType'|'calcNumber'|'difficulty'|'questionDuration'|'answerDuration'|'gap' = column.name;
-              return <td key={columnIndex}>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                  {column.name === 'groups'
-                  ? <div style={{width: '100%',display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <div>groupes</div>
-                    <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
-                      {
-                        exercices[0].groups.map((group:any, groupIndex:any) => {
-                          return <div key={groupIndex} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                            <div>groupe {groupIndex+1} </div>
-                            <div style={{width: '15px', height: '15px', margin: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                            {exercices[0].groups.length > 1
-                              ? <div onClick={()=> removeGroup(groupIndex)} style={{width: '15px', height: '15px', backgroundColor: '#bbb', borderRadius: '5px', color: 'white', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>x</div>
-                              : null
-                            }
-                            </div>
-                            </div>
-                        })
-                      }
-                    </div>
-                  </div>
-                  : dictionary.columns[columnName] ?? column.name
-                  }
+    setSessionConfig(newSessionConfig);
+  }
+
+  const [ratio, setRatio] = useState<number>(getRatio());
+  useEffect(() => {
+    const handleResize = () => {
+      setRatio(getRatio());
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  },[])
+
+  return (<GenerateExercicesWrapper>
+      <Title style={{width: (title.length*1.6).toString() +  '%'}}>
+        {title}
+      </Title>
+      <div style={{width: '96%', margin: '2%', overflow: 'scroll', height: '70%'}}>
+        {sessionConfig.map((exercice: ExerciceConfig, exerciceIndex: number) => {
+          return (<ExerciceConfigWrapper key={exerciceIndex} $iseven={exerciceIndex % 2 === 0}>
+            <div style={{width: '15%', marginRight: '0.3%', display: 'flex', flexDirection: 'column'}}>
+              <TimeConfigWrapper> {/* times and number */}
+                <Input
+                  label={dictionary.fields.questionTime}
+                  value={exercice.questionTime}
+                  setValue={(newValue: string) => {updateExercice({exerciceIndex, keyToChange: 'questionTime', newValue})}}
+                  unit='sec'
+                />
+                <Input
+                  label={dictionary.fields.answerTime}
+                  value={exercice.answerTime}
+                  setValue={(newValue: string) => {updateExercice({exerciceIndex, keyToChange: 'answerTime', newValue})}}
+                  unit='sec'
+                />
+
+                <Input
+                  label={dictionary.fields.calcNumber}
+                  value={exercice.equationCount}
+                  setValue={(newValue: string) => {updateExercice({exerciceIndex, keyToChange: 'equationCount', newValue: Number(newValue)})}}
+                />
+              </TimeConfigWrapper>
+              <div style={{ paddingTop: '3%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center'}}>
+                <div
+                  style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
+                >
+                  {<Save />}
                 </div>
-                </td>
-            })
-          }</tr>
-        </thead>
-        <tbody>
-          {exercices.map((element:any, index:any) => {
-            return (<tr key={index}>
-              {
-                columns.map((column:any, columnIndex:any) => {
-                  return <td key={columnIndex}>
-                    <Switch expression={column.field}>
-                      <Case value={'int'}>
-                        <IntInput
-                          value={element[column.name]}
-                          onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
-                        />
-                      </Case>
-                      <Case value={'groups'}>
-                        <div style={{display: 'flex', flexDirection: 'row'}}>
-                        {
-                          element['groups'].map((group:any, groupIndex:any) => {
-                          return <div key={groupIndex} style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                              <div> min:</div>
-                              <IntInput
-                                value={group.min}
-                                onChangeValue={(value:any) => setOneLimit([index, column.name, groupIndex, 'min'], value)}
-                              />
-                            </div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                              <div>max:</div>
-                              <IntInput
-                                value={group.max}
-                                onChangeValue={(value:any) => setOneLimit([index, column.name, groupIndex, 'max'], value)}
-                              />
-                            </div>
-                          </div>
-                          })
-                        }
-                        </div>
-                        
-                      </Case>
-                      <Case value={'range'}>
-                        <div style={{display: 'flex', alignItems: 'center'}}>
-                          <div>min:</div>
-                          <IntInput
-                            value={element[column.name].min}
-                            onChangeValue={(value:any) => setOneLimit([index, column.name, 'min'], value)}
-                          />
-                        <div>max:</div>
-                        <IntInput
-                          value={element[column.name].max}
-                          onChangeValue={(value:any) => setOneLimit([index, column.name, 'max'], value)}
-                        />
-                        </div>
-                      </Case>
-                      <Case value={'time'}>
-                        <div style={{display:'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
-                          <IntInput
-                            value={element[column.name]}
-                            onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
-                          />
-                          <div>secondes</div>
-                          </div>
-                      </Case>
-                      <Case value={'number'}>
-                        <div style={{display:'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
-                          <IntInput
-                            value={element[column.name]}
-                            onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
-                          />
-                          </div>
-                      </Case>
-                      <Case value={'select'}>
-                        <SelectInput
-                          value={element[column.name]}
-                          onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
-                          choices={column.choices}
-                          renderChoice={(choice:any, choiceIndex:any) => <option key={choiceIndex} value={choice}>{dictionary.fields[column.name][choice] ?? choice}</option>}
-                        />
-                      </Case>
-                      <Case value={'calcType'}>
-                        <SelectInput
-                          value={element[column.name]}
-                          onChangeValue={(value:any) => setOneLimit([index, column.name], value)}
-                          choices={column.choices}
-                          renderChoice={(choice:any, choiceIndex:any) => <option key={choiceIndex} value={choice}>{dictionary.fields[column.name][choice] ?? choice}</option>}
-                        />
-                        {element[column.name] === '+ x*10'
-                          ? <div style={{display: 'flex', alignItems: 'center'}}>
-                            <div>min:</div>
-                            <IntInput
-                              value={element.calcSpeRange.min}
-                              onChangeValue={(value:any) => setOneLimit([index, 'calcSpeRange', 'min'], value)}
-                            />
-                            <div>max:</div>
-                            <IntInput
-                              value={element.calcSpeRange.max}
-                              onChangeValue={(value:any) => setOneLimit([index, 'calcSpeRange', 'max'], value)}
-                            />
-                          </div>
-                          : null
-                        }
-                        {element[column.name] === '+ x'
-                          ? <div style={{display: 'flex', alignItems: 'center'}}>
-                            <div>nombre:</div>
-                            <IntInput
-                              value={element.calcSpeNumber}
-                              onChangeValue={(value:any) => setOneLimit([index, 'calcSpeNumber'], value)}
-                            />
-                          </div>
-                          : null
-                        }
-                      </Case>
-                    </Switch>
-                  </td>
-                })
-              }
-              <td>{exercices.length > 1 ? <Button onClick={() => removeLevel(index)} style={{ color: 'white', background: '#bb1515', width: '30px', height: '30px' }}>x  </Button>:<div style={{width: '30px', height: '30px'}}></div>}</td>
-            </tr>);
-          })}
-        </tbody>
-      </table>
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
-        <Button onClick={() => addGroup()} disable={isMaxGroup} style={{ width: '25%', height: '50px', background: '#106610', fontSize: '1.2em' }}>
-          {dictionary.buttons.addGroup ?? 'addGroup'}
-        </Button>
-        <Button onClick={() => addLevel()} style={{ width: '25%', height: '50px', background: '#106610', fontSize: '1.2em' }}>
-          {dictionary.buttons.addExercice ?? 'addExercice'}
-        </Button>
-        <Button onClick={() => setGameStarted()} style={{ width: '25%', height: '50px', background: '#051087', color: 'white', fontSize: '1.5em', textDecoration: 'none' }}>
-          Démarrer
-        </Button>
+                <div
+                  style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
+                  onClick={() => {sessionConfig.length > 1 ? removeExercice(exerciceIndex) : null}}  
+                >
+                  <Trash />
+                </div>
+              </div>
+            </div>
+            <ColumnsConfigWrapper>
+            
+            {exercice.columns.map((column, columnIndex) => {
+              return (<div key={columnIndex}>
+                  { exercice.columns.length > 1 ? <ColumnCloseCross onClick={()=>{removeColumn({exerciceIndex, columnIndex})}}/> : null}
+                  <ColumnInput
+                    label={'type'}
+                    type={'select'}
+                    options={calcTypes}
+                    value={column.type}
+                    setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: 'type', newValue})}}
+                    reducedWidth={true}
+                  />
+                  <ColumnInput
+                    label={'1er'}
+                    type={'numberGeneration'}
+                    value={column[1]}
+                    setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: '1', newValue})}}
+                  />
+                  <ColumnInput
+                    label={'2ème'}
+                    type={'numberGeneration'}
+                    value={column[2]}
+                    setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: '2', newValue})}}
+                  />
+                  <ColumnInput
+                    label={'trou'}
+                    type={'answer'}
+                    value={column.answer}
+                    setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: 'answer', newValue})}}
+                  />
+              </div>)
+            })}
+            <div onClick={() => addColumn({exerciceIndex})}>+</div>
+            </ColumnsConfigWrapper>
+            
+            <div style={{display: 'flex',width: '20%', marginLeft: '1%'}}> {/* preview */}
+              <div style={{ width: '100%',aspectRatio: ratio}}>
+                {exercices.length && exercices[exerciceIndex] !==undefined && exercices[exerciceIndex].columns.length
+                  ? <Game exercices={exercices} config={config} startTimers={false} startingLevel={exerciceIndex}/>
+                  : <div style={{width: '100%', height: '100%'}}>preview</div>
+                }
+              </div>
+            </div>
+          </ExerciceConfigWrapper>);
+        })}
       </div>
-    </div>
-  </div>)
-}
+      <div style={{margin: '2%', width: '96%', height: '8%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+        <BigActionButton
+          color={colors.blueShades[4]}
+          colorHover={colors.blueShades[5]}
+          textColor={'black'}
+          onClick={(e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {addExercice()}}
+          style={{width: '10%', height: '100%'}}
+        > 
+          +
+        </BigActionButton> 
+        <BigActionButton
+          color={colors.greenShade[1]}
+          colorHover={colors.blueShades[5]}
+          textColor={'black'}
+          onClick={(e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            setGameStarted();
+          }}
+          style={{width: '10%', height: '100%'}}
+        > 
+          <div
+            style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
+          >
+            {<Play />}
+          </div>
+        </BigActionButton> 
+      </div>
+  </GenerateExercicesWrapper>);
+};
 
-export default LimitChoice;
+export default GenerateExercices;
