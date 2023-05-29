@@ -8,12 +8,43 @@ import Config from './routes/Config';
 import LimitChoice from './routes/GenerateExercices';
 import Game from './routes/Game';
 import GameOver from './routes/GameOver';
-import { PageName, ConfigInterface, Columns } from './Calcul.types';
+import { PageName, ConfigInterface, Columns, ExerciceConfig } from './Calcul.types';
+import GenerateExercicesV2 from './routes/GenerateExercicesV2';
+
+const isDevEnv:boolean = (process.env.NODE_ENV === 'development');
 
 const Calcul = () => {
-  const [currState, setCurrState] = useState<PageName>('generateExercices');
-  
-  const isDevEnv:boolean = process.env.NODE_ENV === 'development';
+  const [currState, setCurrState] = useState<PageName>('generateExercicesV2');
+  const setStateConfig = () => setCurrState('config');
+  const setStateGenerateExercices = () => setCurrState('generateExercicesV2');
+  const setGameStarted = () => setCurrState('started');
+  const setGameOver = () => setCurrState('finish');
+
+  const defaultExerciceV2:ExerciceConfig = {
+    questionTime: isDevEnv ? 5 : 180,
+    answerTime: isDevEnv ? 5 : 60,
+    equationCount: 6,
+    columns: [{
+      type: 'addition',
+      1: {
+        type: 'range',
+        min: 1,
+        max: 9,
+      },
+      2: {
+        type: 'range',
+        min: 1,
+        max: 9,
+      },
+      answer: {
+        1: false,
+        2: false,
+        result: true,
+      }
+    }],
+  };
+
+  const [sessionConfig, setSessionConfig] = useState<ExerciceConfig[]>([defaultExerciceV2]);
 
   const [config, setConfig] = useState<ConfigInterface>({
     default: {
@@ -31,56 +62,9 @@ const Calcul = () => {
     displayLetterId: true,
   });
 
-  const columns:Columns = [
-    {
-      name: 'groups',
-      field: 'groups',
-      default: Array.from(new Array(config.default.numberOfGroup), () => {return {...config.default.group};}),
-    }, {
-      name: 'calcType',
-      field: 'calcType',
-      choices: ['+', '+ x*10', '+ x', '-', '*', '/', '/ int', '%'],
-      default: config.default.calcType,
-    }, {
-      name: 'calcNumber',
-      field: 'number',
-      default: config.default.calcNumber,
-    }, {
-      name: 'difficulty',
-      field: 'select',
-      choices: [1, 2],
-      default: config.default.difficulty
-    }, {
-      name: 'questionDuration',
-      field: 'time',
-      default: config.default.questionDuration
-    }, {
-      name: 'answerDuration',
-      field: 'time',
-      default: config.default.answerDuration
-    } , {
-      name: 'gap',
-      field: 'select',
-      choices: ['result' , 'firstElement', 'secondElement', 'randomOnTheTwoFirstElements', 'randomOnAll'],
-      default: config.default.gap,
-    }
-  ];
+  const [exercices, setExercices] = useState([]);
 
-  let defaultExercice : any = {
-    calcSpeRange: config.default.calcSpeRange,
-    calcSpeNumber: config.default.calcSpeNumber
-  };
-  columns.forEach((column) => defaultExercice[column.name] = column.default)
-
-  const [exercices, setExercices] = useState([defaultExercice]);
-
-  const defaultExerciceUpdated = structuredClone(exercices[exercices.length-1])
-  const numberOfCalcul = exercices.reduce((acc, curr) => acc + curr.calcNumber, 0);
-
-  const setStateConfig = () => setCurrState('config');
-  const setStateGenerateExercices = () => setCurrState('generateExercices');
-  const setGameStarted = () => setCurrState('started');
-  const setGameOver = () => setCurrState('finish');
+  const numberOfCalcul = exercices.reduce((acc, exercice:any) => acc + exercice.calcNumber, 0);
 
   return (
     <Switch expression={currState}>
@@ -94,15 +78,16 @@ const Calcul = () => {
         }}
         />
       </Case>
-      <Case value={'generateExercices'}>
-        <LimitChoice
+      <Case value={'generateExercicesV2'}>
+        <GenerateExercicesV2
           title={dictionary.titles.generateExercices}
           {...{
+            sessionConfig,
+            setSessionConfig,
+            setGameStarted,
             exercices,
             setExercices,
-            defaultExerciceUpdated,
-            columns,
-            setGameStarted,
+            config,
           }}
         />
       </Case>
