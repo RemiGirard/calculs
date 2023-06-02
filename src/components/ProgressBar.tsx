@@ -1,4 +1,4 @@
-const ProgressBar = ({value = 0, color = '#f543e2'}) => {
+const ProgressBar = ({value = 0, color = '#ffffff'}) => {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center'}}>
         <div style={{

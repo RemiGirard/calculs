@@ -2,25 +2,29 @@ import { useState } from 'react';
 
 import { Switch, Case } from './utils/Switch';
 
-import dictionary from './dictionary.json'
-
 import Config from './routes/Config';
-import LimitChoice from './routes/GenerateExercices';
+import GenerateExercices from './routes/GenerateExercices';
 import Game from './routes/Game';
 import GameOver from './routes/GameOver';
-import { PageName, ConfigInterface, Columns, ExerciceConfig } from './Calcul.types';
-import GenerateExercicesV2 from './routes/GenerateExercicesV2';
+import { PageName, ConfigInterface, ExerciceConfig } from './Calcul.types';
 
-const isDevEnv:boolean = (process.env.NODE_ENV === 'development');
+import dictionary from './dictionary.json'
+import { Exercice } from './routes/Exercice.type';
+
+const isDevEnv: boolean = (process.env.NODE_ENV === 'development');
 
 const Calcul = () => {
-  const [currState, setCurrState] = useState<PageName>('generateExercicesV2');
+  const [currState, setCurrState] = useState<PageName>('generateExercices');
   const setStateConfig = () => setCurrState('config');
-  const setStateGenerateExercices = () => setCurrState('generateExercicesV2');
+  const setStateGenerateExercices = () => setCurrState('generateExercices');
   const setGameStarted = () => setCurrState('started');
   const setGameOver = () => setCurrState('finish');
 
-  const defaultExerciceV2:ExerciceConfig = {
+  const [config, setConfig] = useState<ConfigInterface>({
+    displayLetterId: true,
+  });
+
+  const defaultExercice: ExerciceConfig = {
     questionTime: isDevEnv ? 5 : 180,
     answerTime: isDevEnv ? 5 : 60,
     equationCount: 6,
@@ -44,48 +48,31 @@ const Calcul = () => {
     }],
   };
 
-  const [sessionConfig, setSessionConfig] = useState<ExerciceConfig[]>([defaultExerciceV2]);
+  const [sessionConfig, setSessionConfig] = useState<ExerciceConfig[]>([defaultExercice]);
 
-  const [config, setConfig] = useState<ConfigInterface>({
-    default: {
-      numberOfGroup: 2,
-      group: {min: 1, max: 9},
-      calcSpeRange: { min: 10, max: 50 },
-      calcSpeNumber: { min: 10, max: 50 },
-      calcType: '+',
-      calcNumber: 6,
-      difficulty: 1,
-      questionDuration: isDevEnv ? 5 : 180,
-      answerDuration: isDevEnv ? 5 : 60,
-      gap: 'result',
-    },
-    displayLetterId: true,
-  });
+  const [exercices, setExercices] = useState<Exercice[]>([]);
 
-  const [exercices, setExercices] = useState([]);
-
-  const numberOfCalcul = exercices.reduce((acc, exercice:any) => acc + exercice.calcNumber, 0);
+  const numberOfCalcul = exercices.reduce((acc, exercice) => acc + exercice.columns.length, 0);
 
   return (
     <Switch expression={currState}>
       <Case value={'config'}>
         <Config
-        title={dictionary.titles.config}
-        {...{
-          setStateGenerateExercices,
-          config,
-          setConfig,
-        }}
+          title={dictionary.titles.config}
+          {...{
+            setStateGenerateExercices,
+            config,
+            setConfig,
+          }}
         />
       </Case>
-      <Case value={'generateExercicesV2'}>
-        <GenerateExercicesV2
+      <Case value={'generateExercices'}>
+        <GenerateExercices
           title={dictionary.titles.generateExercices}
           {...{
             sessionConfig,
             setSessionConfig,
             setGameStarted,
-            exercices,
             setExercices,
             config,
           }}
@@ -103,7 +90,7 @@ const Calcul = () => {
       <Case value={'finish'}>
         <GameOver
           title={dictionary.titles.gameover}
-          {...{numberOfCalcul}}
+          {...{ numberOfCalcul }}
         />
       </Case>
     </Switch>

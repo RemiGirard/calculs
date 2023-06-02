@@ -1,10 +1,4 @@
-export const gapTypes = [
-  '1',
-  '2',
-  'result',
-] as const;
-
-export type GapTypes = typeof gapTypes[number];
+export type ElementId = '1'|'2'|'result'
 
 export const calcTypes = [
   "addition",
@@ -17,18 +11,20 @@ export const calcTypes = [
 
 export type CalcType = typeof calcTypes[number];
 
-export interface Equation {
+export interface EquationInterface {
   1: number,
   operation: CalcType,
   2: number,
   result: number,
-  gap: GapTypes,
+  gap: ElementId,
 }
 
-export type Column = Equation[]
+export type Column = EquationInterface[]
 
 export interface Exercice {
   questionTime: number,
   answerTime: number,
   columns: Column[],
 }
+
+export type DisplayElementAnswer = 'show'|'hideAnswer'|'showAnswer'

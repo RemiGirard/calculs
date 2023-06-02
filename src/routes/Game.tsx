@@ -3,17 +3,18 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useTimer from '../hooks/useTimer';
 import ProgressBar from '../components/ProgressBar';
 import dictionaryTyped from '../dictionary.json';
-import Equation from '../components/Equation';
-import {getRandomInt, biggestNumberFirst, getRandomDivisibleNumbersInRange} from '../utils/number'
+import Equation from '../components/molecules/Equation';
+import colors from '../colors.json';
 
 const dictionary:any = dictionaryTyped;
 
 const Game = ({exercices, setGameOver, config}: any) => {
+  console.debug({exercices})
   const rerollLimit = 1000;
   const backgroundColor = '#022b40';
 
   const [currLevel, setCurrLevel] = useState(0);
-  const [showResult, setShowResult] = useState(false)
+  const [showAnswer, setShowAnswer] = useState(false)
 
   const [questionTimeStarted, setQuestionTimeStarted] = useState(true)
   const [questionTimeReset, setQuestionTimeReset] = useState(false)
@@ -24,98 +25,14 @@ const Game = ({exercices, setGameOver, config}: any) => {
     return !calculLevel.every((calculGroup:any) => calculGroup.every((curr:any) =>  JSON.stringify({...curr}) !== JSON.stringify({...numbers})) === true);
   }
 
-  const getGap = (gapType:any) => {
-    switch(gapType){
-        case 'result':
-            return 'result';
-        case 'firstElement':
-            return 1;
-        case 'secondElement':
-            return 2;
-        case 'randomOnTheTwoFirstElements':
-            return getRandomInt(1, 2);
-        case 'randomOnAll':
-            return getRandomInt(1, 3) === 3 ? 'result' : getRandomInt(1, 2);
-        default:
-            return 'result';
-    }
-  }
-
-  const generateNumbers = ({group, limit, calculLevel, calculGroup, reroll=0}:any):any => {
-    let numbers:any = {
-        1: getRandomInt(group.min, group.max),
-        2: getRandomInt(group.min, group.max),
-        result: 0,
-        gap: getGap(limit.gap),
-    }
-
-    switch(limit.calcType){
-        case '+':
-            numbers.result = numbers[1]+numbers[2]
-            break;
-        case '+ x*10':
-            numbers[2]=(Math.max(10,Math.round(getRandomInt(limit.calcSpeRange.min, limit.calcSpeRange.max)/10)*10))
-            numbers.result = numbers[1]+numbers[2]
-            break;
-        case '+ x':
-            numbers[2]=limit.calcSpeNumber
-            numbers.result = numbers[1]+numbers[2]
-            break;
-        case '-':
-            [numbers[1], numbers[2]] = biggestNumberFirst(numbers[1], numbers[2])
-            numbers.result = numbers[1] - numbers[2]
-            break;
-        case '*':
-            numbers.result = numbers[1]*numbers[2]
-            break;
-        case '/':
-            [numbers[1], numbers[2]] = biggestNumberFirst(numbers[1], numbers[2])
-            numbers.result = parseFloat((numbers[1]/numbers[2]).toFixed(2))
-            break;
-        case '%':
-            [numbers[1], numbers[2]] = biggestNumberFirst(numbers[1], numbers[2])
-            numbers.result = [Math.floor(numbers[1]/numbers[2]), numbers[1]%numbers[2]]
-            break;
-        case '/ int':
-            [numbers[1], numbers[2]] = getRandomDivisibleNumbersInRange({min: group.min, max: group.max})
-            numbers.result = numbers[1]/numbers[2]
-            break;
-        default:
-    }
-
-      if(numbersCombinaisonAlreadyGenerated(numbers, [calculGroup, ...calculLevel]) && reroll < rerollLimit){
-          return generateNumbers({...{group, limit, calculLevel,calculGroup, reroll: reroll+1}})
-      } else {
-          return numbers;
-      }
-    }
-
-    const generateCalcul = () => {
-      const newCalculs:any =[]
-      exercices.forEach((limit:any) => {
-        let calculLevel:any = [];
-        limit.groups.forEach((group:any)=>{
-          let calculGroup:any = []
-          for(let i=0; i<limit.calcNumber;i++){
-            calculGroup.push(structuredClone(generateNumbers(structuredClone({group, limit, calculLevel, calculGroup}))))
-          }
-          calculLevel.push(calculGroup)
-        })
-        newCalculs.push(calculLevel)
-      });
-      return newCalculs
-    }
-
-    const calculs = useMemo(generateCalcul, [exercices]);
-
     const handleReStartAnswerTime = () => {
         setAnswerTimeReset(true);
         setAnswerTimeStarted(true);
-        setShowResult(true)
+        setShowAnswer(true)
     }
 
     const handleReStartQuestionTime = () => {
-        setShowResult(false)
+        setShowAnswer(false)
         setQuestionTimeReset(true);
         setQuestionTimeStarted(true);
     }
@@ -137,14 +54,14 @@ const Game = ({exercices, setGameOver, config}: any) => {
     }
 
     const questionTime = useTimer({
-      duration: exercices[currLevel].questionDuration,
+      duration: exercices[currLevel].questionTime,
       callback: handleEndQuestionTime,
       started: questionTimeStarted,
       reset: questionTimeReset,
       setReset: setQuestionTimeReset,
       });
     const answerTime = useTimer({
-      duration: exercices[currLevel].answerDuration,
+      duration: exercices[currLevel].answerTime,
       callback: handleEndAnswerTime,
       started: answerTimeStarted,
       reset: answerTimeReset,
@@ -152,11 +69,11 @@ const Game = ({exercices, setGameOver, config}: any) => {
     });
 
     const barValue = questionTimeStarted
-    ? (questionTime/exercices[currLevel].questionDuration)*100
-    : ((exercices[currLevel].answerDuration-answerTime )/ exercices[currLevel].answerDuration) *100
+    ? (questionTime/exercices[currLevel].questionTime)*100
+    : ((exercices[currLevel].answerDuration-answerTime )/ exercices[currLevel].answerTime) *100
 
     let granularity = [1, 1];
-    if (calculs && calculs[currLevel] && calculs[currLevel][0]){
+    if (exercices && exercices[currLevel] && exercices[currLevel][0]){
       granularity[1];
     }
 
@@ -181,8 +98,8 @@ const Game = ({exercices, setGameOver, config}: any) => {
 
     const calculateFontSize = () => {
       if(calculsTable.current){
-        const widthSize = calculsTable.current.offsetWidth/calculs[currLevel].length;
-        const heightSize = calculsTable.current.offsetHeight/calculs[currLevel][0].length;
+        const widthSize = calculsTable.current.offsetWidth/exercices[currLevel].columns.length;
+        const heightSize = calculsTable.current.offsetHeight/exercices[currLevel].columns[0].length;
         // maxTextLength
         const textHeight = 1
         setDynamicFontSize(Math.min(widthSize/(updatedMaxTextLengthForListener.current*12), heightSize/(textHeight*25)))
@@ -201,8 +118,8 @@ const Game = ({exercices, setGameOver, config}: any) => {
     },[maxTextLength])
 
     const tableSizes = useMemo(() => {
-      if(calculs && calculs[currLevel]){
-          return calculs[currLevel].map((calculGroup: any, calculGroupIndex: number)=> {
+      if(exercices && exercices[currLevel]){
+          return exercices[currLevel].columns.map((calculGroup: any, calculGroupIndex: number)=> {
             const groupSizes = calculGroup.reduce((acc: any, curr: any) => {
               let newAcc = structuredClone(acc);
               newAcc[1] = newAcc[1] < curr[1].toString().length ? curr[1].toString().length : newAcc[1];
@@ -215,26 +132,26 @@ const Game = ({exercices, setGameOver, config}: any) => {
       } else {
         return [...(new Array(exercices[currLevel].groups.length)).map(() => {return {1: 1, 2: 1, result: 1};})]
       }
-    }, [calculs, currLevel])
+    }, [exercices, currLevel])
+
+    console.debug(exercices[currLevel].columns);
+    let equationIndexExercice = 0;
 
     return (<div style={{width: '100%', height: '100%', backgroundColor: backgroundColor, color: '#dddddd',
         fontFamily: 'arial-rounded-mt-bold', fontWeight: 'bold', display: 'flex', justifyContent: 'center'}}>
           <div ref={calculsTable} style={{width: '95%', height: '85%', display: 'flex', justifyContent: 'space-around', alignItems: 'center', }}>
-            {exercices[currLevel].groups.map((_:any, exerciceIndex:any)=>{
-              return (<div key={exerciceIndex} style={{display:'flex', flexDirection: 'column', width: (1/(calculs[currLevel].length)*100).toString()+'%', height: '100%'}}>
-                  {[...(new Array(exercices[currLevel].calcNumber))].map((currCalcul:any, index:any) => {
-                    const calculGroup = calculs[currLevel][exerciceIndex];
+            {exercices[currLevel].columns.map((column:any, columnIndex:any) => {
+              return (<div key={columnIndex} style={{display:'flex', flexDirection: 'column', width: (1/(exercices[currLevel].columns.length)*100).toString()+'%', height: '100%'}}>
+                  {column.map((equation:any, index:number) => {
+                    equationIndexExercice++;
                     return (<Equation
                       key={index}
-                      currCalcul={calculGroup[index]}
-                      index={index}
-                      calculGroupIndex={exerciceIndex}
-                      calculGroup={calculGroup}
-                      config={config}
-                      showResult={showResult}
-                      calcType={exercices[currLevel].calcType}
+                      equation={equation}
+                      equationIndexExercice={equationIndexExercice}
+                      displayLetterId={config.displayLetterId}
+                      showAnswer={showAnswer}
                       updateParentTextSize={updateParentTextSize}
-                      groupSizes={tableSizes[exerciceIndex]}
+                      columnSizes={tableSizes[columnIndex]}
                       dynamicFontSize={dynamicFontSize}
                     />);
                   })}
@@ -243,7 +160,7 @@ const Game = ({exercices, setGameOver, config}: any) => {
           </div>
         <div style={{display: 'flex', justifyContent: 'center',  width: '100%',position: 'absolute', bottom: '5%', height: '5%'}}>
           <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center'}}>
-            <ProgressBar value={barValue}></ProgressBar>
+            <ProgressBar value={barValue} color={colors.bar.pink}></ProgressBar>
           </div>
         </div>
     </div>)

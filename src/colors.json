@@ -12,6 +12,11 @@
   "text": {
     "light": "#ffffff",
     "pink": "#f543e2",
-    "green": "#0cd00c"
+    "green": "#0cd00c",
+    "equationIdentifierColor": "#0a4663",
+    "answerColor": "#00ff06"
+  },
+  "bar": {
+    "pink": "#f543e2"
   }
 }
