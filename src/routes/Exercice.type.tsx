@@ -2,10 +2,10 @@ export type ElementId = '1'|'2'|'result'
 
 export const calcTypes = [
   "addition",
-  "soustraction",
+  "positiveSoustraction",
   "multiplication",
   "division",
-  "wholeDivision",
+  "intDivision",
   "modulo"
 ] as const;
 

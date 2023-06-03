@@ -69,7 +69,7 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
                   setValue(newValue);
                 }}
                 >
-                  {value[element] ? '☐' : '☑'} {element}
+                  {value[element] ? '☑' : '☐'} {element}
               </div>);
             })}
           </Case>

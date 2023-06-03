@@ -4,10 +4,10 @@ export type MinMax = {min: number, max: number}
 
 export const calcTypes = [
   "addition",
-  "soustraction",
+  "positiveSoustraction",
   "multiplication",
   "division",
-  "wholeDivision",
+  "intDivision",
   "modulo",
 ] as const;
 

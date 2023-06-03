@@ -9,7 +9,7 @@
         "+": "addition",
         "+ x*10": "addition de dizaines",
         "+ x": "addition d'un nombre défini",
-        "-": "soustraction",
+        "-": "positiveSoustraction",
         "*": "multiplication",
         "/": "division",
         "/ int": "division entière",
@@ -45,10 +45,10 @@
 },
 "calcCharacter": {
     "addition": "+",
-    "soustraction": "-",
+    "positiveSoustraction": "-",
     "multiplication": "*",
     "division": "/",
-    "wholeDivision": "/",
+    "intDivision": "/",
     "modulo": "%"
 }
 }
