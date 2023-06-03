@@ -1,22 +1,21 @@
-import { CalcType, ConfigInterface, ExerciceConfig, calcTypes } from "../Calcul.types";
-import Input from "../components/inputs/Input";
-import ColumnInput from "../components/inputs/ColumnInput";
-import { GenerateExercicesWrapper, Title, ColumnsConfigWrapper, ExerciceConfigWrapper, TimeConfigWrapper } from "./GenerateExercices.style";
-import dictionary from '../dictionary.json';
+import { useEffect, useState } from "react";
+
+import Input from "../components/molecules/inputs/Input";
+import ColumnInput from "../components/molecules/inputs/ColumnInput";
 import ColumnCloseCross from "../components/molecules/ColumnCloseCross";
-import BigActionButton from "../components/molecules/BigActionButton";
-import colors from '../colors.json';
+import BigActionButton from "../components/molecules/buttons/BigActionButton";
+import useGenerator from "../hooks/useGenerator";
+import { GenerateExercicesWrapper, Title, ColumnsConfigWrapper, ExerciceConfigWrapper, TimeConfigWrapper } from "./GenerateExercices.style";
+import { ExerciceConfig, calcTypes } from "./GenerateExercice.types";
 import Play from '../assets/Play';
 import Save from '../assets/Save';
 import Trash from '../assets/Trash';
-
-import useGenerator from "../hooks/useGenerator";
-import { useEffect, useState } from "react";
+import colors from '../colors.json';
+import dictionary from '../dictionary.json';
 
 const isDevEnv:boolean = (process.env.NODE_ENV === 'development');
 
 const GenerateExercices = ({title, setGameStarted, setExercices}: any) => {
-
   const defaultExerciceV2:ExerciceConfig = {
     questionTime: isDevEnv ? 500 : 180,
     answerTime: isDevEnv ? 500 : 60,

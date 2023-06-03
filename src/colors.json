@@ -18,5 +18,8 @@
   },
   "bar": {
     "pink": "#f543e2"
+  },
+  "game": {
+    "background": "#022b40"
   }
 }

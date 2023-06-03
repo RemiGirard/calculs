@@ -1,4 +1,4 @@
-import Title from '../components/Title';
+import Title from '../components/molecules/Title';
 import Clapping from '../assets/clapping.png';
 
 const GameOver = ({ numberOfCalcul, title }: any) => {

@@ -1,8 +1,10 @@
-import { Dispatch, useReducer, useState } from "react";
+import { useReducer } from "react";
+
 import { Column, EquationInterface, Exercice } from "../routes/Exercice.type";
-import { ColumnConfig, ExerciceConfig, NumberConfig, NumberType } from "../Calcul.types";
-import { biggestNumberFirst, getRandomDivisibleNumbersInRange, getRandomInt } from "../utils/number";
-import { filterObject, getRandomItemOfArray } from "../utils/utils";
+import { ColumnConfig, ExerciceConfig, NumberConfig } from "../routes/GenerateExercice.types";
+import { biggestNumberFirst, getRandomInt } from "../utils/number";
+import { getRandomItemOfArray, times } from "../utils/utils";
+import { forEach } from "lodash";
 
 const generateNumber = (config: NumberConfig): number => {
   switch (config.type){
@@ -32,7 +34,7 @@ const generateEquation = (config: ColumnConfig) => {
     .entries(config.answer)
     .filter(([_,value]) => value)
     .map(([key, _]) => key)
-    ;
+  ;
 
   let equation:EquationInterface = {
     1: generateNumber(config[1]),
@@ -49,13 +51,101 @@ const generateEquation = (config: ColumnConfig) => {
     break;
   }
 
-  equation['result'] = mathFunctions[config.type](equation[1], equation[2]);
+  equation.result = mathFunctions[config.type](equation[1], equation[2]);
 
   return equation;
 };
 
-const generateColumn = (config: ColumnConfig, equationCount: number) => {
+const evaluateNumberOfPossibilitities = (columnConfig: ColumnConfig): number => {
+  let possibilitiesCount:any = [columnConfig[1], columnConfig[2]].map((numberConfig: NumberConfig) => {
+    switch(numberConfig.type){
+      case 'fix':
+        return 1;
+      case 'range':
+        return (numberConfig.max ?? 0)-(numberConfig.min ?? 0);
+      case 'rangeTens':
+        return Math.floor((numberConfig.max ?? 0)-(numberConfig.min ?? 0)/10);
+    }
+    return 1;
+  });
+
+  possibilitiesCount = possibilitiesCount[0] * possibilitiesCount[1];
+
+  switch(columnConfig.type){
+    case 'soustraction':
+    case 'division':
+    case 'modulo':
+      possibilitiesCount = possibilitiesCount/2;
+      break;
+    default:
+  }
+
+  return possibilitiesCount;
+};
+
+const getPossibilitiesOfANumber = (numberConfig: NumberConfig): number[] => {
+  let possibilities: number[] = [];
+  switch(numberConfig.type){
+    case 'fix':
+      possibilities = [numberConfig.fix ?? 0];
+    case 'range':
+      for(let i=(numberConfig.min ?? 0);i<=(numberConfig.max ?? 1);i++){
+        possibilities.push(i);
+      }
+    case 'rangeTens':
+      const min = Math.ceil(Math.max(numberConfig.min ?? 10, 10)/10)*10;
+      for(let i=min;i<=(numberConfig.max ?? 1);i+=10){
+        possibilities.push(i);
+      }
+  }
+  return possibilities;
+}
+
+const combinePossibilities = (elementsPossibilities: number[][]) => {
+  const otherElements = elementsPossibilities.splice(1);
+  let possibilities: number[][] = [];
+  if(otherElements.length === 0){
+    return [elementsPossibilities[0]];
+  } else {
+    elementsPossibilities[0].forEach((currElement: number) => {
+      combinePossibilities(otherElements).forEach((element: number[]) => {
+        possibilities.push([currElement, ...element]);
+      })
+    })
+  }
+  return possibilities;
+}
+
+const getAllPossibilities = (columnConfig: ColumnConfig) => {
+  let possibilities: any = [];
+
+  switch(columnConfig.type){
+    case 'addition':
+    case 'multiplication':
+      const elementsPossibilities = [columnConfig[1], columnConfig[2]]
+        .map((numberConfig: NumberConfig) => {
+          return getPossibilitiesOfANumber(numberConfig);
+        });
+      
+      break;
+    default:
+  }
+
+  return possibilities;
+}
+
+const generateColumn = (config: ColumnConfig, equationCount: number, usedRef: any) => {
+  let generationMode = 'reroll';
+  if((evaluateNumberOfPossibilitities(config)-usedRef[config.type].length) > equationCount*3){
+    generationMode = 'reroll';
+  } else {
+
+  }
+
   let column = (new Array(equationCount)).fill(null).map(() => {
+    // random not in this list
+    // or
+    // a random from this list
     return generateEquation(config);
   });
 
@@ -63,22 +153,24 @@ const generateColumn = (config: ColumnConfig, equationCount: number) => {
 };
 
 const generateExercice = (config: ExerciceConfig):Exercice => {
+  let usedRef: any = {
+    '+': [],
+    '-': [],
+    '*': [],
+    '/': [],
+  };
   let columns: Column[] = config.columns.map((columnConfig: ColumnConfig) => {
-    return generateColumn(columnConfig, config.equationCount);
+    return generateColumn(columnConfig, config.equationCount, usedRef);
   });
 
-  let exercice: Exercice = {
+  return {
     questionTime: config.questionTime,
     answerTime: config.answerTime,
     columns: columns,
-  }
-
-  return exercice; 
+  };
 }
 
 const generatorReducer = (state: any, action:any) => {
-  console.debug({state})
-  console.debug({index: action.exerciceIndex})
   switch (action.type) {
     case 'generate exercice':{
       let newExercices = structuredClone(state.exercices);
@@ -101,7 +193,7 @@ const generatorReducer = (state: any, action:any) => {
 
 const useGenerator = (config: ExerciceConfig[]) => {
   const initialState = {config: config, exercices: []};
-  const [state, dispatchExercices] = useReducer(generatorReducer, initialState)
+  const [state, dispatchExercices] = useReducer(generatorReducer, initialState);
   return [state.exercices, dispatchExercices];
 }
 

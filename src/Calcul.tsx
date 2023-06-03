@@ -6,10 +6,9 @@ import Config from './routes/Config';
 import GenerateExercices from './routes/GenerateExercices';
 import Game from './routes/Game';
 import GameOver from './routes/GameOver';
-import { PageName, ConfigInterface, ExerciceConfig } from './Calcul.types';
-
-import dictionary from './dictionary.json'
+import { PageName, ConfigInterface, ExerciceConfig } from './routes/GenerateExercice.types';
 import { Exercice } from './routes/Exercice.type';
+import dictionary from './dictionary.json';
 
 const isDevEnv: boolean = (process.env.NODE_ENV === 'development');
 
@@ -95,6 +94,6 @@ const Calcul = () => {
       </Case>
     </Switch>
   );
-}
+};
 
 export default Calcul;

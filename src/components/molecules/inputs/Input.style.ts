@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import colors from '../../colors.json';
+import colors from '../../../colors.json';
 
 export const InputWrapper = styled.div<{hasunit: boolean, isFocus: boolean }>`
   display: flex;

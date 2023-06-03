@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import colors from '../../colors.json';
+import colors from '../../../colors.json';
 
 export const ColumnInputWrapper = styled.div<{isFocus: boolean, reducedWidth: boolean}>`
   display: flex;

@@ -2,12 +2,14 @@ export type PageName = 'config'|'generateExercices'|'started'|'finish';
 
 export type MinMax = {min: number, max: number}
 
-export const calcTypes = ["addition",
+export const calcTypes = [
+  "addition",
   "soustraction",
   "multiplication",
   "division",
   "wholeDivision",
-  "modulo"] as const;
+  "modulo",
+] as const;
 
 export type CalcType = typeof calcTypes[number];
 
