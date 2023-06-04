@@ -1,0 +1,25 @@
+{
+  "blueShades": {
+    "1": "#000419",
+    "2": "#0c1952",
+    "3": "#192f77",
+    "4": "#314ea9",
+    "5": "#515ec9"
+  },
+  "greenShade": {
+    "1": "#30c029"
+  },
+  "text": {
+    "light": "#ffffff",
+    "pink": "#f543e2",
+    "green": "#0cd00c",
+    "equationIdentifierColor": "#0a4663",
+    "answerColor": "#00ff06"
+  },
+  "bar": {
+    "pink": "#f543e2"
+  },
+  "game": {
+    "background": "#022b40"
+  }
+}

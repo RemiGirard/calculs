@@ -1,4 +1,4 @@
-export const getRandomInt = (min:number, max:number) => {
+export const getRandomInt = (min:number, max:number): number => {
   return Math.round(Math.random() * (max - min))+ min;
 }
 
@@ -50,4 +50,18 @@ export const getRandomDivisibleNumbersInRange = ({min = 0, max = 10}): [number, 
 
     // Return both the non-prime number and its random divisor in an array
     return [randomNumber, randomDivisor];
+  }
+
+  export const integerToLetter = (integer:number) => {
+    if (integer < 1 || integer > 26) {
+      return ' ';
+    }
+    
+    // Convert the integer to a character code by adding 64
+    var charCode = integer + 96;
+    
+    // Convert the character code to a letter
+    var letter = String.fromCharCode(charCode);
+    
+    return letter;
   }
