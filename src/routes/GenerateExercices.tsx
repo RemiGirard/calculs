@@ -134,7 +134,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
       <Title style={{width: (title.length*1.6).toString() +  '%'}}>
         {title}
       </Title>
-      <div style={{width: '96%', margin: '2%', overflow: 'scroll', height: '70%'}}>
+      <div style={{width: '96%', margin: '2%', overflow: 'scroll', height: '65%'}}>
         {sessionConfig.map((exercice: ExerciceConfig, exerciceIndex: number) => {
           return (<ExerciceConfigWrapper key={exerciceIndex} $iseven={exerciceIndex % 2 === 0}>
             <div style={{width: '15%', marginRight: '0.3%', display: 'flex', flexDirection: 'column'}}>

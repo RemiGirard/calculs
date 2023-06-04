@@ -146,7 +146,10 @@ const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, star
         </ColumnWrapper>);
       })}
     </div>
-    <ProgressBar value={barValue} color={colors.bar.pink}></ProgressBar>
+    {startTimers
+      ? <ProgressBar value={barValue} color={colors.bar.pink}></ProgressBar>
+      :null
+    }
   </GameWrapper>)
 }
 
