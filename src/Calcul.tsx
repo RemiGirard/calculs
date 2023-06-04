@@ -51,8 +51,7 @@ const Calcul = () => {
 
   const [exercices, setExercices] = useState<Exercice[]>([]);
 
-  const numberOfCalcul = exercices.reduce((acc, exercice) => acc + exercice.columns.length, 0);
-
+  const numberOfCalcul = exercices.reduce((acc, exercice) => acc + exercice.columns[0].length, 0);
   return (
     <Switch expression={currState}>
       <Case value={'config'}>

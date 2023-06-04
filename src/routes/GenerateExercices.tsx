@@ -178,8 +178,9 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
               return (<div key={columnIndex}>
                   { exercice.columns.length > 1 ? <ColumnCloseCross onClick={()=>{removeColumn({exerciceIndex, columnIndex})}}/> : null}
                   <ColumnInput
-                    label={'type'}
+                    label={dictionary.fields.type}
                     type={'select'}
+                    fieldName={'type'}
                     options={calcTypes}
                     value={column.type}
                     setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: 'type', newValue})}}

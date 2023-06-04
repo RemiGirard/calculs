@@ -3,8 +3,11 @@ import { ColumnInputWrapper } from "./ColumnInput.style";
 import { Case, Switch } from "../../../utils/Switch";
 import { NumberTypes } from "../../../routes/GenerateExercice.types";
 import Arrow from '../../../assets/arrow.png';
+import dictionaryTyped from '../../../dictionary.json';
 
-const ColumnInput = ({value, setValue, label = '', type = '', options = [], reducedWidth = false}: any) => {
+const dictionary:any = dictionaryTyped;;
+
+const ColumnInput = ({value, setValue, label = '', type = '', options = [], reducedWidth = false, fieldName = ''}: any) => {
   const inputElement = useRef<null | HTMLDivElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
@@ -27,7 +30,7 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
         <Case value={'select'}>
           <select value={value} onChange={({target}) => setValue(target.value)} >
             {options.map((option: any, index: number) => {
-              return (<option key={index} value={option}>{option}</option>);
+              return (<option key={index} value={option}>{dictionary.fields[fieldName+'s'][option] ?? option}</option>);
             })}
           </select>
         </Case>
@@ -38,7 +41,7 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
           >
             {NumberTypes.map((numberType, index) => {
               return (
-                <option key={index} value={numberType}>{numberType}</option>
+                <option key={index} value={numberType}>{dictionary.fields.numberTypes[numberType] ?? numberType}</option>
               );
             })}
           </select>
@@ -69,7 +72,7 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
                   setValue(newValue);
                 }}
                 >
-                  {value[element] ? '☑' : '☐'} {element}
+                  {value[element] ? '☑' : '☐'} {dictionary.fields.gaps[element] ?? element}
               </div>);
             })}
           </Case>

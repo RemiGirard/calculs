@@ -5,6 +5,20 @@
     "gameover": "On monte !"
 },
 "fields": {
+    "type": "type",
+    "types": {
+        "addition": "addition",
+        "positiveSoustraction": "soustraction",
+        "multiplication": "multiplication",
+        "division": "division",
+        "intDivision": "division entière",
+        "modulo": "modulo"
+    },
+    "numberTypes": {
+        "fix": "fixe",
+        "range": "plage",
+        "rangeTens": "dizaines"
+    },
     "calcType": {
         "+": "addition",
         "+ x*10": "addition de dizaines",
@@ -19,12 +33,10 @@
         "1": "facile",
         "2": "difficile"
     },
-    "gap": {
+    "gaps": {
         "result": "résultat",
-        "firstElement": "premier élément",
-        "secondElement": "deuxième élément",
-        "randomOnTheTwoFirstElements": "1er ou 2em élément",
-        "randomOnAll": "1er, 2em ou résultat"
+        "1": "1",
+        "2": "2"
     },
     "questionTime": "exercice",
     "answerTime": "réponse",
