@@ -12,15 +12,34 @@ import Save from '../assets/Save';
 import Trash from '../assets/Trash';
 import colors from '../colors.json';
 import dictionary from '../dictionary.json';
+import Game from "./Game";
+import { getRatio } from "../utils/utils";
 
 const isDevEnv:boolean = (process.env.NODE_ENV === 'development');
 
-const GenerateExercices = ({title, setGameStarted, setExercices}: any) => {
-  const defaultExerciceV2:ExerciceConfig = {
-    questionTime: isDevEnv ? 500 : 180,
-    answerTime: isDevEnv ? 500 : 60,
+const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) => {
+  const defaultExercice:ExerciceConfig = {
+    questionTime: isDevEnv ? 5 : 180,
+    answerTime: isDevEnv ? 5 : 60,
     equationCount: 6,
     columns: [{
+      type: 'addition',
+      1: {
+        type: 'range',
+        min: 1,
+        max: 9,
+      },
+      2: {
+        type: 'range',
+        min: 1,
+        max: 9,
+      },
+      answer: {
+        1: false,
+        2: false,
+        result: true,
+      }
+    },{
       type: 'addition',
       1: {
         type: 'range',
@@ -40,12 +59,11 @@ const GenerateExercices = ({title, setGameStarted, setExercices}: any) => {
     }],
   };
 
-  const [sessionConfig, setSessionConfig] = useState<ExerciceConfig[]>([defaultExerciceV2]);
+  const [sessionConfig, setSessionConfig] = useState<ExerciceConfig[]>([defaultExercice]);
 
   const [exercices, generatorRequest] = useGenerator(sessionConfig);
 
   useEffect(() => {
-    console.debug({sessionConfig})
     sessionConfig.forEach((exerciceConfig, index) => {
       generatorRequest({type: 'generate exercice', exerciceIndex: index, exerciceConfig: exerciceConfig});
     });
@@ -103,13 +121,22 @@ const GenerateExercices = ({title, setGameStarted, setExercices}: any) => {
     setSessionConfig(newSessionConfig);
   }
 
+  const [ratio, setRatio] = useState<number>(getRatio());
+  useEffect(() => {
+    const handleResize = () => {
+      setRatio(getRatio());
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  },[])
+
   return (<GenerateExercicesWrapper>
       <Title style={{width: (title.length*1.6).toString() +  '%'}}>
         {title}
       </Title>
-      <div style={{width: '96%', margin: '2%'}}>
+      <div style={{width: '96%', margin: '2%', overflow: 'scroll', height: '70%'}}>
         {sessionConfig.map((exercice: ExerciceConfig, exerciceIndex: number) => {
-          return (<ExerciceConfigWrapper key={exerciceIndex} iseven={exerciceIndex % 2 === 0}>
+          return (<ExerciceConfigWrapper key={exerciceIndex} $iseven={exerciceIndex % 2 === 0}>
             <div style={{width: '15%', marginRight: '0.3%', display: 'flex', flexDirection: 'column'}}>
               <TimeConfigWrapper> {/* times and number */}
                 <Input
@@ -128,7 +155,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices}: any) => {
                 <Input
                   label={dictionary.fields.calcNumber}
                   value={exercice.equationCount}
-                  setValue={(newValue: string) => {updateExercice({exerciceIndex, keyToChange: 'equationCount', newValue})}}
+                  setValue={(newValue: string) => {updateExercice({exerciceIndex, keyToChange: 'equationCount', newValue: Number(newValue)})}}
                 />
               </TimeConfigWrapper>
               <div style={{ paddingTop: '3%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center'}}>
@@ -181,8 +208,13 @@ const GenerateExercices = ({title, setGameStarted, setExercices}: any) => {
             <div onClick={() => addColumn({exerciceIndex})}>+</div>
             </ColumnsConfigWrapper>
             
-            <div style={{width: '25%'}}> {/* preview */}
-              preview
+            <div style={{display: 'flex',width: '20%', marginLeft: '1%'}}> {/* preview */}
+              <div style={{ width: '100%',aspectRatio: ratio}}>
+                {exercices.length && exercices[exerciceIndex] !==undefined && exercices[exerciceIndex].columns.length
+                  ? <Game exercices={exercices} config={config} startTimers={false} startingLevel={exerciceIndex}/>
+                  : <div style={{width: '100%', height: '100%'}}>preview</div>
+                }
+              </div>
             </div>
           </ExerciceConfigWrapper>);
         })}
@@ -212,9 +244,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices}: any) => {
             {<Play />}
           </div>
         </BigActionButton> 
-        </div>
-    <div style={{color: 'pink'}}>{JSON.stringify(sessionConfig)}</div>
-    <div style={{color: 'lightgreen'}}>{JSON.stringify(exercices)}</div>
+      </div>
   </GenerateExercicesWrapper>);
 };
 

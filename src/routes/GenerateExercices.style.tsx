@@ -14,13 +14,14 @@ export const Title = styled.div`
   padding: 2%;
 `;
 
-export const ExerciceConfigWrapper = styled.div<{iseven: boolean}>`
+export const ExerciceConfigWrapper = styled.div<{$iseven: boolean}>`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   width: 98%;
   padding: 1%;
-  background-color: ${({iseven: iseven}: {iseven: boolean}) => iseven ? colors.blueShades[4] : colors.blueShades[3]};
+  height: 44%;
+  background-color: ${({$iseven}) => $iseven ? colors.blueShades[4] : colors.blueShades[3]};
 `;
 
 export const TimeConfigWrapper = styled.div`

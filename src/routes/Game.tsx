@@ -9,13 +9,11 @@ import { ColumnWrapper, GameWrapper } from './Game.style';
 
 const dictionary:any = dictionaryTyped;
 
-const Game = ({exercices, setGameOver, config}: any) => {
-  console.debug({exercices})
-
-  const [currLevel, setCurrLevel] = useState(0);
+const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, startingLevel = 0}: any) => {
+  const [currLevel, setCurrLevel] = useState(startingLevel);
   const [showAnswer, setShowAnswer] = useState(false);
 
-  const [questionTimeStarted, setQuestionTimeStarted] = useState(true);
+  const [questionTimeStarted, setQuestionTimeStarted] = useState(startTimers);
   const [questionTimeReset, setQuestionTimeReset] = useState(false);
   const [answerTimeReset, setAnswerTimeReset] = useState(false);
   const [answerTimeStarted, setAnswerTimeStarted] = useState(false);
@@ -65,7 +63,7 @@ const Game = ({exercices, setGameOver, config}: any) => {
 
   const barValue = questionTimeStarted
     ? (questionTime/exercices[currLevel].questionTime)*100
-    : ((exercices[currLevel].answerDuration-answerTime )/ exercices[currLevel].answerTime) *100
+    : ((exercices[currLevel].answerTime-answerTime )/ exercices[currLevel].answerTime) *100
 
   const [maxTextLength, setMaxTextLength] = useState(1);
 
@@ -112,8 +110,8 @@ const Game = ({exercices, setGameOver, config}: any) => {
             newAcc[1] = newAcc[1] < curr[1].toString().length ? curr[1].toString().length : newAcc[1];
             newAcc[2] = newAcc[2] < curr[2].toString().length ? curr[2].toString().length : newAcc[2];
             newAcc.result = newAcc.result < curr.result.toString().length
-              ? (Array.isArray(curr.result)
-                ? 4 + Math.max(curr.result[0].toString().length, curr.result[1].toString().length)
+              ? (typeof curr.result !== 'number'
+                ? 4 + Math.max(curr.result.quotient.toString().length, curr.result.remainder.toString().length)
                 : curr.result.toString().length)
               : newAcc.result
             ;
@@ -131,7 +129,7 @@ const Game = ({exercices, setGameOver, config}: any) => {
   return (<GameWrapper>
     <div ref={calculsTable}>
       {exercices[currLevel].columns.map((column:any, columnIndex:any) => {
-        return (<ColumnWrapper key={columnIndex} columnLength={exercices[currLevel].columns.length}>
+        return (<ColumnWrapper key={columnIndex} $columnLength={exercices[currLevel].columns.length}>
           {column.map((equation:any, index:number) => {
             equationIndexExercice++;
             return (<Equation

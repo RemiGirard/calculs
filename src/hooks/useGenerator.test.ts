@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest';
 
-import { columnPossibilititiesEstimation, combinePossibilities, generatePossibleEquations, getElementsPossibilitiesOfColumnConfig, getPossibilitiesOfANumber, numberPossibilitesCount } from './useGenerator';
+import { columnPossibilititiesEstimation, combinePossibilities, generatePossibleEquations, getElementsPossibilitiesOfColumnConfig, getPossibilitiesOfANumber, mathFunctions, numberPossibilitesCount } from './useGenerator';
 
 test('numberPossibilitesCount', () => {
   expect(numberPossibilitesCount({ type: 'fix', fix: 1 })).toEqual(1);
@@ -166,3 +166,18 @@ test('generatePossibleEquations',()=>{
     {1: 9, operation: 'positiveSoustraction', 2:5, result:4, gap:'result' },
   ]);
 });
+
+test('mathFunctions',()=>{
+  expect(mathFunctions.addition(1,1)).toEqual(2);
+  expect(mathFunctions.addition(12,34)).toEqual(46);
+  expect(mathFunctions.addition(-12,34)).toEqual(22);
+  expect(mathFunctions.addition(-12,-34)).toEqual(-46);
+  expect(mathFunctions.addition(1,-1)).toEqual(0);
+  expect(mathFunctions.positiveSoustraction(1,1)).toEqual(0);
+  expect(mathFunctions.positiveSoustraction(34,12)).toEqual(22);
+  expect(mathFunctions.positiveSoustraction(-12,34)).toEqual(-46);
+  expect(mathFunctions.positiveSoustraction(-12,-34)).toEqual(22);
+  expect(mathFunctions.positiveSoustraction(1,-1)).toEqual(2);
+  expect(mathFunctions.modulo(11,5)).toEqual({quotient:2, remainder: 1});
+  expect(mathFunctions.modulo(1,5)).toEqual({quotient:0, remainder: 1});
+})

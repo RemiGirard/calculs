@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 
 import colors from '../../../colors.json';
 
-export const InputWrapper = styled.div<{hasunit: boolean, isFocus: boolean }>`
+export const InputWrapper = styled.div<{$hasUnit: boolean, $isFocus: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,7 +31,7 @@ export const InputWrapper = styled.div<{hasunit: boolean, isFocus: boolean }>`
     font-size: 1.5em;
     > input {
       width: 50%;
-      text-align: ${({hasunit = false}) => hasunit ? 'right' : 'center'};
+      text-align: ${({$hasUnit = false}) => $hasUnit ? 'right' : 'center'};
       border:none;
       background-image:none;
       background-color:transparent;
@@ -40,7 +40,7 @@ export const InputWrapper = styled.div<{hasunit: boolean, isFocus: boolean }>`
       box-shadow: none;
       color: ${colors.text.light};
       font-size: 1.5em;
-      font-weight: ${({isFocus}) => isFocus ? 1000 : null};
+      font-weight: ${({$isFocus}) => $isFocus ? 1000 : null};
       cursor: pointer;
       outline: none;
       &:focus{

@@ -36,9 +36,9 @@ const Equation = ({
     incTextSize(equation[2].toString().length)
     incTextSize(2); // equal sign
     if(equation.operation === 'modulo') {
-      incTextSize(3)
+      incTextSize(3);
     } else {
-      incTextSize(equation['result'].toString().length)
+      incTextSize(equation.result.toString().length);
     }
     return textSize
   };
@@ -48,7 +48,7 @@ const Equation = ({
   }, [displayLetterId, equation])
 
   const getModuloResultDisplay = (quotient:number, remainder:number) => {
-    return (<div style={{display: 'flex', flexDirection: 'column', fontSize: '0.5em'}}>
+    return (<div style={{display: 'flex', flexDirection: 'column', fontSize: '0.5em', height: '100%'}}>
         <div>quotient: {quotient}</div>
         <div>reste: {remainder}</div>
     </div>);
@@ -61,16 +61,13 @@ const Equation = ({
     return (<EquationElementWrapper $display={display} $width={width}>
       <div>{typeof element === 'number'
         ? element
-        : getModuloResultDisplay(element[0], element[1])}
+        : getModuloResultDisplay(element.quotient, element.remainder)}
       </div>
-      {display === 'hideAnswer'
-        ? <div>..</div>
-        : null}
+      {display === 'hideAnswer'? <div>..</div> : null}
     </EquationElementWrapper>)
   }
 
-  const getDisplay = (
-    {elementId, gap, showAnswer}
+  const getDisplay = ({elementId, gap, showAnswer}
     : {elementId : ElementId, gap: ElementId, showAnswer: boolean}
   ) => {
     let display: DisplayElementAnswer = 'show';

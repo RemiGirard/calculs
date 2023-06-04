@@ -18,3 +18,7 @@ export const filterObject = (
 export const getRandomItemOfArray = (array: any[]) => {
   return array[Math.floor(Math.random()*array.length)];
 }
+
+export const getRatio = () => {
+  return window.innerWidth/window.innerHeight;
+};

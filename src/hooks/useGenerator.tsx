@@ -1,16 +1,20 @@
 import { useReducer } from "react";
 
-import { Column, EquationInterface, Exercice } from "../routes/Exercice.type";
+import { Column, EquationInterface, Exercice, ModuloResult } from "../routes/Exercice.type";
 import { ColumnConfig, ExerciceConfig, NumberConfig } from "../routes/GenerateExercice.types";
 import { getRandomItemOfArray } from "../utils/utils";
 
-const mathFunctions = {
-  'addition':       (first:number, second:number):number => first + second,
-  'positiveSoustraction':   (first:number, second:number):number => first - second,
-  'multiplication': (first:number, second:number):number => first + second,
-  'division':       (first:number, second:number):number => first / second,
-  'intDivision':  (first:number, second:number):number => first / second,
-  'modulo':         (first:number, second:number):number => first / second,
+export const mathFunctions = {
+  addition:       (first:number, second:number):number => first + second,
+  positiveSoustraction:   (first:number, second:number):number => first - second,
+  multiplication: (first:number, second:number):number => first + second,
+  division:       (first:number, second:number):number => first / second,
+  intDivision:  (first:number, second:number):number => first / second,
+  modulo:         (first:number, second:number):ModuloResult => {
+    const quotient = Math.floor(first/second);
+    const remainder = first % second;
+    return {quotient, remainder};
+  },
 };
 
 export const numberPossibilitesCount = (numberConfig: NumberConfig) => {
@@ -105,6 +109,7 @@ export const generatePossibleEquations = (columnConfig: ColumnConfig):EquationIn
   let equations: EquationInterface[] = [];
   const forbidNegativeResults = ['positiveSoustraction','division','intDivision','modulo'].includes(columnConfig.type);
   const forbidNonIntResults = ['intDivision'].includes(columnConfig.type);
+  const forbidQuotientZeroResults = ['modulo'].includes(columnConfig.type);
   
   possibilities.forEach((possibility) => {
     const possibleGaps = Object
@@ -121,7 +126,11 @@ export const generatePossibleEquations = (columnConfig: ColumnConfig):EquationIn
       gap: getRandomItemOfArray(possibleGaps) ?? 'result',
     }
 
-    if((!forbidNegativeResults || equation.result>=0) && (!forbidNonIntResults || Number.isInteger(equation.result))){
+    if(
+      (!forbidNegativeResults || (typeof equation.result !== 'number' || equation.result >=0) )
+      && (!forbidNonIntResults ||(typeof equation.result !== 'number' || Number.isInteger(equation.result)))
+      && (!forbidQuotientZeroResults ||(typeof equation.result === 'number' || equation.result.quotient !== 0))
+    ){
       equations.push(equation);
     }
   });
@@ -133,14 +142,13 @@ const generateColumn = (config: ColumnConfig, equationCount: number) => {
   const possibleEquations = generatePossibleEquations(config).sort(()=>(Math.random()-0.5));
 
   let column = (new Array(equationCount)).fill(null).map((_, index) => {
-    return possibleEquations[index];
+    return possibleEquations[index%(possibleEquations.length)];
   });
 
   return column;
 };
 
 const generateExercice = (config: ExerciceConfig):Exercice => {
-  console.debug({config})
   let columns: Column[] = config.columns.map((columnConfig: ColumnConfig) => {
     return generateColumn(columnConfig, config.equationCount);
   });

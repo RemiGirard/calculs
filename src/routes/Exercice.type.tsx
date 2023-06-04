@@ -11,11 +11,13 @@ export const calcTypes = [
 
 export type CalcType = typeof calcTypes[number];
 
+export type ModuloResult = {quotient: number, remainder:number};
+
 export interface EquationInterface {
   1: number,
   operation: CalcType,
   2: number,
-  result: number,
+  result: number|ModuloResult,
   gap: ElementId,
 }
 

@@ -7,10 +7,10 @@ const Input = ({value, setValue, label = '', unit = ''}: any) => {
 
   return (<InputWrapper
     onClick={() => {inputElement?.current?.focus(); setIsFocus(true);}}
-    hasunit={unit !== ''}
+    $hasUnit={unit !== ''}
     tabIndex={0}
     onBlur={() => {setIsFocus(false)}}
-    isFocus={isFocus}
+    $isFocus={isFocus}
     >
     <label>{label}</label>
     <div>

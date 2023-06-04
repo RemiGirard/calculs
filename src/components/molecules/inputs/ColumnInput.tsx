@@ -18,8 +18,8 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
     onClick={() => {inputElement?.current?.focus(); setIsFocus(true);}}
     tabIndex={0}
     onBlur={() => {setIsFocus(false)}}
-    isFocus={isFocus}
-    reducedWidth={reducedWidth}
+    $isFocus={isFocus}
+    $reducedWidth={reducedWidth}
     >
     <label>{label}</label>
     <div ref={inputElement}>

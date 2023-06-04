@@ -34,13 +34,13 @@ export const EquationElementWrapper = styled.div<{$display: DisplayElementAnswer
   width: 100%;
   position: relative;
   color: ${({$display}) => $display === 'showAnswer' ? colors.text.answerColor : ''};
-  :first-child {
+  > :first-child {
     display: flex;
     justify-content: center;
     visibility: ${({$display}) => $display === 'hideAnswer' ? 'hidden' : 'visible'};
     width: ${({$width}) => ($width/1.5).toString()}em;
   }
-  :nth-child(2){
+  > :nth-child(2){
     position: absolute;
     display: flex;
     justify-content: center;

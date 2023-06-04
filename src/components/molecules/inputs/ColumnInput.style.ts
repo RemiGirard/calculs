@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 
 import colors from '../../../colors.json';
 
-export const ColumnInputWrapper = styled.div<{isFocus: boolean, reducedWidth: boolean}>`
+export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: boolean}>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -10,7 +10,7 @@ export const ColumnInputWrapper = styled.div<{isFocus: boolean, reducedWidth: bo
   margin: 1%;
   border-radius: 5%/50%;
   cursor: pointer;
-  width: ${({reducedWidth}) => reducedWidth ? '70%' : '98%'};
+  width: ${({$reducedWidth}) => $reducedWidth ? '70%' : '98%'};
   min-height: 2em;
   &:hover{
     background-color: ${colors.blueShades[4]};
@@ -52,7 +52,7 @@ export const ColumnInputWrapper = styled.div<{isFocus: boolean, reducedWidth: bo
       box-shadow: none;
       color: ${colors.text.light};
       font-size: 1.5em;
-      font-weight: ${({isFocus}) => isFocus ? 1000 : null};
+      font-weight: ${({$isFocus}) => $isFocus ? 1000 : null};
       cursor: pointer;
       outline: none;
       &:focus{

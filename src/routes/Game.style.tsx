@@ -19,9 +19,9 @@ export const GameWrapper = styled.div`
   }
 `;
 
-export const ColumnWrapper = styled.div<{columnLength: number}>`
+export const ColumnWrapper = styled.div<{$columnLength: number}>`
   display: flex;
   flex-direction: column;
-  width: ${({columnLength}) => (1/(columnLength)*100).toString()}%;
+  width: ${({$columnLength}) => (1/($columnLength)*100).toString()}%;
   height: 100%;
 `;
