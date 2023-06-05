@@ -2,6 +2,11 @@ import { styled } from 'styled-components';
 
 import colors from '../../../colors.json';
 
+const labelWidth = {
+  normal: 98,
+  reduced: 70,
+}
+
 export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: boolean}>`
   display: flex;
   flex-direction: row;
@@ -10,7 +15,7 @@ export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: 
   margin: 1%;
   border-radius: 5%/50%;
   cursor: pointer;
-  width: ${({$reducedWidth}) => $reducedWidth ? '70%' : '98%'};
+  width: ${({$reducedWidth}) => $reducedWidth ? labelWidth.reduced : labelWidth.normal}%;
   min-height: 2em;
   &:hover{
     background-color: ${colors.blueShades[4]};
@@ -23,7 +28,7 @@ export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: 
     font-size: 1em;
     height: 1.5em;
     cursor: pointer;
-    width: 20%;
+    width: ${({$reducedWidth}) => $reducedWidth ? (20/labelWidth.reduced)*100 : (20/labelWidth.normal)*100}%;
   }
   > div {
     width: 80%;

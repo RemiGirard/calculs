@@ -2,21 +2,7 @@ import Title from '../components/molecules/Title';
 import Button from '../components/molecules/buttons/Button';
 
 const Config = ({title, setStateGenerateExercices, config, setConfig}: any) => {
-  // {
-  //   default: {
-  //     numberOfGroup: 2,
-  //     group: {min: 1, max: 9},
-  //     calcSpeRange: { min: 10, max: 50 },
-  //     calcSpeNumber: { min: 10, max: 50 },
-  //     calcType: '+',
-  //     calcNumber: 6,
-  //     difficulty: 1,
-  //     questionDuration: isDevEnv ? 5 : 180,
-  //     answerDuration: isDevEnv ? 5 : 60,
-  //     gap: 'result',
-  //   },
-  //   displayLetterId: true,
-  // }
+
     const handleChange = (e:any, key:any) => {
       const { name, value } = e.target;
       const keys = key.split('.');

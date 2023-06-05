@@ -131,10 +131,12 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
   },[])
 
   return (<GenerateExercicesWrapper>
-      <Title style={{width: (title.length*1.6).toString() +  '%'}}>
-        {title}
-      </Title>
-      <div style={{width: '96%', margin: '2%', overflow: 'scroll', height: '65%'}}>
+      <div style={{width: '96%', height: '10%', margin:'1%', marginTop: '0%'}}>
+        <Title style={{width: (title.length*1.6).toString() +  '%'}}>
+          {title}
+        </Title>
+      </div>
+      <div style={{width: '98%', margin: '1%', overflow: 'scroll', height: '70%'}}>
         {sessionConfig.map((exercice: ExerciceConfig, exerciceIndex: number) => {
           return (<ExerciceConfigWrapper key={exerciceIndex} $iseven={exerciceIndex % 2 === 0}>
             <div style={{width: '15%', marginRight: '0.3%', display: 'flex', flexDirection: 'column'}}>
@@ -160,12 +162,12 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
               </TimeConfigWrapper>
               <div style={{ paddingTop: '3%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center'}}>
                 <div
-                  style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
+                  style={{width: '12%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
                 >
                   {<Save />}
                 </div>
                 <div
-                  style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
+                  style={{width: '12%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
                   onClick={() => {sessionConfig.length > 1 ? removeExercice(exerciceIndex) : null}}  
                 >
                   <Trash />
@@ -209,7 +211,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
             <div onClick={() => addColumn({exerciceIndex})}>+</div>
             </ColumnsConfigWrapper>
             
-            <div style={{display: 'flex',width: '20%', marginLeft: '1%'}}> {/* preview */}
+            <div style={{display: 'flex',width: '20%', marginLeft: '1%'}}>
               <div style={{ width: '100%',aspectRatio: ratio}}>
                 {exercices.length && exercices[exerciceIndex] !==undefined && exercices[exerciceIndex].columns.length
                   ? <Game exercices={exercices} config={config} startTimers={false} startingLevel={exerciceIndex}/>
@@ -220,7 +222,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
           </ExerciceConfigWrapper>);
         })}
       </div>
-      <div style={{margin: '2%', width: '96%', height: '8%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+      <div style={{margin: '1%', width: '98%', height: '10%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
         <BigActionButton
           color={colors.blueShades[4]}
           colorHover={colors.blueShades[5]}

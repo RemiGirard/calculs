@@ -10,6 +10,7 @@ import { ColumnWrapper, GameWrapper } from './Game.style';
 const dictionary:any = dictionaryTyped;
 
 const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, startingLevel = 0}: any) => {
+  console.debug({exercices});
   const [currLevel, setCurrLevel] = useState(startingLevel);
   const [showAnswer, setShowAnswer] = useState(false);
 

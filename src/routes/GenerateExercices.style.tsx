@@ -20,7 +20,7 @@ export const ExerciceConfigWrapper = styled.div<{$iseven: boolean}>`
   align-items: flex-start;
   width: 98%;
   padding: 1%;
-  height: 52%;
+  height: 40%;
   background-color: ${({$iseven}) => $iseven ? colors.blueShades[4] : colors.blueShades[3]};
 `;
 

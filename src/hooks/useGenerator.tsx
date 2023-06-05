@@ -140,10 +140,13 @@ export const generatePossibleEquations = (columnConfig: ColumnConfig):EquationIn
 
 const generateColumn = (config: ColumnConfig, equationCount: number) => {
   const possibleEquations = generatePossibleEquations(config).sort(()=>(Math.random()-0.5));
-
-  let column = (new Array(equationCount)).fill(null).map((_, index) => {
-    return possibleEquations[index%(possibleEquations.length)];
-  });
+  let column = [];
+  for(let i=0;i<equationCount;i++){
+    const equation = possibleEquations[i];
+    if(equation !== undefined){
+      column.push(equation);
+    }
+  }
 
   return column;
 };

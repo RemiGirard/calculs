@@ -24,6 +24,12 @@ or use directly with [pnpm](https://pnpm.io/installation) and `package.json` scr
 
 Edit files inside `src/`. Changes will be updated with HMR.
 
+### run unit tests
+
+-`docker-compose exec calculs pnpm test`
+
+vitest runs in watch mode by default
+
 ### build html
 
 - `docker-compose exec calculs pnpm build`
