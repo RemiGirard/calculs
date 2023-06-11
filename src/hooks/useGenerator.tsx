@@ -2,13 +2,13 @@ import { useReducer } from "react";
 
 import { Column, EquationInterface, Exercice, ModuloResult } from "../routes/Exercice.type";
 import { ColumnConfig, ExerciceConfig, NumberConfig } from "../routes/GenerateExercice.types";
-import { getRandomItemOfArray } from "../utils/utils";
+import { getRandomItemOfArray, shuffleArray } from "../utils/utils";
 
 export const mathFunctions = {
   addition:       (first:number, second:number):number => first + second,
   positiveSoustraction:   (first:number, second:number):number => first - second,
   multiplication: (first:number, second:number):number => first + second,
-  division:       (first:number, second:number):number => first / second,
+  division:       (first:number, second:number):number => Number((first / second).toFixed(2)),
   intDivision:  (first:number, second:number):number => first / second,
   modulo:         (first:number, second:number):ModuloResult => {
     const quotient = Math.floor(first/second);
@@ -118,7 +118,7 @@ export const generatePossibleEquations = (columnConfig: ColumnConfig):EquationIn
       .map(([key, _]) => key)
     ;
 
-    const equation = {
+    const equation:EquationInterface = {
       1: possibility[0],
       operation: columnConfig.type,
       2: possibility[1],
@@ -139,7 +139,7 @@ export const generatePossibleEquations = (columnConfig: ColumnConfig):EquationIn
 }
 
 const generateColumn = (config: ColumnConfig, equationCount: number) => {
-  const possibleEquations = generatePossibleEquations(config).sort(()=>(Math.random()-0.5));
+  const possibleEquations = shuffleArray(generatePossibleEquations(config));
   let column = [];
   for(let i=0;i<equationCount;i++){
     const equation = possibleEquations[i];
@@ -184,7 +184,7 @@ const generatorReducer = (state: any, action:any) => {
   throw Error('Unknow action');
 }
 
-const useGenerator = (config: ExerciceConfig[]) => {
+const useGenerator = (config: ExerciceConfig[]): [any, any] => {
   const initialState = {config: config, exercices: []};
   const [state, dispatchExercices] = useReducer(generatorReducer, initialState);
   return [state.exercices, dispatchExercices];

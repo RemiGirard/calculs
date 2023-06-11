@@ -3,14 +3,13 @@ import colors from '../../colors.json';
 
 import { DisplayElementAnswer } from '../../routes/Exercice.type';
 
-export const EquationWrapper = styled.div<{$dynamicFontSize: number;}>`
+export const EquationWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
-  font-size: ${({$dynamicFontSize}) => $dynamicFontSize.toString()}em;
   > div {
     display: flex;
     flex-direction: row;

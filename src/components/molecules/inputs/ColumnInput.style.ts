@@ -13,7 +13,7 @@ export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: 
   align-items: center;
   background-color: ${colors.blueShades[1]};
   margin: 1%;
-  border-radius: 5%/50%;
+  border-radius: 10px;
   cursor: pointer;
   width: ${({$reducedWidth}) => $reducedWidth ? labelWidth.reduced : labelWidth.normal}%;
   min-height: 2em;

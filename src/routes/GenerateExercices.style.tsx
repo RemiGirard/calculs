@@ -18,20 +18,31 @@ export const ExerciceConfigWrapper = styled.div<{$iseven: boolean}>`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 98%;
-  padding: 1%;
-  height: 40%;
+  width: 99.2%;
+  padding: 0.4%;
+  height: 35%;
   background-color: ${({$iseven}) => $iseven ? colors.blueShades[4] : colors.blueShades[3]};
 `;
 
 export const TimeConfigWrapper = styled.div`
   width: 100%;
+  height: 90%;
   background-color: ${colors.blueShades[2]};
-  border-radius: 3%;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  > div {
+    margin: 3%;
+    margin-bottom: 0%;
+  }
+  > div:last-child{
+    margin-bottom: 3%;
+  }
 `
 
 export const ColumnsConfigWrapper = styled.div`
-  width: 60%;
+  width: 70%;
+  margin-right: 2%;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -41,7 +52,7 @@ export const ColumnsConfigWrapper = styled.div`
     color: ${colors.text.light};
     width: 40%;
     min-width: 40%;
-    border-radius: 3%;
+    border-radius: 5px;
     padding: 0.5%;
     margin-right: 1%;
     display: flex;

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { InputWrapper } from "./Input.style";
 
-const Input = ({value, setValue, label = '', unit = ''}: any) => {
+const Input = ({value, setValue, label = '', unit = '', style = {}}: any) => {
   const inputElement = useRef<null | HTMLInputElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
@@ -11,6 +11,8 @@ const Input = ({value, setValue, label = '', unit = ''}: any) => {
     tabIndex={0}
     onBlur={() => {setIsFocus(false)}}
     $isFocus={isFocus}
+    $labelSize={label.split('').length}
+    style={style}
     >
     <label>{label}</label>
     <div>

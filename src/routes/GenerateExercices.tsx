@@ -14,6 +14,7 @@ import colors from '../colors.json';
 import dictionary from '../dictionary.json';
 import Game from "./Game";
 import { getRatio } from "../utils/utils";
+import { Exercice } from "./Exercice.type";
 
 const isDevEnv:boolean = (process.env.NODE_ENV === 'development');
 
@@ -28,11 +29,13 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
         type: 'range',
         min: 1,
         max: 9,
+        fix: 1,
       },
       2: {
         type: 'range',
         min: 1,
         max: 9,
+        fix: 1,
       },
       answer: {
         1: false,
@@ -45,11 +48,13 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
         type: 'range',
         min: 1,
         max: 9,
+        fix: 1,
       },
       2: {
         type: 'range',
         min: 1,
         max: 9,
+        fix: 1,
       },
       answer: {
         1: false,
@@ -61,7 +66,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
 
   const [sessionConfig, setSessionConfig] = useState<ExerciceConfig[]>([defaultExercice]);
 
-  const [exercices, generatorRequest] = useGenerator(sessionConfig);
+  const [exercices, generatorRequest]: [Exercice[], any] = useGenerator(sessionConfig);
 
   useEffect(() => {
     sessionConfig.forEach((exerciceConfig, index) => {
@@ -130,44 +135,49 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
     return () => window.removeEventListener("resize", handleResize);
   },[])
 
+
   return (<GenerateExercicesWrapper>
-      <div style={{width: '96%', height: '10%', margin:'1%', marginTop: '0%'}}>
+      <div style={{width: '98%', height: '10%', margin:'1%', marginTop: '0%'}}>
         <Title style={{width: (title.length*1.6).toString() +  '%'}}>
           {title}
         </Title>
       </div>
       <div style={{width: '98%', margin: '1%', overflow: 'scroll', height: '70%'}}>
         {sessionConfig.map((exercice: ExerciceConfig, exerciceIndex: number) => {
+          const numberOfTimeInput = 3;
+          const heightOfTimeInput = (97/numberOfTimeInput)*0.97+'%';
           return (<ExerciceConfigWrapper key={exerciceIndex} $iseven={exerciceIndex % 2 === 0}>
-            <div style={{width: '15%', marginRight: '0.3%', display: 'flex', flexDirection: 'column'}}>
+            <div style={{width: '15%', height: '100%', marginRight: '0.3%', display: 'flex', flexDirection: 'column'}}>
               <TimeConfigWrapper> {/* times and number */}
                 <Input
                   label={dictionary.fields.questionTime}
                   value={exercice.questionTime}
                   setValue={(newValue: string) => {updateExercice({exerciceIndex, keyToChange: 'questionTime', newValue})}}
                   unit='sec'
+                  style={{height: heightOfTimeInput}}
                 />
                 <Input
                   label={dictionary.fields.answerTime}
                   value={exercice.answerTime}
                   setValue={(newValue: string) => {updateExercice({exerciceIndex, keyToChange: 'answerTime', newValue})}}
                   unit='sec'
+                  style={{height: heightOfTimeInput}}
                 />
-
                 <Input
                   label={dictionary.fields.calcNumber}
                   value={exercice.equationCount}
                   setValue={(newValue: string) => {updateExercice({exerciceIndex, keyToChange: 'equationCount', newValue: Number(newValue)})}}
+                  style={{height: heightOfTimeInput}}
                 />
               </TimeConfigWrapper>
-              <div style={{ paddingTop: '3%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center'}}>
+              <div style={{ height: '9%', paddingTop: '1.5%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center'}}>
                 <div
-                  style={{width: '12%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
+                  style={{width: '12%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', visibility: 'hidden'}}
                 >
                   {<Save />}
                 </div>
                 <div
-                  style={{width: '12%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
+                  style={{width: '12%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', visibility: sessionConfig.length > 1 ? 'visible': 'hidden'}}
                   onClick={() => {sessionConfig.length > 1 ? removeExercice(exerciceIndex) : null}}  
                 >
                   <Trash />
@@ -211,7 +221,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
             <div onClick={() => addColumn({exerciceIndex})}>+</div>
             </ColumnsConfigWrapper>
             
-            <div style={{display: 'flex',width: '20%', marginLeft: '1%'}}>
+            <div style={{display: 'flex',width: '20%'}}>
               <div style={{ width: '100%',aspectRatio: ratio}}>
                 {exercices.length && exercices[exerciceIndex] !==undefined && exercices[exerciceIndex].columns.length
                   ? <Game exercices={exercices} config={config} startTimers={false} startingLevel={exerciceIndex}/>

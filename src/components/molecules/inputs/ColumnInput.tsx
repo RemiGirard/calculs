@@ -11,9 +11,16 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
   const inputElement = useRef<null | HTMLDivElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
-  const handleNumberTypeChange = (targetValue: string, key: string|number) => {
+  const handleTypeChange = (targetValue: string, key: string|number) => {
     const newValue = structuredClone(value);
     newValue[key] = targetValue;
+    setValue(newValue);
+  };
+
+  const handleNumberChange = (targetValue: string, key: string|number) => {
+    const newValue = structuredClone(value);
+    const numberTargetValue = Number(targetValue);
+    newValue[key] = isNaN(numberTargetValue) ? 0 : numberTargetValue;
     setValue(newValue);
   };
 
@@ -37,7 +44,7 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
         <Case value={'numberGeneration'}>
           <select
             value={value.type}
-            onChange={({target}) => {handleNumberTypeChange(target.value, 'type')}}
+            onChange={({target}) => handleTypeChange(target.value, 'type')}
           >
             {NumberTypes.map((numberType, index) => {
               return (
@@ -47,17 +54,17 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
           </select>
           <Switch expression={value.type}>
             <Case value='fix'>
-              <input value={value.fix} onChange={({target}) => {handleNumberTypeChange(target.value, 'fix')}}/>
+              <input value={value.fix} onChange={({target}) => {handleNumberChange(target.value, 'fix')}}/>
             </Case>
             <Case value='range'>
-              <input value={value.min} onChange={({target}) => {handleNumberTypeChange(target.value, 'min')}}/>
+              <input value={value.min} onChange={({target}) => {handleNumberChange(target.value, 'min')}}/>
               <img src={Arrow} width={'15em'}></img>
-              <input value={value.max} onChange={({target}) => {handleNumberTypeChange(target.value, 'max')}}/>
+              <input value={value.max} onChange={({target}) => {handleNumberChange(target.value, 'max')}}/>
             </Case>
             <Case value='rangeTens'>
-              <input value={value.min} onChange={({target}) => {handleNumberTypeChange(target.value, 'min')}}/>
+              <input value={value.min} onChange={({target}) => {handleNumberChange(target.value, 'min')}}/>
               <img src={Arrow} width={'15em'}></img>
-              <input value={value.max} onChange={({target}) => {handleNumberTypeChange(target.value, 'max')}}/>
+              <input value={value.max} onChange={({target}) => {handleNumberChange(target.value, 'max')}}/>
             </Case>
           </Switch>
           </Case>
@@ -65,7 +72,7 @@ const ColumnInput = ({value, setValue, label = '', type = '', options = [], redu
             {[1, 2, 'result'].map((element, index) => {
               return (<div
                 key={index}
-                style={{width: '100%', textAlign: 'center'}}
+                style={{width: element === 'result' ? '150%': '100%', textAlign: 'center'}}
                 onClick={() => {
                   const newValue = structuredClone(value);
                   newValue[element] = !newValue[element];

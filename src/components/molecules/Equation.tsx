@@ -13,7 +13,6 @@ const Equation = ({
   showAnswer,
   updateParentTextSize,
   columnSizes,
-  dynamicFontSize,
   displayLetterId = false,
   equationIndexExercice = 0,
 }: {
@@ -21,7 +20,6 @@ const Equation = ({
   showAnswer: boolean,
   updateParentTextSize: any,
   columnSizes: {1: number, 2: number, result: number},
-  dynamicFontSize: number,
   displayLetterId?: boolean,
   equationIndexExercice?: number,
 }) => {
@@ -77,7 +75,7 @@ const Equation = ({
     return display;
   }
   
-  return (<EquationWrapper $dynamicFontSize={dynamicFontSize}>
+  return (<EquationWrapper>
     <div> 
       {displayLetterId
         ? <EquationIdentifier identifier={integerToLetter(equationIndexExercice)}/>

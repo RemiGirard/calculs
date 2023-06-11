@@ -6,13 +6,13 @@ import dictionaryTyped from '../dictionary.json';
 import Equation from '../components/molecules/Equation';
 import colors from '../colors.json';
 import { ColumnWrapper, GameWrapper } from './Game.style';
+import { EquationInterface } from './Exercice.type';
 
 const dictionary:any = dictionaryTyped;
 
 const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, startingLevel = 0}: any) => {
-  console.debug({exercices});
   const [currLevel, setCurrLevel] = useState(startingLevel);
-  const [showAnswer, setShowAnswer] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(startTimers ? false : true);
 
   const [questionTimeStarted, setQuestionTimeStarted] = useState(startTimers);
   const [questionTimeReset, setQuestionTimeReset] = useState(false);
@@ -101,19 +101,20 @@ const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, star
       widthObserver.observe(calculsTable.current);
       return () => {widthObserver.disconnect();}
     }
-  },[maxTextLength])
+  },[maxTextLength,exercices])
 
   const tableSizes = useMemo(() => {
     if(exercices && exercices[currLevel]){
         return exercices[currLevel].columns.map((calculGroup: any, calculGroupIndex: number)=> {
-          const groupSizes = calculGroup.reduce((acc: any, curr: any) => {
+          const groupSizes = calculGroup.reduce((acc: {1: number, 2: number, result: number}, curr: EquationInterface) => {
             let newAcc = structuredClone(acc);
             newAcc[1] = newAcc[1] < curr[1].toString().length ? curr[1].toString().length : newAcc[1];
             newAcc[2] = newAcc[2] < curr[2].toString().length ? curr[2].toString().length : newAcc[2];
-            newAcc.result = newAcc.result < curr.result.toString().length
-              ? (typeof curr.result !== 'number'
-                ? 4 + Math.max(curr.result.quotient.toString().length, curr.result.remainder.toString().length)
-                : curr.result.toString().length)
+            const resultLength = typeof curr.result === 'number'
+              ? curr.result.toString().length
+              : 4 + Math.max(curr.result.quotient.toString().length, curr.result.remainder.toString().length);
+            newAcc.result = newAcc.result < resultLength
+              ? resultLength
               : newAcc.result
             ;
             return newAcc;
@@ -127,7 +128,7 @@ const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, star
 
   let equationIndexExercice = 0;
 
-  return (<GameWrapper>
+  return (<GameWrapper $fontSize={dynamicFontSize}>
     <div ref={calculsTable}>
       {exercices[currLevel].columns.map((column:any, columnIndex:any) => {
         return (<ColumnWrapper key={columnIndex} $columnLength={exercices[currLevel].columns.length}>
@@ -141,15 +142,14 @@ const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, star
               showAnswer={showAnswer}
               updateParentTextSize={updateParentTextSize}
               columnSizes={tableSizes[columnIndex]}
-              dynamicFontSize={dynamicFontSize}
             />);
           })}
         </ColumnWrapper>);
       })}
     </div>
     {startTimers
-      ? <ProgressBar value={barValue} color={colors.bar.pink}></ProgressBar>
-      :null
+      ? <ProgressBar value={startTimers ? barValue: 100} color={colors.bar.pink}></ProgressBar>
+      : null
     }
   </GameWrapper>)
 }
