@@ -19,6 +19,10 @@ or use directly with [pnpm](https://pnpm.io/installation) and `package.json` scr
 
 ### dev
 
+- `docker compose build` build image
+- `docker compose -f docker-compose.yml create` build container without volume binding
+- `docker compose cp calculs:/srv/app/node_modules/ ./` copy node_modules from container to local folder
+
 - `docker-compose up`
 - open browser at http://localhost:1420/
 

@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  calculs:
+    ports:
+      - 1421:1421 # hmr port
+    volumes:
+      - ./:/srv/app/
+      - ./node_modules/:/srv/app/node_modules:delegated
