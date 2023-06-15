@@ -150,7 +150,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
   const [exercicesWindowWidth, setExercicesWindowWidth] = useState(0);
   const exercicesWindowRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    exercicesWindowRef.current
+    exercicesWindowRef.current !== null
     ? setExercicesWindowWidth(exercicesWindowRef.current?.offsetHeight)
     : 0
   ;
@@ -159,7 +159,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
   const [exercicesWidth, setExercicesWidth] = useState(0);
   const exercicesRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    exercicesRef.current
+    exercicesRef.current !== null
     ? setExercicesWidth(exercicesRef.current?.scrollHeight)
     : 0
   ;
