@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { ColumnInputWrapper } from "./ColumnInput.style";
 import { Case, Switch } from "../../../utils/Switch";
-import { NumberTypes } from "../../../routes/GenerateExercice.types";
+import { NumberTypes } from "../../../routes/ExerciceConfig.types";
 import Arrow from '../../../assets/arrow.png';
 import dictionaryTyped from '../../../dictionary.json';
 

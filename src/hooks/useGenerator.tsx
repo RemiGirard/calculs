@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
 import { Column, EquationInterface, Exercice, ModuloResult } from "../routes/Exercice.type";
-import { ColumnConfig, ExerciceConfig, NumberConfig } from "../routes/GenerateExercice.types";
+import { ColumnConfig, ExerciceConfig, NumberConfig } from "../routes/ExerciceConfig.types";
 import { getRandomItemOfArray, shuffleArray } from "../utils/utils";
 
 export const mathFunctions = {

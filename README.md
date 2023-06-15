@@ -23,20 +23,20 @@ or use directly with [pnpm](https://pnpm.io/installation) and `package.json` scr
 - `docker compose -f docker-compose.yml create` build container without volume binding
 - `docker compose cp calculs:/srv/app/node_modules/ ./` copy node_modules from container to local folder
 
-- `docker-compose up`
+- `docker compose up`
 - open browser at http://localhost:1420/
 
 Edit files inside `src/`. Changes will be updated with HMR.
 
 ### run unit tests
 
--`docker-compose exec calculs pnpm test`
+-`docker compose exec calculs pnpm test`
 
 vitest runs in watch mode by default
 
 ### build html
 
-- `docker-compose exec calculs pnpm build`
+- `docker compose exec calculs pnpm build`
 
 Unique html file will be available at `dist/index.html`
 

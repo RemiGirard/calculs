@@ -6,7 +6,7 @@ import Config from './routes/Config';
 import GenerateExercices from './routes/GenerateExercices';
 import Game from './routes/Game';
 import GameOver from './routes/GameOver';
-import { PageName, ConfigInterface, ExerciceConfig } from './routes/GenerateExercice.types';
+import { PageName, ConfigInterface, ExerciceConfig } from './routes/ExerciceConfig.types';
 import { Exercice } from './routes/Exercice.type';
 import dictionary from './dictionary.json';
 
@@ -23,35 +23,9 @@ const Calcul = () => {
     displayLetterId: true,
   });
 
-  const defaultExercice: ExerciceConfig = {
-    questionTime: isDevEnv ? 5 : 180,
-    answerTime: isDevEnv ? 5 : 60,
-    equationCount: 6,
-    columns: [{
-      type: 'addition',
-      1: {
-        type: 'range',
-        min: 1,
-        max: 9,
-      },
-      2: {
-        type: 'range',
-        min: 1,
-        max: 9,
-      },
-      answer: {
-        1: false,
-        2: false,
-        result: true,
-      }
-    }],
-  };
-
-  const [sessionConfig, setSessionConfig] = useState<ExerciceConfig[]>([defaultExercice]);
-
   const [exercices, setExercices] = useState<Exercice[]>([]);
-
   const numberOfCalcul = exercices.reduce((acc, exercice) => acc + exercice.columns[0].length, 0);
+  
   return (
     <Switch expression={currState}>
       <Case value={'config'}>
@@ -68,8 +42,6 @@ const Calcul = () => {
         <GenerateExercices
           title={dictionary.titles.generateExercices}
           {...{
-            sessionConfig,
-            setSessionConfig,
             setGameStarted,
             setExercices,
             config,

@@ -8,7 +8,15 @@ export const GenerateExercicesWrapper = styled.div`
   font-family: 'arial-rounded-mt-bold';
 `;
 
-export const Title = styled.div`
+export const TopBar = styled.div`
+  width: 98%;
+  height: 10%;
+  margin: 1%;
+  margin-top: 0%;
+`;
+
+export const Title = styled.div<{$titleLength: number}>`
+  width: ${props => props.$titleLength*1.6}%;
   color: ${colors.blueShades[3]};
   font-size: 2.5em;
   padding: 2%;

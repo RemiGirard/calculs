@@ -1,15 +1,6 @@
+import { CalcType } from "./ExerciceConfig.types";
+
 export type ElementId = '1'|'2'|'result'
-
-export const calcTypes = [
-  "addition",
-  "positiveSoustraction",
-  "multiplication",
-  "division",
-  "intDivision",
-  "modulo"
-] as const;
-
-export type CalcType = typeof calcTypes[number];
 
 export type ModuloResult = {quotient: number, remainder:number};
 
