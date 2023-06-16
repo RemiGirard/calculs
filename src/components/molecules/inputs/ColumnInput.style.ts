@@ -44,6 +44,7 @@ export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: 
       > * {
         background: none !important;;
         font-family: arial-rounded-mt-bold;
+        color: black;
       }
     }
     > input {
