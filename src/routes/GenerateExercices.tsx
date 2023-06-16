@@ -151,8 +151,8 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
   const exercicesWindowRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     exercicesWindowRef.current !== null
-    ? setExercicesWindowWidth(exercicesWindowRef.current?.offsetHeight)
-    : 0
+    ? setExercicesWindowWidth(exercicesWindowRef.current['offsetHeight'])
+    : null
   ;
   }, [exercicesWindowRef, exercices]);
 
@@ -160,8 +160,8 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
   const exercicesRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     exercicesRef.current !== null
-    ? setExercicesWidth(exercicesRef.current?.scrollHeight)
-    : 0
+    ? setExercicesWidth(exercicesRef.current['scrollHeight'])
+    : null
   ;
   }, [exercicesRef, exercices]);
 
@@ -178,8 +178,8 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
           {title}
         </Title>
       </TopBar>
-      <div ref={exercicesWindowRef} style={{width: '98%', margin: '1%', overflow: 'scroll', height: '70%', display: 'flex', flexDirection: 'row'}}>
-        <div ref={exercicesRef} onScroll={scrollEvent} style={{width: '98%', height: '98%', overflow: 'scroll'}}>
+      <div ref={exercicesWindowRef} className="hide-scrollbar" style={{width: '98%', margin: '1%', overflow: 'scroll', height: '70%', display: 'flex', flexDirection: 'row'}}>
+        <div ref={exercicesRef} onScroll={scrollEvent} className="hide-scrollbar" style={{width: '98%', height: '98%', overflow: 'scroll'}}>
           {sessionConfig.map((exercice: ExerciceConfig, exerciceIndex: number) => {
             const numberOfTimeInput = 3;
             const heightOfTimeInput = (97/numberOfTimeInput)*0.97+'%';
@@ -260,7 +260,7 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
                   </div>
                 </div>
               </div>
-              <ColumnsConfigWrapper>
+              <ColumnsConfigWrapper className="hide-scrollbar" >
               
               {exercice.columns.map((column, columnIndex) => {
                 return (<div key={columnIndex}>

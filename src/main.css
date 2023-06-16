@@ -90,4 +90,13 @@ div[style*="background: rgb(187, 187, 187)"] div {
   font-weight: bold;
   transform: rotate(45deg);
 }
-  
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
