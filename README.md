@@ -2,27 +2,29 @@
 
 Generate math exercice.
 
-Get it : [Download](https://github.com/RemiGirard/calculs/releases/download/v1.5.1/index-1.5.1.html)
+Get it : [Download](https://github.com/RemiGirard/calculs/releases/download/v1.9.0/index-1.9.0.html)
 
-![screenshot configuration](doc/asset/screenshotConfiguration01.png)
+![screenshot configuration](doc/asset/screenshotConfiguration02.png)
 
 ![screenshot exercices](doc/asset/screenshotExercice02.png)
 
-
-## Requirement
+## Use with docker
+### Requirement
 
 - [Docker-compose](https://docs.docker.com/compose/install/)
 
-or use directly with [pnpm](https://pnpm.io/installation) and `package.json` scripts (example: `pnpm dev`)
+### build locally
 
-## Use
+build image
+- `docker compose build`
 
-### dev
+build container without volume binding
+- `docker compose -f docker-compose.yml create`
 
-- `docker compose build` build image
-- `docker compose -f docker-compose.yml create` build container without volume binding
-- `docker compose cp calculs:/srv/app/node_modules/ ./` copy node_modules from container to local folder
+copy `node_modules` folder from container to local folder
+- `docker compose cp calculs:/srv/app/node_modules/ ./` 
 
+run
 - `docker compose up`
 - open browser at http://localhost:1420/
 
@@ -30,7 +32,7 @@ Edit files inside `src/`. Changes will be updated with HMR.
 
 ### run unit tests
 
--`docker compose exec calculs pnpm test`
+- `docker compose exec calculs pnpm test`
 
 vitest runs in watch mode by default
 
@@ -40,6 +42,27 @@ vitest runs in watch mode by default
 
 Unique html file will be available at `dist/index.html`
 
+## Use with local server
+
+### Requirement
+
+- [pnpm](https://pnpm.io/installation)
+
+### build
+
+- `pnpm install`
+
+### run
+
+- `pnpm dev`
+- open browser at http://localhost:1420/
+
+### run unit tests
+- `pnpm test`
+
+### build html
+- `pnpm build`
+
 ### build exe/dmg/deb
 
 [Tauri requirements](https://tauri.app/v1/guides/getting-started/prerequisites)
@@ -47,3 +70,4 @@ Unique html file will be available at `dist/index.html`
 - `pnpm tauri build`
 
 Executables will be available at `src-tauri/target/release/` , installers `src-tauri/target/release/bundle`.
+
