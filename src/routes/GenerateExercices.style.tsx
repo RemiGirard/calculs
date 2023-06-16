@@ -4,6 +4,8 @@ import colors from '../colors.json';
 export const GenerateExercicesWrapper = styled.div`
   width: 100%;
   height: 100%;
+  min-width: 1000px;
+  min-height: 800px;
   background-color: ${colors.blueShades[1]};
   font-family: 'arial-rounded-mt-bold';
 `;
