@@ -6,95 +6,10 @@ html, body, #root, #root > div{
   outline: 0;
   box-sizing: border-box;
   font-family: arial-rounded-mt-bold;
-}
-
-body {
   font-size: 16px;
 }
 
 @font-face {
   font-family: 'arial-rounded-mt-bold';
   src: local('arial-rounded-mt-bold'), url(./assets/ARLRDBD.ttf) format('truetype');
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 50px;
-  background-color: #333;
-}
-  
-thead {
-  width: 100%;
-  color: #fff;
-}
-  
-th, td {
-  text-align: left;
-  padding: 10px;
-}
-  
-th {
-  font-weight: bold;
-}
-
-tbody tr:nth-child(odd) {
-  background-color: #222;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #111;
-}
-
-tbody td {
-  border-bottom: 1px solid #333;
-}
-
-input[type="number"], select {
-  border-radius: 5px;
-  border: none;
-  background-color: #444;
-  color: #fff;
-  padding: 5px;
-  font-size: 16px;
-  margin-right: 10px;
-}
-  
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-  
-select::after {
-  content: "v";
-}
-  
-div[style*="background: rgb(187, 21, 21)"] {
-  background-color: #b00;
-}
-  
-div[style*="background: rgb(187, 21, 21)"] div {
-  font-size: 24px;
-  font-weight: bold;
-}
-  
-div[style*="background: rgb(187, 187, 187)"] {
-  background-color: #777;
-}
-
-div[style*="background: rgb(187, 187, 187)"] div {
-  font-size: 12px;
-  font-weight: bold;
-  transform: rotate(45deg);
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
 }

@@ -12,6 +12,10 @@ import {
   ExerciceConfigWrapper,
   TimeConfigWrapper,
   TopBar,
+  ExercicesConfigWrapper,
+  TimeAndActionButtonsWrapper,
+  ActionButtonsWrapper,
+  ActionButton,
 } from "./GenerateExercices.style";
 import { ExerciceConfig, calcTypes } from "./ExerciceConfig.types";
 import Play from '../assets/Play';
@@ -22,6 +26,7 @@ import dictionary from '../dictionary.json';
 import Game from "./Game";
 import { getRatio } from "../utils/utils";
 import { Exercice } from "./Exercice.type";
+import useScrollBar from "../hooks/useScrollBar";
 
 const isDevEnv:boolean = (process.env.NODE_ENV === 'development');
 
@@ -146,199 +151,179 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
     return () => window.removeEventListener("resize", handleResize);
   },[])
 
-  // handle scroll bar, too complicated for just a scroll bar ?
-  const [exercicesWindowWidth, setExercicesWindowWidth] = useState(0);
+  // handle scroll bar
   const exercicesWindowRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    exercicesWindowRef.current !== null
-    ? setExercicesWindowWidth(exercicesWindowRef.current['offsetHeight'])
-    : null
-  ;
-  }, [exercicesWindowRef, exercices]);
-
-  const [exercicesWidth, setExercicesWidth] = useState(0);
   const exercicesRef = useRef<HTMLDivElement>(null);
+  const exercicesScrollTrackRef = useRef<HTMLDivElement>(null);
+
+  const {
+    handleThumbMousedown,
+    handleTrackClick,
+    handleScrollBarSizeChange,
+    scrollEvent,
+    scrollBarSize,
+    scrollContent,
+  } = useScrollBar({
+    windowRef: exercicesWindowRef,
+    contentRef: exercicesRef,
+    scrollTrackRef: exercicesScrollTrackRef
+  });
+
   useEffect(() => {
-    exercicesRef.current !== null
-    ? setExercicesWidth(exercicesRef.current['scrollHeight'])
-    : null
-  ;
-  }, [exercicesRef, exercices]);
-
-  const [scrollExercices, setScrollExercices] = useState<number>(0);
-
-  const scrollEvent = (e: any) => {
-    const target = e.target as HTMLTextAreaElement;
-    setScrollExercices(target.scrollTop);
-  }
+    handleScrollBarSizeChange();
+  }, [exercices]);
 
   return (<GenerateExercicesWrapper>
-      <TopBar>
-        <Title $titleLength={title.length}>
-          {title}
-        </Title>
-      </TopBar>
-      <div ref={exercicesWindowRef} className="hide-scrollbar" style={{width: '98%', margin: '1%', overflow: 'scroll', height: '70%', display: 'flex', flexDirection: 'row'}}>
-        <div ref={exercicesRef} onScroll={scrollEvent} className="hide-scrollbar" style={{width: '98%', height: '98%', overflow: 'scroll'}}>
-          {sessionConfig.map((exercice: ExerciceConfig, exerciceIndex: number) => {
-            const numberOfTimeInput = 3;
-            const heightOfTimeInput = (97/numberOfTimeInput)*0.97+'%';
-            return (<ExerciceConfigWrapper key={exerciceIndex} $iseven={exerciceIndex % 2 === 0}>
-              <div style={{
-                width: '15%',
-                height: '100%',
-                marginRight: '0.3%',
-                display: 'flex',
-                flexDirection: 'column',
-              }}>
-                <TimeConfigWrapper> {/* times and number */}
-                  <Input
-                    label={dictionary.fields.questionTime}
-                    value={exercice.questionTime}
-                    setValue={(newValue: string) => {updateExercice({
-                      exerciceIndex,
-                      keyToChange: 'questionTime',
-                      newValue,
-                    })}}
-                    unit='sec'
-                    style={{height: heightOfTimeInput}}
-                  />
-                  <Input
-                    label={dictionary.fields.answerTime}
-                    value={exercice.answerTime}
-                    setValue={(newValue: string) => {updateExercice({
-                      exerciceIndex,
-                      keyToChange: 'answerTime',
-                      newValue,
-                    })}}
-                    unit='sec'
-                    style={{height: heightOfTimeInput}}
-                  />
-                  <Input
-                    label={dictionary.fields.calcNumber}
-                    value={exercice.equationCount}
-                    setValue={(newValue: string) => {updateExercice({
-                      exerciceIndex,
-                      keyToChange: 'equationCount',
-                      newValue: Number(newValue),
-                    })}}
-                    style={{height: heightOfTimeInput}}
-                  />
-                </TimeConfigWrapper>
-                <div style={{
-                  height: '9%',
-                  paddingTop: '1.5%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  alignContent: 'center',
-                }}>
-                  <div
-                    style={{
-                      width: '12%',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      visibility: 'hidden',
-                    }}
-                  >
-                    {<Save />}
-                  </div>
-                  <div
-                    style={{
-                      width: '12%',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      visibility: sessionConfig.length > 1 ? 'visible': 'hidden',
-                    }}
-                    onClick={() => {sessionConfig.length > 1 ? removeExercice(exerciceIndex) : null}}  
-                  >
-                    <Trash />
-                  </div>
-                </div>
-              </div>
-              <ColumnsConfigWrapper className="hide-scrollbar" >
-              
-              {exercice.columns.map((column, columnIndex) => {
-                return (<div key={columnIndex}>
-                    { exercice.columns.length > 1 ? <ColumnCloseCross onClick={()=>{removeColumn({exerciceIndex, columnIndex})}}/> : null}
-                    <ColumnInput
-                      label={dictionary.fields.type}
-                      type={'select'}
-                      fieldName={'type'}
-                      options={calcTypes}
-                      value={column.type}
-                      setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: 'type', newValue})}}
-                      reducedWidth={true}
-                    />
-                    <ColumnInput
-                      label={'1er'}
-                      type={'numberGeneration'}
-                      value={column[1]}
-                      setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: '1', newValue})}}
-                    />
-                    <ColumnInput
-                      label={'2ème'}
-                      type={'numberGeneration'}
-                      value={column[2]}
-                      setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: '2', newValue})}}
-                    />
-                    <ColumnInput
-                      label={'trou'}
-                      type={'answer'}
-                      value={column.answer}
-                      setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: 'answer', newValue})}}
-                    />
-                </div>)
-              })}
-              <div onClick={() => addColumn({exerciceIndex})}>+</div>
-              </ColumnsConfigWrapper>
-              
-              <div style={{display: 'flex',width: '20%'}}>
-                <div style={{ width: '100%',aspectRatio: ratio}}>
-                  {exercices.length && exercices[exerciceIndex] !==undefined && exercices[exerciceIndex].columns.length
-                    ? <Game exercices={exercices} config={config} startTimers={false} startingLevel={exerciceIndex}/>
-                    : <div style={{width: '100%', height: '100%'}}>preview</div>
+    <TopBar>
+      <Title $titleLength={title.length}>
+        {title}
+      </Title>
+    </TopBar>
+    <ExercicesConfigWrapper ref={exercicesWindowRef}>
+      <div ref={exercicesRef} onScroll={scrollEvent}>
+        {sessionConfig.map((exercice: ExerciceConfig, exerciceIndex: number) => {
+          const numberOfTimeInput = 3;
+          const heightOfTimeInput = (97/numberOfTimeInput)*0.97;
+          return (<ExerciceConfigWrapper key={exerciceIndex} $iseven={exerciceIndex % 2 === 0}>
+            <TimeAndActionButtonsWrapper>
+              <TimeConfigWrapper> {/* times and number */}
+                <Input
+                  label={dictionary.fields.questionTime}
+                  value={exercice.questionTime}
+                  setValue={(newValue: string) => {updateExercice({
+                    exerciceIndex,
+                    keyToChange: 'questionTime',
+                    newValue,
+                  })}}
+                  unit='sec'
+                  height={heightOfTimeInput}
+                />
+                <Input
+                  label={dictionary.fields.answerTime}
+                  value={exercice.answerTime}
+                  setValue={(newValue: string) => {updateExercice({
+                    exerciceIndex,
+                    keyToChange: 'answerTime',
+                    newValue,
+                  })}}
+                  unit='sec'
+                  height={heightOfTimeInput}
+                />
+                <Input
+                  label={dictionary.fields.calcNumber}
+                  value={exercice.equationCount}
+                  setValue={(newValue: string) => {updateExercice({
+                    exerciceIndex,
+                    keyToChange: 'equationCount',
+                    newValue: Number(newValue),
+                  })}}
+                  height={heightOfTimeInput}
+                />
+              </TimeConfigWrapper>
+              <ActionButtonsWrapper>
+                <ActionButton $isVisible={false}>
+                  <Save />
+                </ActionButton>
+                <ActionButton
+                  $isVisible={sessionConfig.length > 1}
+                  onClick={() => {if(sessionConfig.length > 1) removeExercice(exerciceIndex);}}  
+                >
+                  <Trash />
+                </ActionButton>
+              </ActionButtonsWrapper>
+            </TimeAndActionButtonsWrapper>
+            <div style={{width: '70%', height: '100%'}}>
+            <ColumnsConfigWrapper>
+            {exercice.columns.map((column, columnIndex) => {
+              return (<div key={columnIndex}>
+                  { exercice.columns.length > 1
+                    ? <ColumnCloseCross onClick={()=>{removeColumn({exerciceIndex, columnIndex})}}/>
+                    : null
                   }
-                </div>
+                  <ColumnInput
+                    label={dictionary.fields.type}
+                    type={'select'}
+                    fieldName={'type'}
+                    options={calcTypes}
+                    value={column.type}
+                    setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: 'type', newValue})}}
+                    reducedWidth={true}
+                  />
+                  <ColumnInput
+                    label={'1er'}
+                    type={'numberGeneration'}
+                    value={column[1]}
+                    setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: '1', newValue})}}
+                  />
+                  <ColumnInput
+                    label={'2ème'}
+                    type={'numberGeneration'}
+                    value={column[2]}
+                    setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: '2', newValue})}}
+                  />
+                  <ColumnInput
+                    label={'trou'}
+                    type={'answer'}
+                    value={column.answer}
+                    setValue={(newValue: string) => {updateColumn({exerciceIndex, columnIndex, keyToChange: 'answer', newValue})}}
+                  />
+              </div>)
+            })}
+            <div onClick={() => addColumn({exerciceIndex})}>+</div>
+            </ColumnsConfigWrapper>
+            </div>
+            
+            <div style={{display: 'flex',width: '20%'}}>
+              <div style={{ width: '100%',aspectRatio: ratio}}>
+                {
+                exercices.length
+                && exercices[exerciceIndex] !==undefined
+                && exercices[exerciceIndex].columns.length
+                  ? <Game
+                    exercices={exercices}
+                    config={config}
+                    startTimers={false}
+                    startingLevel={exerciceIndex}
+                  />
+                  : <div style={{width: '100%', height: '100%'}}>preview</div>
+                }
               </div>
-            </ExerciceConfigWrapper>);
-          })}
-        </div>
-        <div style={{width: '2%', height: '98%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5px', paddingBottom: '5px'}}>
-          <div style={{height: (scrollExercices/exercicesWidth)*99+'%', width: '100%'}}></div>
-            <div style={{backgroundColor: colors.blueShades[2], borderRadius: '35px', width: '60%', height: ((exercicesWindowWidth/exercicesWidth)*99).toString()+'%'}} />
-        </div>
+            </div>
+          </ExerciceConfigWrapper>);
+        })}
       </div>
-      <div style={{margin: '1%', width: '98%', height: '10%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-        <BigActionButton
-          color={colors.blueShades[4]}
-          colorHover={colors.blueShades[5]}
-          textColor={'black'}
-          onClick={(e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {addExercice()}}
-          style={{width: '10%', height: '100%'}}
-        > 
-          +
-        </BigActionButton> 
-        <BigActionButton
-          color={colors.greenShade[1]}
-          colorHover={colors.blueShades[5]}
-          textColor={'black'}
-          onClick={(e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            setGameStarted();
-          }}
-          style={{width: '10%', height: '100%'}}
-        > 
-          <div
-            style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
-          >
-            {<Play />}
-          </div>
-        </BigActionButton> 
+      <div ref={exercicesScrollTrackRef} style={{width: '2%', height: '98%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5px', paddingBottom: '5px', position: 'relative'}}>
+        <div onClick={handleTrackClick} style={{position: 'absolute', top: 0, bottom: 0, width: '100%'}}/>
+        <div style={{height: (scrollContent/(exercicesRef.current?.scrollHeight ?? 1))*99+'%', width: '100%'}} />
+        <div onMouseDown={handleThumbMousedown} style={{backgroundColor: colors.blueShades[2], borderRadius: '35px', width: '60%', height: scrollBarSize+'%', zIndex: 1000}} />
       </div>
+    </ExercicesConfigWrapper>
+    <div style={{margin: '1%', width: '98%', height: '10%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+      <BigActionButton
+        color={colors.blueShades[4]}
+        colorHover={colors.blueShades[5]}
+        textColor={'black'}
+        onClick={addExercice}
+        style={{width: '10%', height: '100%'}}
+      > 
+        +
+      </BigActionButton> 
+      <BigActionButton
+        color={colors.greenShade[1]}
+        colorHover={colors.blueShades[5]}
+        textColor={'black'}
+        onClick={(e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+          setGameStarted();
+        }}
+        style={{width: '10%', height: '100%'}}
+      > 
+        <div
+          style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
+        >
+          {<Play />}
+        </div>
+      </BigActionButton> 
+    </div>
   </GenerateExercicesWrapper>);
 };
 

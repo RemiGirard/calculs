@@ -41,10 +41,14 @@ export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: 
       background: none !important;;
       font-family: arial-rounded-mt-bold;
       margin: 0;
+      font-size: 1em;
+      border: none;
+      color: ${colors.text.light};
       > * {
-        background: none !important;;
+        background-color: ${colors.blueShades[2]};
         font-family: arial-rounded-mt-bold;
-        color: black;
+        border: none;
+        color: ${colors.text.light};
       }
     }
     > input {

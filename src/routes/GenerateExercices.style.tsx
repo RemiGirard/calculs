@@ -24,6 +24,25 @@ export const Title = styled.div<{$titleLength: number}>`
   padding: 2%;
 `;
 
+export const ExercicesConfigWrapper = styled.div`
+  width: 98%;
+  margin: 1%;
+  height: 70%;
+  display: flex;
+  flex-direction: row;
+  
+  > div:first-child {
+    width: 98%;
+    height: 98%;
+    overflow-y: scroll;
+    &::-webkit-scrollbar{
+      display: none;
+    }
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+`
+
 export const ExerciceConfigWrapper = styled.div<{$iseven: boolean}>`
   display: flex;
   justify-content: flex-start;
@@ -32,6 +51,14 @@ export const ExerciceConfigWrapper = styled.div<{$iseven: boolean}>`
   padding: 0.4%;
   height: 35%;
   background-color: ${({$iseven}) => $iseven ? colors.blueShades[4] : colors.blueShades[3]};
+`;
+
+export const TimeAndActionButtonsWrapper = styled.div`
+  width: 15%;
+  height: 100%;
+  margin-right: 0.3%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const TimeConfigWrapper = styled.div`
@@ -50,13 +77,66 @@ export const TimeConfigWrapper = styled.div`
   }
 `
 
+export const ActionButtonsWrapper = styled.div`
+  height: 9%;
+  padding-top: 1.5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: center;
+`;
+
+export const ActionButton = styled.div<{$isVisible: boolean}>`
+  width: 12%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  visibility: ${({$isVisible}) => $isVisible ? 'visible' : 'hidden'};
+`;
+
 export const ColumnsConfigWrapper = styled.div`
-  width: 70%;
+  width: 99%;
   margin-right: 2%;
+  padding-bottom: 0.5%;
+  @-moz-document url-prefix() {
+    padding-bottom: 2%;
+  }
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  overflow: scroll;
+  overflow-x: auto;
+
+  /* WebKit-based browsers (Chrome, Safari) */
+  &::-webkit-scrollbar {
+    height: 1em;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${colors.blueShades[2]};
+    border-radius: 15px;
+  }
+
+  /* Mozilla Firefox */
+  scrollbar-color: ${colors.blueShades[1]} transparent;
+  scrollbar-width: auto;
+
+  ::-moz-scrollbar {
+    height: 20px;
+  }
+
+  ::-moz-scrollbar-track {
+    background: pink;
+  }
+
+  ::-moz-scrollbar-thumb {
+    background-color: ${colors.blueShades[2]};
+    border-radius: 15px;
+  }
   > div {
     background-color: ${colors.blueShades[2]};
     color: ${colors.text.light};

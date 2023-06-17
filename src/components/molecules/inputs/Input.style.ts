@@ -2,7 +2,12 @@ import { styled } from 'styled-components';
 
 import colors from '../../../colors.json';
 
-export const InputWrapper = styled.div<{$hasUnit: boolean, $isFocus: boolean, $labelSize: number }>`
+export const InputWrapper = styled.div<{
+  $hasUnit: boolean,
+  $isFocus: boolean,
+  $labelSize: number,
+  $height: number,
+}>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,6 +15,7 @@ export const InputWrapper = styled.div<{$hasUnit: boolean, $isFocus: boolean, $l
   background-color: ${colors.blueShades[1]};
   border-radius: 5px;
   cursor: pointer;
+  height: ${props => props.$height}%;
   &:hover{
     background-color: ${colors.blueShades[4]};
   }

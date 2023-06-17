@@ -95,7 +95,7 @@ const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, star
   }
   
   useEffect(() => {
-    if(calculsTable && calculsTable.current){
+    if(calculsTable.current){
       calculateFontSize();
       const widthObserver = new ResizeObserver(calculateFontSize);
       widthObserver.observe(calculsTable.current);
