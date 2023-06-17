@@ -46,6 +46,7 @@ Unique html file will be available at `dist/index.html`
 
 ### Requirement
 
+- [node](https://nodejs.org/en)
 - [pnpm](https://pnpm.io/installation)
 
 ### build
