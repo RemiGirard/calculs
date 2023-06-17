@@ -2,7 +2,7 @@
 
 Generate math exercice.
 
-Get it : [Download](https://github.com/RemiGirard/calculs/releases/download/v1.10.0/index-1.10.0.html)
+Get it : [Download](https://github.com/RemiGirard/calculs/releases/download/v1.10.1/index-1.10.1.html)
 
 ![screenshot configuration](doc/asset/screenshotConfiguration02.png)
 
