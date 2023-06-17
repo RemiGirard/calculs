@@ -2,6 +2,21 @@ import { test, expect } from 'vitest';
 
 import { columnPossibilititiesEstimation, combinePossibilities, generatePossibleEquations, getElementsPossibilitiesOfColumnConfig, getPossibilitiesOfANumber, mathFunctions, numberPossibilitesCount } from './useGenerator';
 
+test('mathFunctions',()=>{
+  expect(mathFunctions.addition(1,1)).toEqual(2);
+  expect(mathFunctions.addition(12,34)).toEqual(46);
+  expect(mathFunctions.addition(-12,34)).toEqual(22);
+  expect(mathFunctions.addition(-12,-34)).toEqual(-46);
+  expect(mathFunctions.addition(1,-1)).toEqual(0);
+  expect(mathFunctions.positiveSoustraction(1,1)).toEqual(0);
+  expect(mathFunctions.positiveSoustraction(34,12)).toEqual(22);
+  expect(mathFunctions.positiveSoustraction(-12,34)).toEqual(-46);
+  expect(mathFunctions.positiveSoustraction(-12,-34)).toEqual(22);
+  expect(mathFunctions.positiveSoustraction(1,-1)).toEqual(2);
+  expect(mathFunctions.modulo(11,5)).toEqual({quotient:2, remainder: 1});
+  expect(mathFunctions.modulo(1,5)).toEqual({quotient:0, remainder: 1});
+});
+
 test('numberPossibilitesCount', () => {
   expect(numberPossibilitesCount({ type: 'fix', fix: 1 })).toEqual(1);
   expect(numberPossibilitesCount({ type: 'fix', fix: 123456 })).toEqual(1);
@@ -19,7 +34,7 @@ test('numberPossibilitesCount', () => {
   expect(numberPossibilitesCount({ type: 'rangeTens', min: -20, max: -10 })).toEqual(2);
 });
 
-test('columnPossibilititiesCount', () => {
+test('columnPossibilititiesEstimation', () => {
   expect(columnPossibilititiesEstimation({
     type: 'addition',
     1: { type: 'fix', fix: 1 },
@@ -75,6 +90,24 @@ test('getPossibilitiesOfANumber', () => {
   expect(getPossibilitiesOfANumber({ type: 'rangeTens', min: 1, max: 35 })).toEqual([10, 20, 30]);
 });
 
+test('combinePossibilities', () => {
+  expect(combinePossibilities([])).toEqual([]);
+  expect(combinePossibilities([[]])).toEqual([]);
+  expect(combinePossibilities([[1, 2]])).toEqual([[1], [2]]);
+  expect(combinePossibilities([[1, 2], [3, 4]])).toEqual([[1, 3], [1, 4], [2, 3], [2, 4]]);
+  expect(combinePossibilities([[1, 2], [3, 4], [5, 6]]))
+    .toEqual([
+      [1, 3, 5],
+      [1, 3, 6],
+      [1, 4, 5],
+      [1, 4, 6],
+      [2, 3, 5],
+      [2, 3, 6],
+      [2, 4, 5],
+      [2, 4, 6],
+    ]);
+});
+
 test('getElementsPossibilitiesOfColumnConfig', () => {
   expect(getElementsPossibilitiesOfColumnConfig({
     type: 'addition',
@@ -96,23 +129,7 @@ test('getElementsPossibilitiesOfColumnConfig', () => {
   })).toEqual([[10,20,30], [1]]);
 })
 
-test('combinePossibilities', () => {
-  expect(combinePossibilities([])).toEqual([]);
-  expect(combinePossibilities([[]])).toEqual([]);
-  expect(combinePossibilities([[1, 2]])).toEqual([[1], [2]]);
-  expect(combinePossibilities([[1, 2], [3, 4]])).toEqual([[1, 3], [1, 4], [2, 3], [2, 4]]);
-  expect(combinePossibilities([[1, 2], [3, 4], [5, 6]]))
-    .toEqual([
-      [1, 3, 5],
-      [1, 3, 6],
-      [1, 4, 5],
-      [1, 4, 6],
-      [2, 3, 5],
-      [2, 3, 6],
-      [2, 4, 5],
-      [2, 4, 6],
-    ]);
-});
+
 
 test('generatePossibleEquations',()=>{
   expect(generatePossibleEquations({
@@ -167,17 +184,4 @@ test('generatePossibleEquations',()=>{
   ]);
 });
 
-test('mathFunctions',()=>{
-  expect(mathFunctions.addition(1,1)).toEqual(2);
-  expect(mathFunctions.addition(12,34)).toEqual(46);
-  expect(mathFunctions.addition(-12,34)).toEqual(22);
-  expect(mathFunctions.addition(-12,-34)).toEqual(-46);
-  expect(mathFunctions.addition(1,-1)).toEqual(0);
-  expect(mathFunctions.positiveSoustraction(1,1)).toEqual(0);
-  expect(mathFunctions.positiveSoustraction(34,12)).toEqual(22);
-  expect(mathFunctions.positiveSoustraction(-12,34)).toEqual(-46);
-  expect(mathFunctions.positiveSoustraction(-12,-34)).toEqual(22);
-  expect(mathFunctions.positiveSoustraction(1,-1)).toEqual(2);
-  expect(mathFunctions.modulo(11,5)).toEqual({quotient:2, remainder: 1});
-  expect(mathFunctions.modulo(1,5)).toEqual({quotient:0, remainder: 1});
-})
+

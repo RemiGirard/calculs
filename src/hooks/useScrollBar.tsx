@@ -134,7 +134,6 @@ const useScrollBar = ({windowRef, contentRef, scrollTrackRef, direction = "verti
     }
     if(contentRef.current){
       const contentObserver = new ResizeObserver(() =>{
-        console.debug('content changed');
         handleScrollBarSizeChange
       });
       contentObserver.observe(contentRef.current);

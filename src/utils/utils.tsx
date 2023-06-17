@@ -19,7 +19,7 @@ export const getRandomItemOfArray = (array: any[]) => {
   return array[Math.floor(Math.random()*array.length)];
 }
 
-export const getRatio = () => {
+export const getBodyRatio = () => {
   return document.body.clientWidth/document.body.clientHeight;
 };
 

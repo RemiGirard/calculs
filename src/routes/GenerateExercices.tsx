@@ -24,7 +24,7 @@ import Trash from '../assets/Trash';
 import colors from '../colors.json';
 import dictionary from '../dictionary.json';
 import Game from "./Game";
-import { getRatio } from "../utils/utils";
+import { getBodyRatio } from "../utils/utils";
 import { Exercice } from "./Exercice.type";
 import useScrollBar from "../hooks/useScrollBar";
 
@@ -142,10 +142,10 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
     setSessionConfig(newSessionConfig);
   }
 
-  const [ratio, setRatio] = useState<number>(getRatio());
+  const [ratio, setRatio] = useState<number>(getBodyRatio());
   useEffect(() => {
     const handleResize = () => {
-      setRatio(getRatio());
+      setRatio(getBodyRatio());
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener("resize", handleResize);
