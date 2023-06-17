@@ -6,6 +6,9 @@ html, body, #root, #root > div{
   outline: 0;
   box-sizing: border-box;
   font-family: arial-rounded-mt-bold;
+}
+
+body{
   font-size: 16px;
 }
 
