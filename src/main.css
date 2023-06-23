@@ -5,10 +5,10 @@ html, body, #root, #root > div{
   padding: 0;
   outline: 0;
   box-sizing: border-box;
-  font-family: arial-rounded-mt-bold;
 }
 
 body{
+  font-family: arial-rounded-mt-bold;
   font-size: 16px;
 }
 

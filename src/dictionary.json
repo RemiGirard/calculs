@@ -62,5 +62,10 @@
     "division": "/",
     "intDivision": "/",
     "modulo": "%"
+},
+"helper": {
+    "globalConfig": {
+        "displayLetterId": "Affiche les lettres devant les équations"
+    }
 }
 }

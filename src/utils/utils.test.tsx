@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { areArraysEqual, filterObject, getRandomItemOfArray, shuffleArray, times } from './utils';
+import { areArraysEqual, filterObject, getRandomItemOfArray, shuffleArray, stringToBoolean, times } from './utils';
 
 describe('times', () => {
   test('times', () => {
@@ -102,3 +102,15 @@ describe('areArraysEqual', () => {
     expect(areArraysEqual(arrayA, arrayB)).toBe(false)
   });
 });
+
+describe('stringToBoolean', () => {
+  test.each([
+    ['', undefined],
+    ['true', true],
+    ['false', false],
+    ['null', null],
+    ['sadsad', undefined],
+  ])('stringToBoolean', (value, expected) => {
+    expect(stringToBoolean(value)).toEqual(expected);
+  })
+})

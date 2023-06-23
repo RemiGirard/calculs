@@ -1,25 +1,27 @@
 import Title from '../components/molecules/Title';
 import Button from '../components/molecules/buttons/Button';
+import GlobalConfigInput from '../components/molecules/inputs/GlobalConfigInput';
+import { ConfigWrapper } from './Config.style';
+import colors from '../colors.json';
+import dictionaryTyped from '../dictionary.json';
+import Helper from '../components/molecules/Helper';
 
-const Config = ({title, setStateGenerateExercices, config, setConfig}: any) => {
+const dictionary:any = dictionaryTyped;
 
-    const handleChange = (e:any, key:any) => {
-      const { name, value } = e.target;
-      const keys = key.split('.');
-      let newConfig = { ...config };
-      let current = newConfig;
-      for (let i = 0; i < keys.length - 1; i++) {
-        current = current[keys[i]];
-      }
-      current[keys[keys.length - 1]] = value;
+const Config = ({title, config, setConfig, pageGenerateExercices}: any) => {
+
+    const handleChange = (value:any, key:any) => {
+      let newConfig = structuredClone(config);
+      newConfig[key] = {...newConfig[key], value};
       setConfig(newConfig);
     };
   
     const renderFields = (config:any, key='') => {
       return Object.keys(config).map((fieldKey) => {
         const field = config[fieldKey];
-        const newKey = key ? `${key}.${fieldKey}` : fieldKey;
-        if (typeof field === 'object' && !Array.isArray(field)) {
+        const newKey = key ? key+'.'+fieldKey : fieldKey;
+        console.debug({fieldKey})
+        if (typeof field === 'object' && !field.hasOwnProperty('value')) {
           return (
             <div key={newKey}>
               <h4>{fieldKey}</h4>
@@ -28,14 +30,14 @@ const Config = ({title, setStateGenerateExercices, config, setConfig}: any) => {
           );
         } else {
           return (
-            <div key={newKey}>
-              <label>{fieldKey}:</label>
-              <input
-                type={typeof field === 'number' ? 'number' : 'text'}
-                name={newKey}
-                value={field}
-                onChange={(e) => handleChange(e, newKey)}
-              />
+            <div key={newKey} style={{display: 'flex'}}>
+              <div style={{marginRight: '15px'}}>{newKey}</div>
+              <GlobalConfigInput value={field.value} setValue={(newValue:any)=>handleChange(newValue, newKey)} type={field.type} />
+              {
+                dictionary.helper.globalConfig[fieldKey]
+                  ? <Helper text={dictionary.helper.globalConfig[fieldKey] ?? ''} />
+                  : null
+              }
             </div>
           );
         }
@@ -43,10 +45,13 @@ const Config = ({title, setStateGenerateExercices, config, setConfig}: any) => {
     };
   
     return (
-      <div>
-        <Title>Configuration</Title>
+      <ConfigWrapper>
+        <div style={{position: 'absolute', right: '2%', top: '1%'}}>
+          <button onClick={pageGenerateExercices} style={{fontFamily: 'inherit', fontSize: '100%', backgroundColor: 'transparent', color: colors.text.globalConfig, border: 'none', padding: 0}}>exit</button>
+        </div>
+        <Title>{title}</Title>
         {renderFields(config)}
-      </div>
+      </ConfigWrapper>
     );
 };
 

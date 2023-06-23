@@ -38,7 +38,7 @@ export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: 
     color: ${colors.text.light};
     font-size: 1em;
     > select {
-      background: none !important;;
+      background: none !important;
       font-family: arial-rounded-mt-bold;
       margin: 0;
       font-size: 1em;

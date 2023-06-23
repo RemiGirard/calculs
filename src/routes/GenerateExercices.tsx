@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Input from "../components/molecules/inputs/Input";
 import ColumnInput from "../components/molecules/inputs/ColumnInput";
 import ColumnCloseCross from "../components/molecules/ColumnCloseCross";
-import BigActionButton from "../components/molecules/buttons/BigActionButton";
+import { BigActionButton } from "./GenerateExercices.style";
 import useGenerator from "../hooks/useGenerator";
 import {
   GenerateExercicesWrapper,
@@ -27,10 +27,11 @@ import Game from "./Game";
 import { getBodyRatio } from "../utils/utils";
 import { Exercice } from "./Exercice.type";
 import useScrollBar from "../hooks/useScrollBar";
+import Gear from "../assets/Gear";
 
 const isDevEnv:boolean = (process.env.NODE_ENV === 'development');
 
-const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) => {
+const GenerateExercices = ({title, pageGame, pageConfig, setExercices, config}: any) => {
   const defaultExercice:ExerciceConfig = {
     questionTime: isDevEnv ? 5 : 180,
     answerTime: isDevEnv ? 5 : 60,
@@ -178,6 +179,19 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
       <Title $titleLength={title.length}>
         {title}
       </Title>
+        <BigActionButton
+          $color={colors.blueShades[4]}
+          $colorHover={colors.blueShades[5]}
+          $textColor={'black'}
+          onClick={(e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            pageConfig();
+          }}
+          style={{width: '7%', height: '70%'}}
+          > 
+          <div style={{width: '40%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+            <Gear />
+          </div>
+        </BigActionButton> 
     </TopBar>
     <ExercicesConfigWrapper ref={exercicesWindowRef}>
       <div ref={exercicesRef} onScroll={scrollEvent}>
@@ -300,27 +314,27 @@ const GenerateExercices = ({title, setGameStarted, setExercices, config}: any) =
     </ExercicesConfigWrapper>
     <div style={{margin: '1%', width: '98%', height: '10%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
       <BigActionButton
-        color={colors.blueShades[4]}
-        colorHover={colors.blueShades[5]}
-        textColor={'black'}
+        $color={colors.blueShades[4]}
+        $colorHover={colors.blueShades[5]}
+        $textColor={'black'}
         onClick={addExercice}
         style={{width: '10%', height: '100%'}}
       > 
         +
       </BigActionButton> 
       <BigActionButton
-        color={colors.greenShade[1]}
-        colorHover={colors.blueShades[5]}
-        textColor={'black'}
+        $color={colors.greenShade[1]}
+        $colorHover={colors.greenShade[2]}
+        $textColor={'black'}
         onClick={(e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-          setGameStarted();
+          pageGame();
         }}
         style={{width: '10%', height: '100%'}}
       > 
         <div
           style={{width: '20%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}
         >
-          {<Play />}
+          <Play />
         </div>
       </BigActionButton> 
     </div>

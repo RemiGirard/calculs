@@ -10,7 +10,7 @@ import { EquationInterface } from './Exercice.type';
 
 const dictionary:any = dictionaryTyped;
 
-const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, startingLevel = 0}: any) => {
+const Game = ({exercices, pageGameOver = ()=>{}, config, startTimers = true, startingLevel = 0}: any) => {
   const [currLevel, setCurrLevel] = useState(startingLevel);
   const [showAnswer, setShowAnswer] = useState(startTimers ? false : true);
 
@@ -35,7 +35,7 @@ const Game = ({exercices, setGameOver = ()=>{}, config, startTimers = true, star
       setAnswerTimeStarted(false);
       if(currLevel >= (exercices.length -1)){
           // all exercices are over
-          setGameOver()
+          pageGameOver()
       } else {
           setCurrLevel(currLevel+1);
           handleReStartQuestionTime();

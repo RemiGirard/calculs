@@ -15,6 +15,10 @@ export const TopBar = styled.div`
   height: 10%;
   margin: 1%;
   margin-top: 0%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Title = styled.div<{$titleLength: number}>`
@@ -158,5 +162,18 @@ export const ColumnsConfigWrapper = styled.div`
     &:hover {
       background-color: ${colors.blueShades[3]};
     }
+  }
+`;
+
+export const BigActionButton = styled.div<{$textColor?: string, $color?: string, $textColorHover?: string, $colorHover?: string}>`
+  color: ${({$textColor})=>$textColor ?? 'white'};
+  background-color: ${({$color})=>$color ?? 'green'};
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4em;
+  &:hover {
+    background-color: ${({$colorHover})=>$colorHover ?? 'green'};
   }
 `;

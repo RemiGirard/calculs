@@ -14,13 +14,13 @@ const isDevEnv: boolean = (process.env.NODE_ENV === 'development');
 
 const Calcul = () => {
   const [currState, setCurrState] = useState<PageName>('generateExercices');
-  const setStateConfig = () => setCurrState('config');
-  const setStateGenerateExercices = () => setCurrState('generateExercices');
-  const setGameStarted = () => setCurrState('started');
-  const setGameOver = () => setCurrState('finish');
+  const pageConfig = () => setCurrState('config');
+  const pageGenerateExercices = () => setCurrState('generateExercices');
+  const pageGame = () => setCurrState('started');
+  const pageGameOver = () => setCurrState('finish');
 
-  const [config, setConfig] = useState<ConfigInterface>({
-    displayLetterId: true,
+  const [config, setConfig] = useState<any>({
+    displayLetterId: {value: true, type: 'boolean'},
   });
 
   const [exercices, setExercices] = useState<Exercice[]>([]);
@@ -32,7 +32,7 @@ const Calcul = () => {
         <Config
           title={dictionary.titles.config}
           {...{
-            setStateGenerateExercices,
+            pageGenerateExercices,
             config,
             setConfig,
           }}
@@ -42,7 +42,8 @@ const Calcul = () => {
         <GenerateExercices
           title={dictionary.titles.generateExercices}
           {...{
-            setGameStarted,
+            pageGame,
+            pageConfig,
             setExercices,
             config,
           }}
@@ -52,7 +53,7 @@ const Calcul = () => {
         <Game
           {...{
             exercices,
-            setGameOver,
+            pageGameOver,
             config,
           }}
         />

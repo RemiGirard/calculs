@@ -56,3 +56,16 @@ export const areArraysEqual = (arr1: any[], arr2: any[]) => {
 
   return true;
 }
+
+export const stringToBoolean = (value: string): boolean | null | undefined=> {
+  switch(value){
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    case 'null':
+      return null;
+    default:
+      return undefined;
+  }
+}
