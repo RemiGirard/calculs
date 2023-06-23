@@ -10,7 +10,7 @@ const GlobalConfigInput = ({type='text', value, setValue, options = []}: any) =>
                 <input value={value} onChange={setValue}/>
             </Case>
             <Case value={'boolean'}>
-                <select onChange={({target}) => setValue(stringToBoolean(target.value))} 
+                <select value={value} onChange={({target}) => setValue(stringToBoolean(target.value))} 
                     style={{backgroundColor: 'transparent', color: 'inherit', background: 'none !important'}}
                     >
                     <option value={'null'}>null</option>

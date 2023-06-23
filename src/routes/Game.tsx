@@ -138,7 +138,7 @@ const Game = ({exercices, pageGameOver = ()=>{}, config, startTimers = true, sta
               key={index}
               equation={equation}
               equationIndexExercice={equationIndexExercice}
-              displayLetterId={config.displayLetterId}
+              displayLetterId={config.displayLetterId.value}
               showAnswer={showAnswer}
               updateParentTextSize={updateParentTextSize}
               columnSizes={tableSizes[columnIndex]}

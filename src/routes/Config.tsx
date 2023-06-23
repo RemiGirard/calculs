@@ -19,7 +19,6 @@ const Config = ({title, config, setConfig, pageGenerateExercices}: any) => {
       return Object.keys(config).map((fieldKey) => {
         const field = config[fieldKey];
         const newKey = key ? key+'.'+fieldKey : fieldKey;
-        console.debug({fieldKey})
         if (typeof field === 'object' && !field.hasOwnProperty('value')) {
           return (
             <div key={newKey}>

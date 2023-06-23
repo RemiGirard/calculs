@@ -22,6 +22,7 @@ const Calcul = () => {
   const [config, setConfig] = useState<any>({
     displayLetterId: {value: true, type: 'boolean'},
   });
+  console.debug({config})
 
   const [exercices, setExercices] = useState<Exercice[]>([]);
   const numberOfCalcul = exercices.reduce((acc, exercice) => acc + exercice.columns[0].length, 0);
