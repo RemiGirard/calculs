@@ -173,6 +173,7 @@ export const BigActionButton = styled.div<{$textColor?: string, $color?: string,
   justify-content: center;
   align-items: center;
   font-size: 4em;
+  cursor: pointer;
   &:hover {
     background-color: ${({$colorHover})=>$colorHover ?? 'green'};
   }

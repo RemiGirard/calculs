@@ -15,6 +15,7 @@
     "pink": "#f543e2",
     "green": "#0cd00c",
     "globalConfig": "#009900",
+    "globalConfigHover": "#00bb00",
     "equationIdentifierColor": "#0a4663",
     "answerColor": "#00ff06"
   },

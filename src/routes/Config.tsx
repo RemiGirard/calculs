@@ -1,13 +1,12 @@
 import Title from '../components/molecules/Title';
 import Button from '../components/molecules/buttons/Button';
 import GlobalConfigInput from '../components/molecules/inputs/GlobalConfigInput';
-import { ConfigWrapper } from './Config.style';
+import { ConfigWrapper, ExitButton } from './Config.style';
 import colors from '../colors.json';
 import dictionaryTyped from '../dictionary.json';
 import Helper from '../components/molecules/Helper';
 
 const dictionary:any = dictionaryTyped;
-
 const Config = ({title, config, setConfig, pageGenerateExercices}: any) => {
 
     const handleChange = (value:any, key:any) => {
@@ -47,7 +46,7 @@ const Config = ({title, config, setConfig, pageGenerateExercices}: any) => {
     return (
       <ConfigWrapper>
         <div style={{position: 'absolute', right: '2%', top: '1%'}}>
-          <button onClick={pageGenerateExercices} style={{fontFamily: 'inherit', fontSize: '100%', backgroundColor: 'transparent', color: colors.text.globalConfig, border: 'none', padding: 0}}>exit</button>
+          <ExitButton onClick={pageGenerateExercices}>exit</ExitButton>
         </div>
         <Title>{title}</Title>
         {renderFields(config)}

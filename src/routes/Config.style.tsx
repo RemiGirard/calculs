@@ -9,3 +9,16 @@ export const ConfigWrapper = styled.div`
     flex-direction: column;
     align-items: center;
 `;
+
+export const ExitButton = styled.button`
+    font-family: inherit;
+    font-size: 100%;
+    background-color: transparent;
+    color: ${colors.text.globalConfig};
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    &:hover {
+        color: ${colors.text.globalConfigHover}
+    }
+`;
