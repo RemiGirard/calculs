@@ -188,7 +188,7 @@ const GenerateExercices = ({title, pageGame, pageConfig, setExercices, config}: 
           }}
           style={{width: '7%', height: '70%'}}
           > 
-          <div style={{width: '40%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+          <div style={{width: '30%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
             <Gear />
           </div>
         </BigActionButton> 

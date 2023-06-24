@@ -9,11 +9,12 @@ import GameOver from './routes/GameOver';
 import { PageName, ConfigInterface, ExerciceConfig } from './routes/ExerciceConfig.types';
 import { Exercice } from './routes/Exercice.type';
 import dictionary from './dictionary.json';
+import Interactive from './routes/Interactive';
 
 const isDevEnv: boolean = (process.env.NODE_ENV === 'development');
 
 const Calcul = () => {
-  const [currState, setCurrState] = useState<PageName>('generateExercices');
+  const [currState, setCurrState] = useState<PageName>('interactive');
   const pageConfig = () => setCurrState('config');
   const pageGenerateExercices = () => setCurrState('generateExercices');
   const pageGame = () => setCurrState('started');
@@ -22,7 +23,6 @@ const Calcul = () => {
   const [config, setConfig] = useState<any>({
     displayLetterId: {value: true, type: 'boolean'},
   });
-  console.debug({config})
 
   const [exercices, setExercices] = useState<Exercice[]>([]);
   const numberOfCalcul = exercices.reduce((acc, exercice) => acc + exercice.columns[0].length, 0);
@@ -63,6 +63,11 @@ const Calcul = () => {
         <GameOver
           title={dictionary.titles.gameover}
           {...{ numberOfCalcul }}
+        />
+      </Case>
+      <Case value={'interactive'}>
+        <Interactive
+          {...{  }}
         />
       </Case>
     </Switch>
