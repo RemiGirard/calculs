@@ -31,77 +31,49 @@ const Interactive = () => {
   const photoRef = useRef(null);
   const screenshotRef = useRef(null);
   const heatmapContainerRef = useRef(null);
-  const stripRef = useRef(null);
   const [picture, setPicture] = useState('');
   const [ocrText, setOcrText] = useState('');
   const [predictionsToDisplay, setPredictionsToDisplay] = useState([]);
   const detectionModel = useRef<any>(null);
   const recognitionModel = useRef<any>(null);
-  const tensorImage = useRef(null);
   const loopIsRunning = useRef(false);
   const crops = useRef([]);
 
   // console.debug({cocoSsd});
+  tf.engine().startScope()
 
-  const saveModelInIndexDB =  async () => {
+  const loadModel = async ({modelRef, indexddbAdress, modelFile}: any) => {
+    try{
+      modelRef.current = await tf.loadGraphModel('indexeddb://' + indexddbAdress);
+      // console.debug('loaded from db');
+    } catch (error) {
+      const modelToSave = await tf.loadGraphModel(modelFile);
+      await modelToSave.save('indexeddb://' + indexddbAdress);
 
-    if(false){
-      // check if it's already saved
-      const savedModel = await tf.loadLayersModel('indexeddb://coco-ssd');
-      console.log({savedModel});
+      modelRef.current = await tf.loadGraphModel('indexeddb://' + indexddbAdress);
+      // console.debug('loaded from file then from db');
     }
-
-    if(isDevEnv){
-      console.debug('loading')
-      const modelToSave = await tf.loadGraphModel('/src/models/db_mobilenet_v2/model.json');
-      await modelToSave.save('indexeddb://my-model');
-      detectionModel.current = modelToSave;
-      console.debug({modelToSave})
-
-      recognitionModel.current = await tf.loadGraphModel('/src/models/crnn_mobilenet_v2/model.json');
-    }
-    
-
-
-
   }
 
-  saveModelInIndexDB();
+  const saveAndLoadModelInIndexDB =  async () => {
+      await loadModel({
+        modelRef: detectionModel,
+        indexddbAdress: 'detection-model',
+        modelFile: '/src/models/db_mobilenet_v2/model.json',
+      });
 
-  // const testTf = async() => {
-  //   saveModelInIndexDB();
-  //   // await import('@tensorflow-models/coco-ssd');
-  //   // const img = document.getElementById('img');
+    await loadModel({
+      modelRef: recognitionModel,
+      indexddbAdress: 'recognition-model',
+      modelFile: '/src/models/crnn_mobilenet_v2/model.json',
+    });
+  }
 
-  //   // Load the model.
-  //   tf.backend();
-  //   // const model = await cocoSsd.load();
-  //   const savedModel = await tf.loadGraphModel('indexeddb://coco-ssd');
-  //     console.log({savedModel});
-  //   let model:any = undefined;
-  //   await savedModel.load().then((loadedModel) => {
-  //     model = loadedModel;
-  //   });
+  saveAndLoadModelInIndexDB();
 
-  //   const imageData:ImageData|undefined = await imageDataFromSource(dog);
-  //   // Classify the image.
-  //   console.debug({imageData: imageData});
-  //   if(imageData !== undefined){
-
-  //     // const predictions = await model.detect(imageData);
-  //     const predictions = await model.detect(imageData)
-
-  //     console.log('Predictions: ');
-  //     console.log(predictions);
-  //     setPredictionsToDisplay(predictions)
-  //   }
-  // }
 
   useEffect(() => {
     getVideo();
-    
-    // testTf();
-
   }, [videoRef]);
 
   const getVideo = () => {
@@ -133,51 +105,8 @@ const Interactive = () => {
   };
 
   const takePhoto = async () => {
-    let photo:any = photoRef.current;
-    // let strip:any = stripRef.current;
-
-    // console.warn(strip);
-
-    const data = photo.toDataURL("image/jpeg");
-
-    // console.warn(data);
-    // const link = document.createElement("a");
-    // link.href = data;
-    // link.setAttribute("download", "myWebcam");
-    // link.innerHTML = `<img src='${data}' alt='thumbnail'/>`;
-    setPicture(data);
-    // strip.insertBefore(link, strip.firstChild);
-    const cameraImageData:ImageData|undefined = await imageDataFromSource(data);
-    if(cameraImageData !== undefined){
-      // const model = await cocoSsd.load();
-      // const predictions = await model.detect(cameraImageData);
-      
-      // console.log('Predictions: ');
-      // console.log(predictions);
-      // setPredictionsToDisplay(predictions)
-    }
+    setPicture(photoRef.current?.toDataURL("image/jpeg"));
   };
-
-
-  // using tesseract
-  // const getText = async () => {
-  //   const worker = await createWorker({
-  //     langPath: 'test',
-  //     logger: m => console.log(m)
-  //   });
-    
-  
-  //   (async () => {
-  //     await worker.load();
-  //     await worker.loadLanguage('eng');
-  //     await worker.initialize('eng');
-  //     const { data: { text } } = await worker.recognize(picture);
-  //     console.log(text);
-  //     setOcrText(text);
-  //     await worker.terminate();
-  //   })();
-  // }
-  // ;
 
 
   const getImageTensorForRecognitionModel = (
@@ -215,7 +144,11 @@ const Interactive = () => {
     const tensor = tf.concat(list);
     let mean = tf.scalar(255 * 0.694);
     let std = tf.scalar(255 * 0.298);
-    return tensor.sub(mean).div(std);
+
+    const output = tensor.sub(mean).div(std);
+    tf.dispose(mean);
+    tf.dispose(std);
+    return output;
   };
 
  const getImageTensorForDetectionModel = (
@@ -232,9 +165,9 @@ const Interactive = () => {
   };
 
 
-  function clamp(number: number, size: number) {
+  const clamp = (number: number, size: number) => {
     return Math.max(0, Math.min(number, size));
-  }
+  };
 
   const transformBoundingBox = (
     contour: any,
@@ -293,17 +226,18 @@ const Interactive = () => {
   };
 
   const getText = async () => {
-    console.debug({detectionModel});
+    crops.current = [];
+    // console.debug({detectionModel});
 
     const tensor = getImageTensorForDetectionModel(screenshotRef.current, [512,512]);
-    console.debug({tensor})
+    // console.debug({tensor})
 
     let prediction = await detectionModel.current.execute(tensor);
     prediction = tf.squeeze(prediction, 0);
     if (Array.isArray(prediction)) {
       prediction = prediction[0];
     }
-    console.debug({prediction})
+    // console.debug({prediction})
     await tf.browser.toPixels(prediction, heatmapContainerRef.current);
     const boundingBoxes = await extractBoundingBoxesFromHeatmap([512,512]);
     let boundingBoxesPixel = boundingBoxes.map((boundingBoxe) => {
@@ -322,29 +256,14 @@ const Interactive = () => {
 
     await setPredictionsToDisplay(boundingBoxesPixel);
 
-    console.debug({boundingBoxesPixel});
-    // { boundingBoxes:[
-    //   [ 118.58333333333334, 86.125 ],
-    //   [ 190.79166666666666, 86.125 ],
-    //   [ 190.79166666666666, 104.65625 ],
-    //   [ 118.58333333333334, 104.65625 ],
-    // ]}
-    console.debug({screenshotRef});
-    // {screenshotRef: <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD…" alt="screenshot">}
-    
     let tensors = []
-    boundingBoxesPixel.forEach(boundingBox => {
-      // @todo build tensor
-      console.debug({boundingBox});
-      // const [left, top, right, bottom] = boundingBox.bbox;
-      const left = Math.round(boundingBox.bbox[0][0])-10;
-      const top = Math.round(boundingBox.bbox[0][1])-20;
-      const right = Math.round(boundingBox.bbox[2][0])+10;
+    boundingBoxesPixel.forEach((boundingBox, index) => {
+
+      const left = Math.round(boundingBox.bbox[0][0]);
+      const top = Math.round(boundingBox.bbox[0][1]);
+      const right = Math.round(boundingBox.bbox[2][0]);
       const bottom = Math.round(boundingBox.bbox[2][1]);
-      console.debug({left})
-      console.debug({top})
-      console.debug({right})
-      console.debug({bottom})
+
       // Calculate width and height of the bounding box
       const width = right - left;
       const height = bottom - top;
@@ -353,7 +272,7 @@ const Interactive = () => {
       const imageElement = screenshotRef.current;
 
       // Create a canvas to draw the sub-image
-      const canvas = document.getElementById('canvas');
+      let canvas = document.getElementById('canvas'+index);
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d');
@@ -362,11 +281,10 @@ const Interactive = () => {
       ctx.drawImage(imageElement, left, top, width, height, 0, 0, width, height);
 
       crops.current = [...crops.current, ctx];
-      console.debug({ctx});
       // Get the pixel data of the sub-image
-      // console.debug({width})
-      // console.debug({height})
+
       const subImageData = ctx.getImageData(0, 0, width, height);
+      // console.debug({subImageData});
 
       // Convert sub-image data to tensor
       const tensor = tf.tensor(subImageData.data, [Math.round(height), Math.round(width), 4], 'int32'); // Assuming 4 channels (RGBA)
@@ -378,14 +296,21 @@ const Interactive = () => {
     });
 
     const VOCAB = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~°£€¥¢฿àâéèêëîïôùûüçÀÂÉÈÊËÎÏÔÙÛÜÇ";
-    for(const tensor of tensors){
+
       try {
+
+        let tensor = getImageTensorForRecognitionModel(crops.current.map(crop => crop.canvas), [32, 128]);
+
         let predictions = await recognitionModel.current.executeAsync(tensor);
-        console.debug({ predictions });
+        tf.dispose(tensor);
+
         let probabilities = tf.softmax(predictions, -1);
-        let bestPath = tf.unstack(tf.argMax(probabilities, -1), 0);
+        let prob2 = tf.argMax(probabilities, -1);
+        let bestPath = tf.unstack(prob2, 0);
+        tf.dispose(probabilities)
         let blank = 126;
         let words = [];
+
         for (const sequence of bestPath) {
           let collapsed = "";
           let added = false;
@@ -401,15 +326,16 @@ const Interactive = () => {
           }
           words.push(collapsed);
         }
-        console.debug(words);
+        tf.dispose(tensor);
+        tf.dispose(predictions);
+        tf.dispose(probabilities);
+        tf.dispose(prob2);
+        tf.dispose(bestPath);
+        console.log(words)
       } catch (error) {
         console.error("Prediction error:", error);
       }
-    }
-    
-    
   }
-  console.debug({predictionsToDisplay});
 
   const loopTakeAndGetText = async () => {
     loopIsRunning.current = true;
@@ -454,9 +380,28 @@ const Interactive = () => {
         heatmapContainerRef
       </canvas>
       testcanvas
-      <canvas id={'canvas'}>
+        <canvas id={'canvas'}>
 
       </canvas>
+        <canvas id={'canvas0'} />
+        <canvas id={'canvas1'} />
+        <canvas id={'canvas2'} />
+        <canvas id={'canvas3'} />
+        <canvas id={'canvas4'} />
+        <canvas id={'canvas5'} />
+        <canvas id={'canvas6'} />
+        <canvas id={'canvas7'} />
+        <canvas id={'canvas8'} />
+        <canvas id={'canvas9'} />
+        <canvas id={'canvas10'} />
+        <canvas id={'canvas11'} />
+        <canvas id={'canvas12'} />
+        <canvas id={'canvas13'} />
+        <canvas id={'canvas14'} />
+        <canvas id={'canvas15'} />
+        <canvas id={'canvas16'} />
+        <canvas id={'canvas17'} />
+        <canvas id={'canvas18'} />
       <div>
         crops
         <RenderCrops crops={crops.current} />
@@ -464,20 +409,5 @@ const Interactive = () => {
       </div>
     </InteractiveWrapper>
 };
-
-async function imageDataFromSource (source:any) {
-  const image = Object.assign(new Image(), { src: source });
-  await new Promise(resolve => image.addEventListener('load', () => resolve('')));
-  const context = Object.assign(document.createElement('canvas'), {
-     width: image.width,
-     height: image.height
-  }).getContext('2d');
-  if(context !== null){
-
-    context.imageSmoothingEnabled = false;
-    context.drawImage(image, 0, 0);
-    return context.getImageData(0, 0, image.width, image.height);
-  }
-}
 
 export default Interactive;
