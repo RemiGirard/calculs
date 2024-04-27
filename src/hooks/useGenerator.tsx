@@ -3,10 +3,14 @@ import { useReducer } from "react";
 import { Column, EquationInterface, Exercice, ModuloResult } from "../routes/Exercice.type";
 import { ColumnConfig, ExerciceConfig, NumberConfig } from "../routes/ExerciceConfig.types";
 import { getRandomItemOfArray, shuffleArray } from "../utils/utils";
+import {eachDigitAdditionIsInferiorToTen, eachDigitSoustractionIsPositive} from "../utils/number";
 
 export const mathFunctions = {
   addition:       (first:number, second:number):number => first + second,
+  additionWithoutCarry: (first:number, second:number):number => first + second,
+  soustraction: (first:number, second:number):number => first - second,
   positiveSoustraction:   (first:number, second:number):number => first - second,
+  positiveSoustractionWithoutCarry: (first:number, second:number):number => first - second,
   multiplication: (first:number, second:number):number => first + second,
   division:       (first:number, second:number):number => Number((first / second).toFixed(2)),
   intDivision:  (first:number, second:number):number => first / second,
@@ -107,9 +111,11 @@ export const generatePossibleEquations = (columnConfig: ColumnConfig):EquationIn
   const possibilities = combinePossibilities(elementPossibilities);
 
   let equations: EquationInterface[] = [];
-  const forbidNegativeResults = ['positiveSoustraction','division','intDivision','modulo'].includes(columnConfig.type);
+  const forbidNegativeResults = ['positiveSoustraction', 'positiveSoustractionWithoutCarry','division','intDivision','modulo'].includes(columnConfig.type);
   const forbidNonIntResults = ['intDivision'].includes(columnConfig.type);
   const forbidQuotientZeroResults = ['modulo'].includes(columnConfig.type);
+  const forbidAdditionCarry = ['additionWithoutCarry'].includes(columnConfig.type);
+  const forbidSoustractionCarry = ['soustractionWithoutCarry', 'positiveSoustractionWithoutCarry'].includes(columnConfig.type);
   
   possibilities.forEach((possibility) => {
     const possibleGaps = Object
@@ -129,7 +135,9 @@ export const generatePossibleEquations = (columnConfig: ColumnConfig):EquationIn
     if(
       (!forbidNegativeResults || (typeof equation.result !== 'number' || equation.result >=0) )
       && (!forbidNonIntResults ||(typeof equation.result !== 'number' || Number.isInteger(equation.result)))
-      && (!forbidQuotientZeroResults ||(typeof equation.result === 'number' || equation.result.quotient !== 0))
+      && (!forbidQuotientZeroResults || (typeof equation.result === 'number' || equation.result.quotient !== 0))
+      && (!forbidAdditionCarry || (typeof equation.result !== 'number' || eachDigitAdditionIsInferiorToTen(equation[1], equation[2])))
+      && (!forbidSoustractionCarry || (typeof equation.result !== 'number' || eachDigitSoustractionIsPositive(equation[1], equation[2])))
     ){
       equations.push(equation);
     }

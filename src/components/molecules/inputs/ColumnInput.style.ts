@@ -17,6 +17,7 @@ export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: 
   cursor: pointer;
   width: ${({$reducedWidth}) => $reducedWidth ? labelWidth.reduced : labelWidth.normal}%;
   min-height: 2em;
+  overflow: hidden;
   &:hover{
     background-color: ${colors.blueShades[4]};
   }
@@ -39,14 +40,14 @@ export const ColumnInputWrapper = styled.div<{$isFocus: boolean, $reducedWidth: 
     font-size: 1em;
     > select {
       background: none !important;
-      font-family: arial-rounded-mt-bold;
+      font-family: arial-rounded-mt-bold,serif;
       margin: 0;
       font-size: 1em;
       border: none;
       color: ${colors.text.light};
       > * {
         background-color: ${colors.blueShades[2]};
-        font-family: arial-rounded-mt-bold;
+        font-family: arial-rounded-mt-bold,serif;
         border: none;
         color: ${colors.text.light};
       }

@@ -1,5 +1,11 @@
 import { describe, test, expect } from 'vitest';
-import { biggestNumberFirst, getRandomDivisibleNumbersInRange, getRandomInt, integerToLetter } from './number';
+import {
+  biggestNumberFirst,
+  eachDigitAdditionIsInferiorToTen, eachDigitSoustractionIsPositive,
+  getRandomDivisibleNumbersInRange,
+  getRandomInt,
+  integerToLetter
+} from './number';
 
 describe('getRandomInt', () => {
     test('positive', () => {
@@ -69,6 +75,49 @@ describe('integerToLetter', () => {
     [27, ' '],
   ])('returns the correct letter for integer %p', (integer, expected) => {
     const result = integerToLetter(integer);
+    expect(result).toBe(expected);
+  });
+});
+
+describe('eachDigitAdditionIsInferiorToTen', () => {
+  test.each([
+    [0, 0, true],
+    [1, 2, true],
+    [5, 4, true],
+    [10, 10, true],
+    [34, 65, true],
+    [5, 5, false],
+    [9, 9, false],
+    [15, 15, false],
+    [15, 7, false],
+    [34, 75, false],
+    [123456789, 876543210, true],
+    [123456789, 123456789, false],
+    [987654321, 123456789, false],
+  ])('returns the correct boolean for %p and %p', (first, second, expected) => {
+    const result = eachDigitAdditionIsInferiorToTen(first, second);
+    expect(result).toBe(expected);
+  });
+});
+
+describe('eachDigitSoustractionIsPositive', () => {
+  test.each([
+    [0, 0, true],
+    [1, 2, false],
+    [5, 4, true],
+    [5, 5, true],
+    [10, 10, true],
+    [34, 65, false],
+    [15, 15, true],
+    [15, 7, false],
+    [34, 75, false],
+    [123456789, 876543210, false],
+    [123456789, 123456789, true],
+    [123456789, 12345678, true],
+    [123456789, 12365678, false],
+    [987654321, 123456789, false],
+  ])('returns the correct boolean for %p and %p', (first, second, expected) => {
+    const result = eachDigitSoustractionIsPositive(first, second);
     expect(result).toBe(expected);
   });
 });

@@ -59,10 +59,24 @@ export const integerToLetter = (integer:number) => {
   }
   
   // Convert the integer to a character code by adding 64
-  var charCode = integer + 96;
+  const charCode = integer + 96;
   
   // Convert the character code to a letter
-  var letter = String.fromCharCode(charCode);
-  
-  return letter;
+  return String.fromCharCode(charCode);
 }
+
+export const eachDigitAdditionIsInferiorToTen = (number1: number, number2: number): boolean => {
+  const numberMaxLength = Math.max(number1, number2).toString().length;
+  const [number1String, number2String] = [number1, number2].map((number) => number.toString().padStart(numberMaxLength, '0'));
+  return number1String.split('').every((digit, index) => {
+    return parseInt(digit) + parseInt(number2String[index]) < 10;
+  });
+};
+
+export const eachDigitSoustractionIsPositive = (number1: number, number2: number): boolean => {
+  const numberMaxLength = Math.max(number1, number2).toString().length;
+  const [number1String, number2String] = [number1, number2].map((number) => number.toString().padStart(numberMaxLength, '0'));
+  return number1String.split('').every((digit, index) => {
+    return parseInt(digit) - parseInt(number2String[index]) >= 0;
+  });
+};
