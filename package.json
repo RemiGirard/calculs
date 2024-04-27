@@ -20,9 +20,11 @@
     "@tensorflow/tfjs-backend-webgl": "^3.21.0",
     "@tensorflow/tfjs-core": "^3.21.0",
     "@types/lodash": "^4.14.194",
+    "Layer": "link:konva/lib/Layer",
     "randomcolor": "^0.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-mindee-js": "^1.6.1",
     "styled-components": "6.0.0-rc.1",
     "tesseract.js": "^4.1.1"
   },

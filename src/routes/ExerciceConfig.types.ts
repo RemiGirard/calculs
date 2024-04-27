@@ -1,6 +1,6 @@
 import { Exercice } from "./Exercice.type";
 
-export type PageName = 'config'|'generateExercices'|'started'|'finish'|'interactive';
+export type PageName = 'config'|'generateExercices'|'started'|'finish'|'interactive'|'tensorflow'|'tensorflowV2';
 
 export type MinMax = {min: number, max: number}
 

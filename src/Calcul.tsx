@@ -10,11 +10,13 @@ import { PageName, ConfigInterface, ExerciceConfig } from './routes/ExerciceConf
 import { Exercice } from './routes/Exercice.type';
 import dictionary from './dictionary.json';
 import Interactive from './routes/Interactive';
+import Tensorflow from "./routes/Tensorflow";
+import TensorflowV2 from "./routes/TensorflowV2";
 
 const isDevEnv: boolean = (process.env.NODE_ENV === 'development');
 
 const Calcul = () => {
-  const [currState, setCurrState] = useState<PageName>('interactive');
+  const [currState, setCurrState] = useState<PageName>('tensorflowV2');
   const pageConfig = () => setCurrState('config');
   const pageGenerateExercices = () => setCurrState('generateExercices');
   const pageGame = () => setCurrState('started');
@@ -69,6 +71,12 @@ const Calcul = () => {
         <Interactive
           {...{  }}
         />
+      </Case>
+      <Case value={'tensorflow'}>
+          <Tensorflow />
+      </Case>
+      <Case value={'tensorflowV2'}>
+        <TensorflowV2 />
       </Case>
     </Switch>
   );

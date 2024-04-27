@@ -239,6 +239,8 @@ const Interactive = () => {
     }
     // console.debug({prediction})
     await tf.browser.toPixels(prediction, heatmapContainerRef.current);
+
+
     const boundingBoxes = await extractBoundingBoxesFromHeatmap([512,512]);
     let boundingBoxesPixel = boundingBoxes.map((boundingBoxe) => {
       return {bbox: boundingBoxe.coordinates.map((([x,y]) => [x*320, y*240]))};
