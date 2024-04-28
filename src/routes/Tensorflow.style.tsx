@@ -13,4 +13,5 @@ export const ImagesContainer = styled.div`
 export const ImageContainer = styled.div<{hidden?: boolean}>`
   flex-direction: column;
   display: ${props => props.hidden ? 'hidden' : 'flex'};
+  align-items: center;
 `

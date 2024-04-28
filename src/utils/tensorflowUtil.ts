@@ -1,7 +1,8 @@
 import * as tf from "@tensorflow/tfjs";
 import {browser, GraphModel, scalar, squeeze} from "@tensorflow/tfjs";
 import {MutableRefObject, RefObject} from "react";
-import cv from "@techstark/opencv-js";
+import cv, {del} from "@techstark/opencv-js";
+import * as dgram from "node:dgram";
 
 const indexeddb = 'indexeddb://';
 
@@ -64,9 +65,8 @@ export const getHeatMapFromImage = async (image: HTMLImageElement, detectionMode
     }
     console.debug({width: image.width, height: image.height})
 
-
     await browser.toPixels(prediction, heatmap);
-}
+};
 
 export const takePicture = async (canvas: HTMLCanvasElement) => {
     return canvas.toDataURL('image/jpeg')
@@ -74,7 +74,7 @@ export const takePicture = async (canvas: HTMLCanvasElement) => {
 
 const getImageTensorForDetectionModel = (
   imageObject: HTMLImageElement,
-  size: [number, number]
+  size: [number, number],
 ) => {
     let tensor = browser
       .fromPixels(imageObject)
@@ -170,56 +170,55 @@ const transformBoundingBox = (
     };
 };
 
-export const nextStep = async (boundingBoxesPixel, screenshotRef, crops, recognitionModel) => {
+export const getWords = async (
+  boundingBoxesPixel: {x: number, y: number, width: number, height: number}[],
+  imageElement: HTMLCanvasElement,
+  crops: MutableRefObject<(GPUCanvasContext | CanvasRenderingContext2D)[]>,
+  ) => {
     let tensors = []
     boundingBoxesPixel.forEach((boundingBox, index) => {
 
-        const left = Math.round(boundingBox.bbox[0][0]);
-        const top = Math.round(boundingBox.bbox[0][1]);
-        const right = Math.round(boundingBox.bbox[2][0]);
-        const bottom = Math.round(boundingBox.bbox[2][1]);
-
-        // Calculate width and height of the bounding box
-        const width = right - left;
-        const height = bottom - top;
-
-        // Get the image element from the ref
-        const imageElement = screenshotRef.current;
 
         // Create a canvas to draw the sub-image
-        let canvas: HTMLCanvasElement| null = document.getElementById('canvas'+index);
+        const canvas = document.getElementById('canvas'+index) as HTMLCanvasElement;
         if(canvas === null) return;
-        canvas.style.width = width+'px';
-        canvas.style.height = height+'px';
+        canvas.style.width = boundingBox.width+'px';
+        canvas.style.height = boundingBox.height+'px';
         const ctx = canvas.getContext('2d');
 
         if(ctx === null) return;
         // Draw the sub-image onto the canvas
 
-        ctx.drawImage(imageElement, left, top, width, height, 0, 0, width, height);
+        ctx.drawImage(imageElement, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height, 0, 0, boundingBox.width, boundingBox.height);
 
         crops.current = [...crops.current, ctx];
         // Get the pixel data of the sub-image
 
-        const subImageData = ctx.getImageData(0, 0, width, height);
+        const subImageData = ctx.getImageData(0, 0, boundingBox.width, boundingBox.height);
         // console.debug({subImageData});
 
         // Convert sub-image data to tensor
-        const tensor = tf.tensor(subImageData.data, [Math.round(height), Math.round(width), 4], 'int32'); // Assuming 4 channels (RGBA)
+        const tensor = tf.tensor(subImageData.data, [boundingBox.height, boundingBox.width, 4], 'int32'); // Assuming 4 channels (RGBA)
         const rgbTensor = tensor.slice([0, 0, 0], [-1, -1, 3]);
         const resizedTensor = tf.image.resizeBilinear(rgbTensor, [32, 128]);
         // Add batch dimension to the tensor
         const batchedTensor = tf.expandDims(resizedTensor, 0);
         tensors.push(batchedTensor);
     });
+    return tensors;
 
+}
+
+export const recognizeWords = async (
+  recognitionModel: GraphModel,
+  crops: any[],
+) => {
     const VOCAB = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~°£€¥¢฿àâéèêëîïôùûüçÀÂÉÈÊËÎÏÔÙÛÜÇ";
 
     try {
+        let tensor = getImageTensorForRecognitionModel(crops, [32, 128]);
 
-        let tensor = getImageTensorForRecognitionModel(crops.current.map(crop => crop.canvas), [32, 128]);
-
-        let predictions = await recognitionModel.current.executeAsync(tensor);
+        let predictions = await recognitionModel.executeAsync(tensor);
         tf.dispose(tensor);
 
         let probabilities = tf.softmax(predictions, -1);
@@ -254,8 +253,68 @@ export const nextStep = async (boundingBoxesPixel, screenshotRef, crops, recogni
     } catch (error) {
         console.error("Prediction error:", error);
     }
+}
+
+export const getImagesFromBoundingBoxes = (boundingBoxes: any[], imageElement: HTMLImageElement) => {
+    let crops: HTMLImageElement[] = [];
+    boundingBoxes.forEach((boundingBox, index) => {
+        const canvas = document.createElement('canvas');
+        const image = document.createElement('img');
+        canvas.width = boundingBox.width;
+        canvas.height = boundingBox.height;
+        const ctx = canvas.getContext('2d');
+        if(ctx === null) return;
+        ctx.drawImage(imageElement, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height, 0, 0, boundingBox.width, boundingBox.height);
+        const data = canvas.toDataURL('image/jpeg');
+        image.setAttribute('src', data);
+        crops.push(image);
+    });
+    return crops;
 
 }
+
+export const recognizeWordFromTensor = async (tensor, recognitionModel: GraphModel) => {
+    const VOCAB = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~°£€¥¢฿àâéèêëîïôùûüçÀÂÉÈÊËÎÏÔÙÛÜÇ";
+
+    try {
+
+        let predictions = await recognitionModel.executeAsync(tensor);
+        tf.dispose(tensor);
+
+        let probabilities = tf.softmax(predictions, -1);
+        let prob2 = tf.argMax(probabilities, -1);
+        let bestPath = tf.unstack(prob2, 0);
+        tf.dispose(probabilities)
+        let blank = 126;
+        let words = [];
+
+        for (const sequence of bestPath) {
+            let collapsed = "";
+            let added = false;
+            const values = sequence.dataSync();
+            const arr = Array.from(values);
+            for (const k of arr) {
+                if (k === blank) {
+                    added = false;
+                } else if (k !== blank && added === false) {
+                    collapsed += VOCAB[k];
+                    added = true;
+                }
+            }
+            words.push(collapsed);
+        }
+        tf.dispose(tensor);
+        tf.dispose(predictions);
+        tf.dispose(probabilities);
+        tf.dispose(prob2);
+        tf.dispose(bestPath);
+        console.log(words)
+        return words;
+    } catch (error) {
+        console.error("Prediction error:", error);
+    }
+}
+
 
 const getImageTensorForRecognitionModel = (
   crops: HTMLImageElement[],

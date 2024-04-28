@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {
     drawVideoToCanvas,
     getBoundingBoxesPixel,
-    getHeatMapFromImage,
+    getHeatMapFromImage, getWords,
     loadModel, nextStep,
     playVideo,
     takePicture
@@ -129,7 +129,9 @@ export default () => {
             </ImageContainer>
             <ImageContainer>
                 <button onClick={()=> {
-                    nextStep(boundingBoxes, pictureRef, crops, recognitionModel)
+                    if(pictureRef.current === null || recognitionModel.current === null) return;
+                    const words = getWords(boundingBoxes, pictureRef.current, crops, recognitionModel.current);
+                    console.debug({words})
                 }}>recognize</button>
             </ImageContainer>
             <ImageContainer>
