@@ -1,0 +1,6 @@
+services:
+  calculs:
+    volumes:
+      - ./:/srv/app/
+      - ./node_modules/:/srv/app/node_modules
+    command: pnpm dev
