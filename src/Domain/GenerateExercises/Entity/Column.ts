@@ -1,5 +1,5 @@
-import EquationConfig from "@/Domain/EquationConfig.ts";
-import Equation from "@/Domain/Equation.ts";
+import EquationConfig from "@/Domain/GenerateExercises/Entity/EquationConfig.ts";
+import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
 
 export default class Column {
     public config: EquationConfig;

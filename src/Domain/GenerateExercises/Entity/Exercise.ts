@@ -1,4 +1,4 @@
-import Column from "@/Domain/Column.ts";
+import Column from "@/Domain/GenerateExercises/Entity/Column.ts";
 
 export default class Exercise {
     questionTime: number;

@@ -1,4 +1,4 @@
-import Exercise from "@/Domain/Exercise.ts";
+import Exercise from "@/Domain/GenerateExercises/Entity/Exercise.ts";
 import {setState} from "@/utils/react.ts";
 
 export default (exerciseList: Exercise[], setExerciseList: setState<Exercise[]>, index: number) => {

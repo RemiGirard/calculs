@@ -1,9 +1,9 @@
 export const PageNames = [
     'generateExercises',
-    'game',
-    'finish',
+    // 'game',
+    // 'finish',
     'config',
-    'pageNotFound',
+    // 'pageNotFound',
 ] as const;
 
 export type PageName = typeof PageNames[number];

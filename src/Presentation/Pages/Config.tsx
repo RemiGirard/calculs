@@ -1,5 +1,5 @@
 import {useRouter} from "@/Presentation/Router.tsx";
-import Config from "@/Domain/Config.ts";
+import Config from "@/Domain/GenerateExercises/Entity/Config.ts";
 
 export default ({config}: {config: Config, setConfig: (newConfig: Config) => void}) => {
     const {navigate} = useRouter();

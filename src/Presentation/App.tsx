@@ -1,11 +1,11 @@
-import Config from "@/Domain/Config.ts";
+import Config from "@/Domain/GenerateExercises/Entity/Config.ts";
 import {Route, RouterProvider} from "@/Presentation/Router.tsx";
 import ConfigContext from "@/Presentation/ConfigContext.ts";
 import {useState} from "react";
 import GenerateExercises from "@/Presentation/Pages/GenerateExercises.tsx";
 import ConfigPage from "@/Presentation/Pages/Config.tsx";
-import Exercise from "@/Domain/Exercise.ts";
-import defaultExerciseList from "@/Domain/defaultExerciseList.ts";
+import Exercise from "@/Domain/GenerateExercises/Entity/Exercise.ts";
+import defaultExerciseList from "@/Domain/GenerateExercises/Entity/defaultExerciseList.ts";
 
 export default () => {
   const [config, setConfig] = useState(new Config());

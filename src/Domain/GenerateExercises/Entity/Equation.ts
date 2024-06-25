@@ -1,6 +1,6 @@
-import {CalcType} from "@/Domain/CalcTypes.ts";
+import {CalcType} from "@/Domain/GenerateExercises/Entity/CalcTypes.ts";
 import {getRandomItemOfArray} from "@/utils/utils.ts";
-import MathFunctions from "@/Domain/MathFunctions.ts";
+import MathFunctions from "@/Domain/GenerateExercises/Entity/MathFunctions.ts";
 
 export type ModuloResult = {quotient: number, remainder:number};
 

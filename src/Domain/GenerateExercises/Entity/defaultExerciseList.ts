@@ -1,7 +1,7 @@
-import Exercise from "@/Domain/Exercise.ts";
+import Exercise from "@/Domain/GenerateExercises/Entity/Exercise.ts";
 import isDevEnv from "@/Domain/isDevEnv.ts";
-import Column from "@/Domain/Column.ts";
-import EquationConfig from "@/Domain/EquationConfig.ts";
+import Column from "@/Domain/GenerateExercises/Entity/Column.ts";
+import EquationConfig from "@/Domain/GenerateExercises/Entity/EquationConfig.ts";
 
 const defaultConfig = new EquationConfig({
     type: 'addition',

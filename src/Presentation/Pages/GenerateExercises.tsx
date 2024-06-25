@@ -1,4 +1,4 @@
-import Exercise from "@/Domain/Exercise.ts";
+import Exercise from "@/Domain/GenerateExercises/Entity/Exercise.ts";
 
 import {useRouter} from "@/Presentation/Router.tsx";
 import TopBarWrapper from "@/Presentation/Organisms/TopBarWrapper.ts";

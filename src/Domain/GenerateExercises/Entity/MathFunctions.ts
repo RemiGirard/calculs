@@ -1,4 +1,4 @@
-import {ModuloResult} from "@/Domain/Equation.ts";
+import {ModuloResult} from "@/Domain/GenerateExercises/Entity/Equation.ts";
 
 export default {
     addition:       (first:number, second:number):number => first + second,
