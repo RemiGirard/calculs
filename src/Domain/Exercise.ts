@@ -14,4 +14,12 @@ export default class Exercise {
         this.answerTime = answerTime;
         this.columnList = columnList;
     }
+
+    getCopy(): Exercise {
+        return new Exercise({
+            questionTime: this.questionTime,
+            answerTime: this.answerTime,
+            columnList: this.columnList.map(column => column.getCopy()),
+        });
+    }
 }

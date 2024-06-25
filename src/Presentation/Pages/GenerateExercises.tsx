@@ -8,14 +8,24 @@ import GenerateExercisesWrapper from "@/Presentation/Pages/GenerateExercisesWrap
 import ExercisesTableWrapper from "@/Presentation/Organisms/ExercisesTableWrapper.ts";
 import BottomButtonsWrapper from "@/Presentation/Organisms/BottomButtonsWrapper.ts";
 import Gear from "@/Presentation/assets/icons/Gear.tsx";
+import addExercise from "@/Domain/GenerateExercises/UseCase/addExercise.ts";
+import deleteExercice from "@/Domain/GenerateExercises/UseCase/deleteExercice.ts";
+import {setState} from "@/utils/react.ts";
 
 type componentProps = {
     exerciseList: Exercise[],
-    setExerciseList: (newExerciseList: Exercise[]) => void,
+    setExerciseList: setState<Exercise[]>,
 };
 
-export default ({exerciseList}: componentProps) => {
+export default ({exerciseList, setExerciseList}: componentProps) => {
     const navigate = useRouter().navigate;
+
+    const clickAddExerciseButton = () => addExercise(exerciseList, setExerciseList);
+    const clickPlayButton = () => {
+        console.log('click play');
+    };
+
+    const clickGearButton = () => navigate('config');
 
     return (<GenerateExercisesWrapper>
         <TopBarWrapper>
@@ -23,7 +33,7 @@ export default ({exerciseList}: componentProps) => {
                 <h1>S.M.U.C</h1>
             </TitleWrapper>
             <TopButtonsWrapper>
-                <button onClick={() => navigate('config')}>
+                <button onClick={clickGearButton}>
                     <Gear />
                 </button>
             </TopButtonsWrapper>
@@ -31,6 +41,10 @@ export default ({exerciseList}: componentProps) => {
         <ExercisesTableWrapper>
             <div>
                 {exerciseList.map((exercise, index) => {
+                    // @ts-ignore not used yet
+                    const deleteThisExercise = () => {
+                        deleteExercice(exerciseList, setExerciseList, index);
+                    }
                     return (<div key={index}>{JSON.stringify(exercise)}</div>);
                 })}
             </div>
@@ -39,8 +53,8 @@ export default ({exerciseList}: componentProps) => {
             </aside>
         </ExercisesTableWrapper>
         <BottomButtonsWrapper>
-            <button onClick={() => {}}>+</button>
-            <button onClick={() => {}}>play</button>
+            <button onClick={clickAddExerciseButton}>+</button>
+            <button onClick={clickPlayButton}>play</button>
         </BottomButtonsWrapper>
     </GenerateExercisesWrapper>);
 };

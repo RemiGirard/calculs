@@ -22,4 +22,13 @@ export default class EquationConfig {
         this.second = second;
         this.possibleGaps = possibleGaps;
     }
+
+    getCopy(): EquationConfig {
+        return new EquationConfig({
+            type: this.type,
+            first: this.first,
+            second: this.second,
+            possibleGaps: {...this.possibleGaps},
+        });
+    }
 };

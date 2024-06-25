@@ -8,4 +8,10 @@ export default class Column {
     constructor({config}:{config: EquationConfig}) {
         this.config = config;
     }
+
+    getCopy(): Column {
+        return new Column({
+            config: this.config.getCopy(),
+        });
+    }
 }
