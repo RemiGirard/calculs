@@ -5,11 +5,12 @@ import {useState} from "react";
 import GenerateExercices from "@/Presentation/Pages/GenerateExercices.tsx";
 import ConfigPage from "@/Presentation/Pages/Config.tsx";
 import Exercise from "@/Domain/Exercice.ts";
+import defaultExerciseList from "@/Domain/defaultExerciseList.ts";
 
 export default () => {
   const [config, setConfig] = useState(new Config());
 
-  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [exercises, setExercises] = useState<Exercise[]>(defaultExerciseList);
   // const numberOfCalcul = exercises.reduce((acc, exercise) => acc + exercise.columns[0].length, 0);
 
   return (<ConfigContext.Provider value={config}>

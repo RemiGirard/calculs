@@ -10,9 +10,10 @@ html, body, #root, #root > div{
 body{
   font-family: arial-rounded-mt-bold, serif;
   font-size: 16px;
+  color: #fff;
 }
 
 @font-face {
   font-family: 'arial-rounded-mt-bold';
-  src: local('arial-rounded-mt-bold'), url(./assets/ARLRDBD.ttf) format('truetype');
+  src: local('arial-rounded-mt-bold'), url(Presentation/assets/ARLRDBD.ttf) format('truetype');
 }
