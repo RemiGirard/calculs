@@ -2,9 +2,9 @@ import Config from "@/Domain/Config.ts";
 import {Route, RouterProvider} from "@/Presentation/Router.tsx";
 import ConfigContext from "@/Presentation/ConfigContext.ts";
 import {useState} from "react";
-import GenerateExercices from "@/Presentation/Pages/GenerateExercices.tsx";
+import GenerateExercises from "@/Presentation/Pages/GenerateExercises.tsx";
 import ConfigPage from "@/Presentation/Pages/Config.tsx";
-import Exercise from "@/Domain/Exercice.ts";
+import Exercise from "@/Domain/Exercise.ts";
 import defaultExerciseList from "@/Domain/defaultExerciseList.ts";
 
 export default () => {
@@ -15,7 +15,7 @@ export default () => {
 
   return (<ConfigContext.Provider value={config}>
     <RouterProvider>
-      <Route name={'generateExercises'} render={() => <GenerateExercices exercices={exercises} setExercices={setExercises}/>} />
+      <Route name={'generateExercises'} render={() => <GenerateExercises exerciseList={exercises} setExerciseList={setExercises}/>} />
       <Route name={'config'} render={() => <ConfigPage config={config} setConfig={setConfig}/>} />
     </RouterProvider>
   </ConfigContext.Provider>);

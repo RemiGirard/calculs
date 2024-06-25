@@ -1,23 +1,23 @@
-import Exercise from "@/Domain/Exercice.ts";
+import Exercise from "@/Domain/Exercise.ts";
 
 import {useRouter} from "@/Presentation/Router.tsx";
 import TopBarWrapper from "@/Presentation/Organisms/TopBarWrapper.ts";
 import TitleWrapper from "@/Presentation/Molecules/TitleWrapper.ts";
 import TopButtonsWrapper from "@/Presentation/Molecules/TopButtonsWrapper.ts";
-import GenerateExercicesWrapper from "@/Presentation/Pages/GenerateExercicesWrapper.ts";
-import ExercicesTableWrapper from "@/Presentation/Organisms/ExercicesTableWrapper.ts";
+import GenerateExercisesWrapper from "@/Presentation/Pages/GenerateExercisesWrapper.ts";
+import ExercisesTableWrapper from "@/Presentation/Organisms/ExercisesTableWrapper.ts";
 import BottomButtonsWrapper from "@/Presentation/Organisms/BottomButtonsWrapper.ts";
 import Gear from "@/Presentation/assets/icons/Gear.tsx";
 
 type componentProps = {
-    exercices: Exercise[],
-    setExercices: (newExercices: Exercise[]) => void,
+    exerciseList: Exercise[],
+    setExerciseList: (newExerciseList: Exercise[]) => void,
 };
 
-export default ({exercices}: componentProps) => {
+export default ({exerciseList}: componentProps) => {
     const navigate = useRouter().navigate;
-    
-    return (<GenerateExercicesWrapper>
+
+    return (<GenerateExercisesWrapper>
         <TopBarWrapper>
             <TitleWrapper>
                 <h1>S.M.U.C</h1>
@@ -28,19 +28,19 @@ export default ({exercices}: componentProps) => {
                 </button>
             </TopButtonsWrapper>
         </TopBarWrapper>
-        <ExercicesTableWrapper>
+        <ExercisesTableWrapper>
             <div>
-                {exercices.map((exercice, index) => {
-                    return (<div key={index}>{JSON.stringify(exercice)}</div>);
+                {exerciseList.map((exercise, index) => {
+                    return (<div key={index}>{JSON.stringify(exercise)}</div>);
                 })}
             </div>
             <aside>
                 <div />
             </aside>
-        </ExercicesTableWrapper>
+        </ExercisesTableWrapper>
         <BottomButtonsWrapper>
             <button onClick={() => {}}>+</button>
             <button onClick={() => {}}>play</button>
         </BottomButtonsWrapper>
-    </GenerateExercicesWrapper>);
+    </GenerateExercisesWrapper>);
 };

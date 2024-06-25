@@ -1,4 +1,4 @@
-import Exercise from "@/Domain/Exercice.ts";
+import Exercise from "@/Domain/Exercise.ts";
 import isDevEnv from "@/Domain/isDevEnv.ts";
 import Column from "@/Domain/Column.ts";
 import EquationConfig from "@/Domain/EquationConfig.ts";
