@@ -76,7 +76,7 @@ export const eachDigitAdditionIsInferiorToTen = (numbers: number[]): boolean => 
   });
 };
 
-export const eachDigitSoustractionIsPositive = (number1: number, number2: number): boolean => {
+export const eachDigitSubtractionIsPositive = (number1: number, number2: number): boolean => {
   const numberMaxLength = Math.max(number1, number2).toString().length;
   const [number1String, number2String] = [number1, number2].map((number) => number.toString().padStart(numberMaxLength, '0'));
   return number1String.split('').every((digit, index) => {

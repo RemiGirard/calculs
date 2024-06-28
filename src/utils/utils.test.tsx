@@ -1,15 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import { areArraysEqual, filterObject, getRandomItemOfArray, shuffleArray, stringToBoolean, times } from './utils';
-
-describe('times', () => {
-  test('times', () => {
-    let a = 0;
-    times(1, () => a++);
-    expect(a).toEqual(1);
-    times(10, () => a++);
-    expect(a).toEqual(11);
-  });
-});
+import { areArraysEqual, filterObject, getRandomItemOfArray, shuffleArray, stringToBoolean } from './utils';
+import times from "@/utils/times.ts";
 
 describe('filterObject', () => {
   test.each([
@@ -78,13 +69,16 @@ describe('shuffleArray', () => {
     // Check if some shuffled arrays are different from the original array
     if(newSet.length >= 2){
       let shuffledArrays: unknown[][] = [];
+      // chances of having the same shuffled arrays
+      // 2 elements or more, shuffle 50 times : min 2!^50 = 10^30
+      // 10 elements or more, shuffle 2 times : min 10!^4 = 10^26
       times(
-        newSet.length < 10 ? 10 : 2,
+        newSet.length < 10 ? 100 : 4,
         () => shuffledArrays.push(shuffleArray(originalArray))
-        )
+      )
       expect(
         shuffledArrays.some((array) => !areArraysEqual(array, originalArray))
-        ).true
+      ).true
     }
   });
 });

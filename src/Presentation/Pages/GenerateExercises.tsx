@@ -10,11 +10,14 @@ import BottomButtonsWrapper from "@/Presentation/Organisms/BottomButtonsWrapper.
 import Gear from "@/Presentation/assets/icons/Gear.tsx";
 import addExercise from "@/Domain/GenerateExercises/UseCase/addExercise.ts";
 import deleteExercice from "@/Domain/GenerateExercises/UseCase/deleteExercice.ts";
-import {setState} from "@/utils/react.ts";
+import {setter} from "@/utils/Type/setter.ts";
+import ExerciseConfig from "@/Presentation/Organisms/ExerciseConfig.tsx";
+import updateExercise from "@/Domain/GenerateExercises/UseCase/updateExercise.ts";
+import dictionary from "@/Presentation/dictionary.ts";
 
 type componentProps = {
     exerciseList: Exercise[],
-    setExerciseList: setState<Exercise[]>,
+    setExerciseList: setter<Exercise[]>,
 };
 
 export default ({exerciseList, setExerciseList}: componentProps) => {
@@ -27,10 +30,12 @@ export default ({exerciseList, setExerciseList}: componentProps) => {
 
     const clickGearButton = () => navigate('config');
 
+    const canDeleteExercise = exerciseList.length > 1;
+
     return (<GenerateExercisesWrapper>
         <TopBarWrapper>
             <TitleWrapper>
-                <h1>S.M.U.C</h1>
+                <h1>{dictionary.title}</h1>
             </TitleWrapper>
             <TopButtonsWrapper>
                 <button onClick={clickGearButton}>
@@ -41,11 +46,20 @@ export default ({exerciseList, setExerciseList}: componentProps) => {
         <ExercisesTableWrapper>
             <div>
                 {exerciseList.map((exercise, index) => {
-                    // @ts-ignore not used yet
                     const deleteThisExercise = () => {
                         deleteExercice(exerciseList, setExerciseList, index);
                     }
-                    return (<div key={index}>{JSON.stringify(exercise)}</div>);
+
+                    const setExercise:setter<Exercise> = (newExercise: Exercise) => {
+                        updateExercise(exerciseList, setExerciseList, index, newExercise);
+                    }
+                    return (<ExerciseConfig
+                      key={index}
+                      exercise={exercise}
+                      setExercise={setExercise}
+                      deleteExercise={deleteThisExercise}
+                      canBeDeleted={canDeleteExercise}
+                    />);
                 })}
             </div>
             <aside>

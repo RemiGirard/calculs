@@ -1,5 +1,6 @@
-import dictionary from "@/Domain/dictionary.ts";
+import dictionaries from "@/Domain/dictionaries.ts";
 
 const language = 'french';
 
-export default dictionary[language] as typeof dictionary['french'];
+const dictionary: typeof dictionaries.french = dictionaries[language];
+export default dictionary;

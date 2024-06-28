@@ -1,7 +1,3 @@
-export const times = (n: number, callback: () => {}) => {
-  for (let i = 0; i < n; i++) callback();
-}
-
 export const filterObject = <T>(
   object: {[key: string]: T},
   filter: (key: string, val: T) => boolean
@@ -58,5 +54,5 @@ export const areArraysEqual = (arr1: unknown[], arr2: unknown[]) => {
 }
 
 export const stringToBoolean = (value: string): boolean=> {
-  return value === 'true';
+  return ['true', '1'].includes(value);
 }

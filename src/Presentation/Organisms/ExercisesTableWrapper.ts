@@ -9,8 +9,7 @@ export default styled.div`
         width: 98%;
         margin-right: 0.5%;
         >div {
-            height: 100px;
-            background-color: ${colors.secondary};
+            background-color: ${colors.mainAlternate};
             &:nth-child(odd) {
                 background-color: ${colors.main};
             }

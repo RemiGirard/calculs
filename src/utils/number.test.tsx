@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import {
   biggestNumberFirst,
-  eachDigitAdditionIsInferiorToTen, eachDigitSoustractionIsPositive,
+  eachDigitAdditionIsInferiorToTen, eachDigitSubtractionIsPositive,
   getRandomDivisibleNumbersInRange,
   getRandomInt,
   integerToLetter
@@ -100,7 +100,7 @@ describe('eachDigitAdditionIsInferiorToTen', () => {
   });
 });
 
-describe('eachDigitSoustractionIsPositive', () => {
+describe('eachDigitSubtractionIsPositive', () => {
   test.each([
     [0, 0, true],
     [1, 2, false],
@@ -117,7 +117,7 @@ describe('eachDigitSoustractionIsPositive', () => {
     [123456789, 12365678, false],
     [987654321, 123456789, false],
   ])('returns the correct boolean for %p and %p', (first, second, expected) => {
-    const result = eachDigitSoustractionIsPositive(first, second);
+    const result = eachDigitSubtractionIsPositive(first, second);
     expect(result).toBe(expected);
   });
 });

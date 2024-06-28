@@ -1,3 +1,9 @@
+export const numberRangeTypes = [
+  'fix',
+  'range',
+  'rangeTens',
+] as const;
+
 export type NumberRange = {
     type: 'fix',
     fix: number,
@@ -7,4 +13,4 @@ export type NumberRange = {
     max: number,
 };
 
-export type NumberRangeTypes = NumberRange['type'];
+export type NumberRangeType = NumberRange['type'];
