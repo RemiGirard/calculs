@@ -1,7 +1,1 @@
-export default<T> (parent:T[][], child:T[]) => {
-    return parent.some((parentElement) => {
-        return parentElement.every((parentSubElement, index) => {
-            return parentSubElement === child[index];
-        });
-    });
-}
+export default <T> (parent:T[][], child:T[]) => parent.some((parentElement) => parentElement.every((parentSubElement, index) => parentSubElement === child[index]));

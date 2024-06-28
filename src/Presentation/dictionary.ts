@@ -1,4 +1,4 @@
-import dictionaries from "@/Domain/dictionaries.ts";
+import dictionaries from '@/Domain/dictionaries.ts';
 
 const language = 'french';
 

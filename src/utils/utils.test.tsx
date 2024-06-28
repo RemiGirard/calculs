@@ -1,6 +1,8 @@
 import { describe, test, expect } from 'vitest';
-import { areArraysEqual, filterObject, getRandomItemOfArray, shuffleArray, stringToBoolean } from './utils';
-import times from "@/utils/times.ts";
+import {
+  areArraysEqual, filterObject, getRandomItemOfArray, shuffleArray, stringToBoolean,
+} from './utils';
+import times from '@/utils/times.ts';
 
 describe('filterObject', () => {
   test.each([
@@ -67,18 +69,18 @@ describe('shuffleArray', () => {
     const newSet = [...new Set(originalArray)];
 
     // Check if some shuffled arrays are different from the original array
-    if(newSet.length >= 2){
-      let shuffledArrays: unknown[][] = [];
+    if (newSet.length >= 2) {
+      const shuffledArrays: unknown[][] = [];
       // chances of having the same shuffled arrays
       // 2 elements or more, shuffle 50 times : min 2!^50 = 10^30
       // 10 elements or more, shuffle 2 times : min 10!^4 = 10^26
       times(
         newSet.length < 10 ? 100 : 4,
-        () => shuffledArrays.push(shuffleArray(originalArray))
-      )
+        () => shuffledArrays.push(shuffleArray(originalArray)),
+      );
       expect(
-        shuffledArrays.some((array) => !areArraysEqual(array, originalArray))
-      ).true
+        shuffledArrays.some((array) => !areArraysEqual(array, originalArray)),
+      ).true;
     }
   });
 });
@@ -90,7 +92,7 @@ describe('areArraysEqual', () => {
     [[0, 1, 2, 3], [0, 1, 2, 3]],
     [['a', 'b', 'c', 'd'], ['a', 'b', 'c', 'd']],
   ])('areArraysEqual', (arrayA, arrayB) => {
-    expect(areArraysEqual(arrayA, arrayB)).toBe(true)
+    expect(areArraysEqual(arrayA, arrayB)).toBe(true);
   });
 
   test.each([
@@ -99,7 +101,7 @@ describe('areArraysEqual', () => {
     [[0, 1, 3], [0, 1, 2, 3]],
     [['a', 'b', 'c', 'd', 'e'], ['a', 'b', 'c', 'd']],
   ])('areArraysEqual', (arrayA, arrayB) => {
-    expect(areArraysEqual(arrayA, arrayB)).toBe(false)
+    expect(areArraysEqual(arrayA, arrayB)).toBe(false);
   });
 });
 
@@ -112,5 +114,5 @@ describe('stringToBoolean', () => {
     ['sadsad', false],
   ])('stringToBoolean', (value, expected) => {
     expect(stringToBoolean(value)).toEqual(expected);
-  })
-})
+  });
+});

@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import colors from "@/Presentation/colors.ts";
+import colors from '@/Presentation/colors.ts';
 
 export default styled.div`
     width: 100%;

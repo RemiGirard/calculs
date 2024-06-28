@@ -1,19 +1,25 @@
-import {CalcType} from "@/Domain/GenerateExercises/Entity/CalcTypes.ts";
-import {getRandomItemOfArray} from "@/utils/utils.ts";
-import MathFunctions from "@/Domain/GenerateExercises/Entity/MathFunctions.ts";
+import { CalcType } from '@/Domain/GenerateExercises/Entity/CalcTypes.ts';
+import { getRandomItemOfArray } from '@/utils/utils.ts';
+import MathFunctions from '@/Domain/GenerateExercises/Entity/MathFunctions.ts';
 
 export type ModuloResult = {quotient: number, remainder:number};
 
 export type ElementId = '1'|'2'|'result';
 
 export default class Equation {
-    1: number;
-    operation: CalcType;
-    2: number;
-    result?: number|ModuloResult;
-    gap?: ElementId;
+  1: number;
 
-    constructor({first, second, operation, possibleGaps, calculateResult = true, gap}:{
+  operation: CalcType;
+
+  2: number;
+
+  result?: number|ModuloResult;
+
+  gap?: ElementId;
+
+  constructor({
+    first, second, operation, possibleGaps, calculateResult = true, gap,
+  }:{
         first: number,
         second: number,
         operation: CalcType,
@@ -21,35 +27,35 @@ export default class Equation {
         calculateResult?: boolean,
         gap?: ElementId,
     }) {
-        this[1] = first;
-        this[2] = second;
-        this.operation = operation;
-        if(possibleGaps) this.applyRandomGap(possibleGaps)
-        if(calculateResult) this.calculateResult();
-        if(gap) this.gap = gap;
-    }
+    this[1] = first;
+    this[2] = second;
+    this.operation = operation;
+    if (possibleGaps) this.applyRandomGap(possibleGaps);
+    if (calculateResult) this.calculateResult();
+    if (gap) this.gap = gap;
+  }
 
-    calculateResult() {
-        if(this.operation && this[1] && this[2]) {
-            this.result = MathFunctions[this.operation](this[1], this[2]);
-        }
+  calculateResult() {
+    if (this.operation && this[1] && this[2]) {
+      this.result = MathFunctions[this.operation](this[1], this[2]);
     }
+  }
 
-    applyRandomGap(possibleGaps: ElementId[]) {
-        this.gap = possibleGaps.length > 0 ? getRandomItemOfArray(possibleGaps) : 'result';
-    }
+  applyRandomGap(possibleGaps: ElementId[]) {
+    this.gap = possibleGaps.length > 0 ? getRandomItemOfArray(possibleGaps) : 'result';
+  }
 
-    getOperands(): [number, number] {
-        return [this[1], this[2]];
-    }
+  getOperands(): [number, number] {
+    return [this[1], this[2]];
+  }
 
-    getCopy(): Equation {
-        return new Equation({
-            first: this[1],
-            second: this[2],
-            operation: this.operation,
-            calculateResult: false,
-            gap: this.gap,
-        });
-    }
+  getCopy(): Equation {
+    return new Equation({
+      first: this[1],
+      second: this[2],
+      operation: this.operation,
+      calculateResult: false,
+      gap: this.gap,
+    });
+  }
 }

@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import colors from "@/Presentation/colors.ts";
+import colors from '@/Presentation/colors.ts';
 
 export const InputWrapper = styled.fieldset<{
   $hasUnit: boolean,
@@ -19,7 +19,7 @@ export const InputWrapper = styled.fieldset<{
     justify-content: center;
     align-items: flex-end;
     color: ${colors.category2};
-    font-size: ${({$labelSize}) => $labelSize > 10 ? 0.8 : 1}em;
+    font-size: ${({ $labelSize }) => ($labelSize > 10 ? 0.8 : 1)}em;
     cursor: pointer;
     width: 100%;
     height: 30%;
@@ -42,7 +42,7 @@ export const InputWrapper = styled.fieldset<{
     > input {
       width: 50%;
       height: 100%;
-      text-align: ${({$hasUnit = false}) => $hasUnit ? 'right' : 'center'};
+      text-align: ${({ $hasUnit = false }) => ($hasUnit ? 'right' : 'center')};
       border:none;
       background-image:none;
       background-color:transparent;
@@ -51,7 +51,7 @@ export const InputWrapper = styled.fieldset<{
       box-shadow: none;
       color: ${colors.mainText};
       font-size: 1.5em;
-      font-weight: ${({$isFocus}) => $isFocus ? 1000 : null};
+      font-weight: ${({ $isFocus }) => ($isFocus ? 1000 : null)};
       cursor: pointer;
       outline: none;
       &:focus{

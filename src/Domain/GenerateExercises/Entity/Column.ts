@@ -1,17 +1,18 @@
-import EquationConfig from "@/Domain/GenerateExercises/Entity/EquationConfig.ts";
-import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
+import EquationConfig from '@/Domain/GenerateExercises/Entity/EquationConfig.ts';
+import Equation from '@/Domain/GenerateExercises/Entity/Equation.ts';
 
 export default class Column {
-    public config: EquationConfig;
-    public equations: null|Equation[] = null;
+  public config: EquationConfig;
 
-    constructor({config}:{config: EquationConfig}) {
-        this.config = config;
-    }
+  public equations: null|Equation[] = null;
 
-    getCopy(): Column {
-        return new Column({
-            config: this.config.getCopy(),
-        });
-    }
+  constructor({ config }:{config: EquationConfig}) {
+    this.config = config;
+  }
+
+  getCopy(): Column {
+    return new Column({
+      config: this.config.getCopy(),
+    });
+  }
 }

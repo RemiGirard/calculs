@@ -1,5 +1,5 @@
-import {describe, expect, test} from "vitest";
-import times from "@/utils/times.ts";
+import { describe, expect, test } from 'vitest';
+import times from '@/utils/times.ts';
 
 describe('times', () => {
   test('times', () => {

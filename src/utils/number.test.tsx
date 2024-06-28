@@ -4,34 +4,34 @@ import {
   eachDigitAdditionIsInferiorToTen, eachDigitSubtractionIsPositive,
   getRandomDivisibleNumbersInRange,
   getRandomInt,
-  integerToLetter
+  integerToLetter,
 } from './number';
 
 describe('getRandomInt', () => {
-    test('positive', () => {
-        expect(getRandomInt(0, 10)).toBeGreaterThanOrEqual(0);
-        expect(getRandomInt(0, 10)).toBeLessThanOrEqual(10);
-    });
-    test.each([
-        [0, 10],
-        [0, 100],
-        [0, 100000],
-        [0, 10000000000000],
-        [-8, 1],
-        [-17, -3],
-        [1, 1],
-        [0, 0],
-    ])('should return a random integer', (min, max) => {
-        for(let i = 0; i < 10; i++) {
-            expect(getRandomInt(min, max)).toBeGreaterThanOrEqual(min);
-            expect(getRandomInt(min, max)).toBeLessThanOrEqual(max);
-        }
-    });
-    test('wrong parameters', () => {
-      expect(() => getRandomInt(10, 2)).throw();
-      expect(() => getRandomInt(10, -2)).throw();
-      expect(() => getRandomInt(-10, -20)).throw();
-    })
+  test('positive', () => {
+    expect(getRandomInt(0, 10)).toBeGreaterThanOrEqual(0);
+    expect(getRandomInt(0, 10)).toBeLessThanOrEqual(10);
+  });
+  test.each([
+    [0, 10],
+    [0, 100],
+    [0, 100000],
+    [0, 10000000000000],
+    [-8, 1],
+    [-17, -3],
+    [1, 1],
+    [0, 0],
+  ])('should return a random integer', (min, max) => {
+    for (let i = 0; i < 10; i++) {
+      expect(getRandomInt(min, max)).toBeGreaterThanOrEqual(min);
+      expect(getRandomInt(min, max)).toBeLessThanOrEqual(max);
+    }
+  });
+  test('wrong parameters', () => {
+    expect(() => getRandomInt(10, 2)).throw();
+    expect(() => getRandomInt(10, -2)).throw();
+    expect(() => getRandomInt(-10, -20)).throw();
+  });
 });
 
 describe('biggestNumberFirst', () => {
@@ -63,7 +63,6 @@ describe('getRandomDivisibleNumbersInRange', () => {
     expect(Number.isInteger(randomDivisor)).toBe(true);
   });
 });
-
 
 describe('integerToLetter', () => {
   test.each([

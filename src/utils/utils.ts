@@ -1,23 +1,16 @@
 export const filterObject = <T>(
   object: {[key: string]: T},
-  filter: (key: string, val: T) => boolean
-) => {
-  return Object
+  filter: (key: string, val: T) => boolean,
+) => Object
     .fromEntries(
       Object
-      .entries(object)
-      .filter(([key, val]) => filter(key, val))
-    )
-  ;
-}
+        .entries(object)
+        .filter(([key, val]) => filter(key, val)),
+    );
 
-export const getRandomItemOfArray = <T>(list: T[]): T => {
-  return list[Math.floor(Math.random()*list.length)];
-}
+export const getRandomItemOfArray = <T>(list: T[]): T => list[Math.floor(Math.random() * list.length)];
 
-export const getBodyRatio = () => {
-  return document.body.clientWidth/document.body.clientHeight;
-};
+export const getBodyRatio = () => document.body.clientWidth / document.body.clientHeight;
 
 export const shuffleArray = <T>(array: T[]) => {
   const newArray = structuredClone(array);
@@ -26,7 +19,7 @@ export const shuffleArray = <T>(array: T[]) => {
     [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
   return newArray;
-}
+};
 
 export const areArraysEqual = (arr1: unknown[], arr2: unknown[]) => {
   // Check if the arrays have the same length
@@ -51,8 +44,6 @@ export const areArraysEqual = (arr1: unknown[], arr2: unknown[]) => {
   }
 
   return true;
-}
+};
 
-export const stringToBoolean = (value: string): boolean=> {
-  return ['true', '1'].includes(value);
-}
+export const stringToBoolean = (value: string): boolean => ['true', '1'].includes(value);
