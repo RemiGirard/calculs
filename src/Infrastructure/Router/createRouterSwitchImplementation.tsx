@@ -11,7 +11,6 @@ export default <GenericPageName extends string>(...[partialConfig]: Parameters<c
   };
 
   function Renderer({ page, routes }:{page: GenericPageName, routes: RouteElementType<GenericPageName>[]}) {
-    // @ts-ignore, partial config is wrongly interpreted
     const notFoundRoute = routes.find((route) => route.props.name === partialConfig?.notFoundPage) ?? routes[0];
 
     const findRoute = (page: GenericPageName|undefined): RouteElementType<GenericPageName>|undefined => routes.find((route) => route.props.name === page);
@@ -30,7 +29,6 @@ export default <GenericPageName extends string>(...[partialConfig]: Parameters<c
 
   const Provider:React.FC<{children: RouteElementType<GenericPageName>[]}> = ({ children }) => {
     if (children.length === 0) throw new Error('Router must have at least one route');
-    // @ts-ignore, partial config is wrongly interpreted
     const [page, setPage] = useState<GenericPageName>(partialConfig.defaultPage ?? children[0].props.name);
     return (
       <RouterContext.Provider value={{ page, setPage }}>

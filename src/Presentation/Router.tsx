@@ -6,9 +6,8 @@ import createRouterSwitchImplementation from '@/Infrastructure/Router/createRout
 
 const createRouter: createRouterInterface<PageName> = createRouterSwitchImplementation<PageName>;
 
-export const Route: React.FC<{name: PageName, render: () => React.ReactElement}> = () =>
 // never rendered (use render props inside Router)
-  (<></>);
+export const Route: React.FC<{name: PageName, render: () => React.ReactElement}> = () =>(<></>);
 
 const Router = createRouter({
   defaultPage: 'generateExercises',

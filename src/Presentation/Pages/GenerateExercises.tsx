@@ -20,7 +20,7 @@ type componentProps = {
   setExerciseList: setter<Exercise[]>,
 };
 
-export default function ({ exerciseList, setExerciseList }: componentProps) {
+export default ({ exerciseList, setExerciseList }: componentProps) => {
   const { navigate } = useRouter();
 
   const clickAddExerciseButton = () => addExercise(exerciseList, setExerciseList);
@@ -32,14 +32,13 @@ export default function ({ exerciseList, setExerciseList }: componentProps) {
 
   const canDeleteExercise = exerciseList.length > 1;
 
-  return (
-    <GenerateExercisesWrapper>
+  return (<GenerateExercisesWrapper>
       <TopBarWrapper>
         <TitleWrapper>
           <h1>{dictionary.title}</h1>
         </TitleWrapper>
         <TopButtonsWrapper>
-          <button onClick={clickGearButton}>
+          <button onClick={clickGearButton} type="button" aria-label="Config">
             <Gear />
           </button>
         </TopButtonsWrapper>
@@ -56,7 +55,7 @@ export default function ({ exerciseList, setExerciseList }: componentProps) {
             };
             return (
               <ExerciseConfig
-                key={index}
+                key={exercise.uuid}
                 exercise={exercise}
                 setExercise={setExercise}
                 deleteExercise={deleteThisExercise}
@@ -70,9 +69,8 @@ export default function ({ exerciseList, setExerciseList }: componentProps) {
         </aside>
       </ExercisesTableWrapper>
       <BottomButtonsWrapper>
-        <button onClick={clickAddExerciseButton}>+</button>
-        <button onClick={clickPlayButton}>play</button>
+        <button onClick={clickAddExerciseButton} aria-label="add exercise" type="button">+</button>
+        <button onClick={clickPlayButton} aria-label="play" type="button">play</button>
       </BottomButtonsWrapper>
-    </GenerateExercisesWrapper>
-  );
-}
+    </GenerateExercisesWrapper>);
+};

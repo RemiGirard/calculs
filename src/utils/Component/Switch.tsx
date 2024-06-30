@@ -10,7 +10,7 @@ export interface CaseProps {
     children: ReactNode;
 }
 
-export const Case: FC<CaseProps> = ({}: CaseProps) => null;
+export const Case: FC<CaseProps> = () => null;
 
 export function Switch({ expression, children }: SwitchProps<unknown>): ReactElement {
   const child = children.find((child) => child.props.value === expression);

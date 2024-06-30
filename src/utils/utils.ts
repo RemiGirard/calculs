@@ -1,12 +1,11 @@
 export const filterObject = <T>(
   object: {[key: string]: T},
-  filter: (key: string, val: T) => boolean,
-) => Object
-    .fromEntries(
-      Object
-        .entries(object)
-        .filter(([key, val]) => filter(key, val)),
-    );
+  filter: (key: string, value: T) => boolean,
+) => Object.fromEntries(
+    Object
+      .entries(object)
+      .filter(([key, val]) => filter(key, val)),
+  );
 
 export const getRandomItemOfArray = <T>(list: T[]): T => list[Math.floor(Math.random() * list.length)];
 

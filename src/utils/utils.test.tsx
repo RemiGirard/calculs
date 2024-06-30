@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import {
   areArraysEqual, filterObject, getRandomItemOfArray, shuffleArray, stringToBoolean,
-} from './utils';
+} from './utils.ts';
 import times from '@/utils/times.ts';
 
 describe('filterObject', () => {
@@ -17,9 +17,9 @@ describe('filterObject', () => {
   test('test by type', () => {
     // [{ a: 1, b: { c: 2 }, d: 3 } as {[key: string]: number | {}}, (key:string, val: (number|{})) => typeof val === 'number', { a: 1, d: 3 }],
     const obj = { a: 1, b: { c: 2 }, d: 3 };
-    const filter = (_:string, val: (number|{})) => typeof val === 'number';
+    const filter = (_:string, val: (number|object)) => typeof val === 'number';
     const expected = { a: 1, d: 3 };
-    expect(filterObject<number | {}>(obj, filter)).toEqual(expected);
+    expect(filterObject<number | object>(obj, filter)).toEqual(expected);
   });
 });
 

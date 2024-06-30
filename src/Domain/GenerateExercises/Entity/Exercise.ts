@@ -9,6 +9,8 @@ export default class Exercise {
 
   columnList: Column[];
 
+  uuid: string;
+
   constructor({
     questionTime, answerTime, equationNumberPerColumn, columnList,
   }:{
@@ -21,6 +23,7 @@ export default class Exercise {
     this.answerTime = answerTime;
     this.equationNumberPerColumn = equationNumberPerColumn;
     this.columnList = columnList;
+    this.uuid = crypto.randomUUID();
   }
 
   getCopy(): Exercise {
