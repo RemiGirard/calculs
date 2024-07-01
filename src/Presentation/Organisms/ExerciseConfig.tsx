@@ -12,6 +12,8 @@ import InputGap from '@/Presentation/Molecules/Input/InputGap.tsx';
 import BottomInputTimeButtons from '@/Presentation/Molecules/BottomInputTimeButtons.tsx';
 import addExerciseColumn from '@/Domain/GenerateExercises/UseCase/addExerciseColumn.ts';
 import CrossExerciceConfig from '@/Presentation/Molecules/CrossExerciseConfig.tsx';
+import Column from "@/Domain/GenerateExercises/Entity/Column.ts";
+import deleteColumn from "@/Domain/GenerateExercises/UseCase/deleteColumn.ts";
 
 type componentProps = {
     exercise: Exercise;
@@ -41,6 +43,12 @@ export default function ({
       setExercise(exercise);
     });
   };
+
+  const setColumns = (newColumns: Column[]) => {
+    const newExercise = exercise.getCopy();
+    newExercise.columnList = newColumns;
+    setExercise(newExercise);
+  }
 
   return (
     <ExerciseConfigWrapper>
@@ -72,9 +80,13 @@ export default function ({
             updateEquationConfig(newConfig, index);
           };
 
+          const deleteColumnHandler = () => {
+            deleteColumn(exercise.columnList, setColumns, index);
+          }
+
           return (
             <ColumnConfigWrapper key={index}>
-              <CrossExerciceConfig onClick={() => console.log('click')} />
+              {exercise.columnList.length > 1 ? <CrossExerciceConfig onClick={deleteColumnHandler}/> : null}
               <InputColumnWrapper>
                 <label>{dictionary.inputLabel.type}</label>
                 <InputType value={column.config.type} setValue={(v) => updateConfig(v, 'type')} />
