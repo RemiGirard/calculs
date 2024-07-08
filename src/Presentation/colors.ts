@@ -1,10 +1,10 @@
 export default {
-  main: '#314EA9',
-  secondary: '#0C1952',
+  main: '#263c81',
+  secondary: '#0a1545',
   mainText: '#FFFFFF',
-  background: '#000419',
+  background: '#010727',
   mainHighlight: '#2952cf',
-  mainAlternate: '#203285',
+  mainAlternate: '#19286c',
   category1: '#0CCD0C',
   category2: '#F543E2',
 };

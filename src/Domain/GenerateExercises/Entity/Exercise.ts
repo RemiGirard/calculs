@@ -5,7 +5,7 @@ export default class Exercise {
 
   answerTime: number;
 
-  equationNumberPerColumn: number;
+  equationCountPerColumn: number;
 
   columnList: Column[];
 
@@ -16,12 +16,12 @@ export default class Exercise {
   }:{
         questionTime: Exercise['questionTime'],
         answerTime: Exercise['answerTime'],
-        equationNumberPerColumn: Exercise['equationNumberPerColumn'],
+        equationNumberPerColumn: Exercise['equationCountPerColumn'],
         columnList: Exercise['columnList'],
     }) {
     this.questionTime = questionTime;
     this.answerTime = answerTime;
-    this.equationNumberPerColumn = equationNumberPerColumn;
+    this.equationCountPerColumn = equationNumberPerColumn;
     this.columnList = columnList;
     this.uuid = crypto.randomUUID();
   }
@@ -30,7 +30,7 @@ export default class Exercise {
     return new Exercise({
       questionTime: this.questionTime,
       answerTime: this.answerTime,
-      equationNumberPerColumn: this.equationNumberPerColumn,
+      equationNumberPerColumn: this.equationCountPerColumn,
       columnList: this.columnList.map((column) => column.getCopy()),
     });
   }

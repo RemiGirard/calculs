@@ -14,6 +14,8 @@ import Gear from '@/Presentation/assets/icons/Gear.tsx';
 import ExerciseConfig from '@/Presentation/Organisms/ExerciseConfig.tsx';
 import dictionary from '@/Presentation/dictionary.ts';
 import { setter } from '@/utils/Type/setter.ts';
+import DivWithScrollBar from "@/utils/Component/DivWithScrollBar/DivWithScrollBar.tsx";
+import colors from "@/Presentation/colors.ts";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -43,31 +45,28 @@ export default ({ exerciseList, setExerciseList }: componentProps) => {
           </button>
         </TopButtonsWrapper>
       </TopBarWrapper>
-      <ExercisesTableWrapper>
-        <div>
-          {exerciseList.map((exercise, index) => {
-            const deleteThisExercise = () => {
-              deleteExercice(exerciseList, setExerciseList, index);
-            };
+      <DivWithScrollBar config={{color: colors.secondary}}>
+        <ExercisesTableWrapper>
+          <div>
+            {exerciseList.map((exercise, index) => {
+              const deleteThisExercise = () => {
+                deleteExercice(exerciseList, setExerciseList, index);
+              };
 
-            const setExercise: setter<Exercise> = (newExercise: Exercise) => {
-              updateExercise(exerciseList, setExerciseList, index, newExercise);
-            };
-            return (
-              <ExerciseConfig
-                key={exercise.uuid}
-                exercise={exercise}
-                setExercise={setExercise}
-                deleteExercise={deleteThisExercise}
-                canBeDeleted={canDeleteExercise}
-              />
-            );
-          })}
-        </div>
-        <aside>
-          <div />
-        </aside>
-      </ExercisesTableWrapper>
+              const setExercise: setter<Exercise> = (newExercise: Exercise) => {
+                updateExercise(exerciseList, setExerciseList, index, newExercise);
+              };
+              return (<ExerciseConfig
+                  key={exercise.uuid}
+                  exercise={exercise}
+                  setExercise={setExercise}
+                  deleteExercise={deleteThisExercise}
+                  canBeDeleted={canDeleteExercise}
+              />);
+            })}
+          </div>
+        </ExercisesTableWrapper>
+      </DivWithScrollBar>
       <BottomButtonsWrapper>
         <button onClick={clickAddExerciseButton} aria-label="add exercise" type="button">+</button>
         <button onClick={clickPlayButton} aria-label="play" type="button">play</button>

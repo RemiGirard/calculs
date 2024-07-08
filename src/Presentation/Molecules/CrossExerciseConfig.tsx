@@ -5,9 +5,7 @@ type componentProps = {
 }
 
 export default function ({ onClick }: componentProps) {
-  return (
-    <CrossExerciseConfigWrapper>
+  return (<CrossExerciseConfigWrapper>
       <div onClick={onClick}>×</div>
-    </CrossExerciseConfigWrapper>
-  );
-}
+    </CrossExerciseConfigWrapper>);
+};

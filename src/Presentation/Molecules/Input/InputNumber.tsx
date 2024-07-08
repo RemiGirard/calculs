@@ -63,7 +63,7 @@ export default function ({ value, setValue } : componentProps) {
     });
   };
   return (
-    <>
+    <div>
       <select value={value.type} onChange={onChangeHandler}>
         {
         numberRangeTypes.map((numberRangeType) => <option key={numberRangeType} value={numberRangeType}>{numberRangeType}</option>)
@@ -99,6 +99,6 @@ export default function ({ value, setValue } : componentProps) {
       />
       )
     }
-    </>
+    </div>
   );
 }

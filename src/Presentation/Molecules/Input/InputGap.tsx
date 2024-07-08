@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react';
 import EquationConfig from '@/Domain/GenerateExercises/Entity/EquationConfig.ts';
 import { setter } from '@/utils/Type/setter.ts';
+import dictionary from "@/Presentation/dictionary.ts";
 
 type componentProps = {
   value: EquationConfig['possibleGaps'];
@@ -12,16 +13,15 @@ export default function ({ value, setValue }: componentProps) {
     const newValue = event.target.checked;
     setValue({ ...value, [key]: newValue });
   };
-  return (
-    <>
-      {(['first', 'second', 'result'] as const).map((key) => (
+  return (<div>
+      {(['first', 'second', 'result'] as const).map((key) => (<div key={key}>
+        <label>{dictionary.inputGapLabel[key]}</label>
         <input
-          key={key}
           type="checkbox"
           onChange={(e) => onChangeHandler(e, key)}
           checked={value[key]}
         />
-      ))}
-    </>
+      </div>))}
+    </div>
   );
 }

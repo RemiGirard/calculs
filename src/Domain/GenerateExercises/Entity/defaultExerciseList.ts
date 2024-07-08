@@ -5,8 +5,8 @@ import EquationConfig from '@/Domain/GenerateExercises/Entity/EquationConfig.ts'
 
 const defaultConfig = new EquationConfig({
   type: 'addition',
-  first: { type: 'range', min: 1, max: 10 },
-  second: { type: 'range', min: 1, max: 10 },
+  first: { type: 'range', min: 1, max: 9 },
+  second: { type: 'range', min: 1, max: 9 },
   possibleGaps: {
     first: false,
     second: false,

@@ -17,11 +17,11 @@ export default function ({ value, setValue }: componentProps) {
     setValue(typedNewValue);
   };
 
-  return (
+  return (<div>
     <select value={value} onChange={onChangeHandler}>
-      {
-        calcTypes.map((calcType) => <option key={calcType} value={calcType}>{dictionary.calcTypes[calcType]}</option>)
-      }
+      {calcTypes.map((calcType) => {
+          return (<option key={calcType} value={calcType}>{dictionary.calcTypes[calcType]}</option>);
+      })}
     </select>
-  );
+  </div>);
 }

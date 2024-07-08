@@ -12,17 +12,18 @@ export const InputWrapper = styled.fieldset<{
   border: none;
   cursor: pointer;
   &:hover{
-    background-color: ${colors.secondary};
+    background-color: ${colors.background};
   }
   > label {
     display: flex;
     justify-content: center;
     align-items: flex-end;
     color: ${colors.category2};
-    font-size: ${({ $labelSize }) => ($labelSize > 10 ? 0.8 : 1)}em;
+    font-size: 1em;
     cursor: pointer;
     width: 100%;
     height: 30%;
+    text-align: center;
   }
   > div {
     width: 100%;

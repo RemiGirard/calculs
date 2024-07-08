@@ -1,4 +1,5 @@
 import BottomInputTimeButtonsWrapper from '@/Presentation/Molecules/BottomInputTimeButtonsWrapper.ts';
+import Trash from "@/Presentation/assets/icons/Trash.tsx";
 
 type componentProps = {
   deleteExercise: () => void;
@@ -10,7 +11,7 @@ export default function ({ deleteExercise, displayDelete }: componentProps) {
     <BottomInputTimeButtonsWrapper>
       <div />
       <div>
-        {displayDelete && <button onClick={deleteExercise}>x</button>}
+        {displayDelete && <button onClick={deleteExercise}><Trash /></button>}
       </div>
     </BottomInputTimeButtonsWrapper>
   );
