@@ -1,6 +1,6 @@
-import React from 'react';
+import {FC, ReactElement} from 'react';
 
-export type RouteElementType<PageName> = React.ReactElement<{name: PageName, render: () => React.ReactElement}>;
+export type RouteElementType<PageName> = ReactElement<{name: PageName, render: () => ReactElement}>;
 
 export type Config<PageName extends string> = {
     defaultPage?: PageName;
@@ -8,6 +8,6 @@ export type Config<PageName extends string> = {
 };
 
 export type createRouterInterface<PageName extends string> = (config: Config<PageName>) => {
-    Provider: React.FC<{children: RouteElementType<PageName>[]}>;
+    Provider: FC<{children: RouteElementType<PageName>[]}>;
     useRouter: () => {page: PageName, navigate: (page: PageName) => void};
 };

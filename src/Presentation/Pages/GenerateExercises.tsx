@@ -13,9 +13,9 @@ import BottomButtonsWrapper from '@/Presentation/Organisms/BottomButtonsWrapper.
 import Gear from '@/Presentation/assets/icons/Gear.tsx';
 import ExerciseConfig from '@/Presentation/Organisms/ExerciseConfig.tsx';
 import dictionary from '@/Presentation/dictionary.ts';
+import colors from "@/Presentation/colors.ts";
 import { setter } from '@/utils/Type/setter.ts';
 import DivWithScrollBar from "@/utils/Component/DivWithScrollBar/DivWithScrollBar.tsx";
-import colors from "@/Presentation/colors.ts";
 
 type componentProps = {
   exerciseList: Exercise[],
