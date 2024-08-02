@@ -14,12 +14,6 @@ export const getRandomItemOfArray = <T>(list: T[]): T|undefined => {
   return list[randomIndex];
 };
 
-const myArray: boolean[] = [];
-
-const myEl = getRandomItemOfArray(myArray);
-
-console.log(myEl);
-
 export const getBodyRatio = () => document.body.clientWidth / document.body.clientHeight;
 
 export const shuffleArray = <T>(array: T[]) => {
