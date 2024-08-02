@@ -1,4 +1,4 @@
-import { CalcType } from '@/Domain/GenerateExercises/Entity/CalcTypes.ts';
+import { CalcType } from '@/Domain/GenerateExercises/Entity/CalcTypeList.ts';
 import { getRandomItemOfArray } from '@/utils/utils.ts';
 import MathFunctions from '@/Domain/GenerateExercises/Entity/MathFunctions.ts';
 

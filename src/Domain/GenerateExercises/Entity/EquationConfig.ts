@@ -1,4 +1,4 @@
-import { CalcType } from '@/Domain/GenerateExercises/Entity/CalcTypes.ts';
+import { CalcType } from '@/Domain/GenerateExercises/Entity/CalcTypeList.ts';
 import { NumberRange } from '@/Domain/GenerateExercises/Entity/NumberRange.ts';
 
 export default class EquationConfig {

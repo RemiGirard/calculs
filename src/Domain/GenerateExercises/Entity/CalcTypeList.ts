@@ -1,4 +1,4 @@
-export const calcTypes = [
+export const calcTypeList = [
   'addition',
   'additionWithoutCarry',
   'subtraction',
@@ -10,4 +10,4 @@ export const calcTypes = [
   'modulo',
 ] as const;
 
-export type CalcType = typeof calcTypes[number];
+export type CalcType = typeof calcTypeList[number];

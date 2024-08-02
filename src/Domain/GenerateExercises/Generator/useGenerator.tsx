@@ -1,23 +1,40 @@
 import {shuffleArray} from "@/utils/utils.ts";
 import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
 import EquationConfig from "@/Domain/GenerateExercises/Entity/EquationConfig.ts";
-import {AdditionGenerator} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/AdditionGenerator.ts";
+import {Addition} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Addition";
 import {
-  AdditionWithoutCarryGenerator
-} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/AdditionWithoutCarryGenerator.ts";
+  AdditionWithoutCarry
+} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/AdditionWithoutCarry";
+import {Subtraction} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Subtraction.ts";
+import {PositiveSubtraction} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/PositiveSubtraction.ts";
+import {Multiplication} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Multiplication.ts";
+import {Division} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Division.ts";
+import {IntDivision} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/IntDivision.ts";
+import {Modulo} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Modulo.ts";
+import {CalcType} from "../Entity/CalcTypeList.ts";
+import {GeneratorType} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Generator.ts";
+import {
+  PositiveSubtractionWithoutCarry
+} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/PositiveSubtractionWithoutCarry.ts";
 
 export const generatePossibleEquations = (equationConfig: EquationConfig, equationCount: number):Equation[] => {
-  let equations: Equation[] = [];
 
-  if(equationConfig.type === 'addition') {
-    equations = (new AdditionGenerator).generate([equationConfig.first, equationConfig.second], equationCount);
-  } else if(equationConfig.type === 'additionWithoutCarry') {
-    equations = (new AdditionWithoutCarryGenerator).generate([equationConfig.first, equationConfig.second], equationCount);
-  } else {
-    // @TODO: add others, not error all cases will be implemented
-  }
+  const typeGeneratorTable: {[K in CalcType]: GeneratorType } = {
+    addition: Addition,
+    additionWithoutCarry: AdditionWithoutCarry,
+    subtraction: Subtraction,
+    positiveSubtraction: PositiveSubtraction,
+    positiveSubtractionWithoutCarry: PositiveSubtractionWithoutCarry,
+    multiplication: Multiplication,
+    division: Division,
+    intDivision: IntDivision,
+    modulo: Modulo,
+  };
 
-  return equations.map((equation) => {
+  const generator = new typeGeneratorTable[equationConfig.type]();
+  const equationList: Equation[] = generator.generate([equationConfig.first, equationConfig.second], equationCount);
+
+  return equationList.map((equation) => {
     equation.calculateResult();
     const convertedGaps = equationConfig.getPossibleGaps().map((e) => {
       return ({
@@ -29,7 +46,7 @@ export const generatePossibleEquations = (equationConfig: EquationConfig, equati
     equation.applyRandomGap(convertedGaps);
     return equation;
   });
-}
+};
 
 export const generateColumn = (config: EquationConfig, equationCount: number): Equation[] => {
   return shuffleArray(generatePossibleEquations(config, equationCount));

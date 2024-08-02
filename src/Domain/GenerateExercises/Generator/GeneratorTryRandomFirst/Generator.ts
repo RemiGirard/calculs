@@ -7,8 +7,9 @@ import {MaxRerollReachedFiltersError} from "@/Domain/GenerateExercises/Error/Max
 import {shuffleArray} from "@/utils/utils.ts";
 import {combinePossibilities} from "@/utils/combinePossibilities.ts";
 import {GeneratorInterface} from "@/Domain/GenerateExercises/Generator/GeneratorInterface";
-import {CalcType} from "@/Domain/GenerateExercises/Entity/CalcTypes.ts";
+import {CalcType} from "@/Domain/GenerateExercises/Entity/CalcTypeList.ts";
 
+export type GeneratorType = typeof Generator;
 export class Generator implements GeneratorInterface{
     protected filters: Filter[] = [];
     protected maxRerollIncludes = 100;
