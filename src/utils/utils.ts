@@ -7,7 +7,18 @@ export const filterObject = <T>(
       .filter(([key, val]) => filter(key, val)),
   );
 
-export const getRandomItemOfArray = <T>(list: T[]): T => list[Math.floor(Math.random() * list.length)];
+export const getRandomItemOfArray = <T>(list: T[]): T|undefined => {
+  if(list.length === 0) return undefined;
+
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+};
+
+const myArray: boolean[] = [];
+
+const myEl = getRandomItemOfArray(myArray);
+
+console.log(myEl);
 
 export const getBodyRatio = () => document.body.clientWidth / document.body.clientHeight;
 

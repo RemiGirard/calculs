@@ -36,4 +36,11 @@ export default class EquationConfig {
       possibleGaps: { ...this.possibleGaps },
     });
   }
+
+  getPossibleGaps(): ('first' | 'second' | 'result')[] {
+    const entries = Object.entries(this.possibleGaps) as ['first' | 'second' | 'result', boolean][];
+    const filteredEntries = entries.filter((entry) => entry[1]);
+
+    return filteredEntries.map(([key]) => key);
+  }
 }

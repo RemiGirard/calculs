@@ -2,13 +2,9 @@ import Column from '@/Domain/GenerateExercises/Entity/Column.ts';
 
 export default class Exercise {
   questionTime: number;
-
   answerTime: number;
-
   equationCountPerColumn: number;
-
   columnList: Column[];
-
   uuid: string;
 
   constructor({
@@ -32,6 +28,15 @@ export default class Exercise {
       answerTime: this.answerTime,
       equationNumberPerColumn: this.equationCountPerColumn,
       columnList: this.columnList.map((column) => column.getCopy()),
+    });
+  }
+
+  getCopyWithoutEquations(): Exercise {
+    return new Exercise({
+      questionTime: this.questionTime,
+      answerTime: this.answerTime,
+      equationNumberPerColumn: this.equationCountPerColumn,
+      columnList: this.columnList.map((column) => new Column({ config: column.config })),
     });
   }
 }

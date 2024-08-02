@@ -8,13 +8,9 @@ export type ElementId = '1'|'2'|'result';
 
 export default class Equation {
   1: number;
-
   operation: CalcType;
-
   2: number;
-
   result?: number|ModuloResult;
-
   gap?: ElementId;
 
   constructor({

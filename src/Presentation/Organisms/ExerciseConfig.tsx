@@ -32,7 +32,7 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
   };
 
   const updateEquationConfig = (newEquationConfig: EquationConfig, index: number) => {
-    const newExercise = exercise.getCopy();
+    const newExercise = exercise.getCopyWithoutEquations();
     newExercise.columnList[index].config = newEquationConfig;
     setExercise(newExercise);
   };
@@ -118,7 +118,7 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
         </DivWithScrollBar>
       </div>
     <div>
-      {JSON.stringify(exercise.columnList.map((column) => column.equations))}
+      {JSON.stringify(exercise.columnList.map((column) => column.equationList))}
     </div>
   </ExerciseConfigWrapper>);
 }

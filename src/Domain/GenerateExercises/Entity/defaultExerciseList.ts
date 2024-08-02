@@ -2,6 +2,7 @@ import Exercise from '@/Domain/GenerateExercises/Entity/Exercise.ts';
 import isDevEnv from '@/Domain/isDevEnv.ts';
 import Column from '@/Domain/GenerateExercises/Entity/Column.ts';
 import EquationConfig from '@/Domain/GenerateExercises/Entity/EquationConfig.ts';
+import generateEquations from "@/Domain/GenerateExercises/UseCase/generateEquations.ts";
 
 const defaultConfig = new EquationConfig({
   type: 'addition',
@@ -31,4 +32,7 @@ const defaultExercise = new Exercise({
   columnList: [defaultColumn],
 });
 
-export default [defaultExercise];
+let defaultExerciseList = [defaultExercise];
+generateEquations(defaultExerciseList, (newValue)=> defaultExerciseList = newValue);
+
+export default defaultExerciseList;
