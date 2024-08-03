@@ -77,7 +77,6 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
         <DivWithScrollBar config={{isHorizontal: true, color: colors.secondary}}>
           <ColumnConfigListWrapper>
             {exercise.columnList.map((column, index) => {
-              console.debug({column})
               const updateConfig = <K extends keyof EquationConfig>(newValue: EquationConfig[K], key: K) => {
                 const newConfig = column.config.getCopy();
                 newConfig[key] = newValue;

@@ -74,7 +74,6 @@ const useScrollBar = ({windowRef, contentRef, scrollTrackRef, direction = "verti
   );
 
   const handleThumbMousedown:MouseEventHandler<Element> = useCallback((event: React.MouseEvent<Element, MouseEvent>) => {
-    console.debug('handleThumbMousedown');
     event.preventDefault();
     event.stopPropagation();
     setScrollStartPosition(event[wOrH.clickPosition]);
