@@ -32,8 +32,9 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
   };
 
   const updateEquationConfig = (newEquationConfig: EquationConfig, index: number) => {
-    const newExercise = exercise.getCopyWithoutEquations();
+    const newExercise = exercise.getCopy();
     newExercise.columnList[index].config = newEquationConfig;
+    newExercise.columnList[index].equationList = null;
     setExercise(newExercise);
   };
 
