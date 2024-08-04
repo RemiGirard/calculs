@@ -2,14 +2,13 @@ import styled from 'styled-components';
 import colors from "@/Presentation/colors.ts";
 
 export default styled.div`
-    width: 100%;
+    width: 99%;
     display: flex;
     flex-direction: row;
     padding: 0.5% 0.5% 0.1% 0.5%;
     > div {
         margin-right: 0.5%;
         &:nth-child(1) {
-            margin-left: 1%;
             width: 15%;
             > div:nth-child(1) {
                 background-color: ${colors.secondary};
