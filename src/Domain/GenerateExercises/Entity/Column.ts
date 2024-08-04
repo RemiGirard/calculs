@@ -4,9 +4,11 @@ import Equation from '@/Domain/GenerateExercises/Entity/Equation.ts';
 export default class Column {
   public config: EquationConfig;
   public equationList: null|Equation[] = null;
+  uuid: string;
 
   constructor({ config }:{config: EquationConfig}) {
     this.config = config;
+    this.uuid = crypto.randomUUID();
   }
 
   getCopy(): Column {

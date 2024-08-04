@@ -9,6 +9,7 @@ export default styled.div`
     > div {
         margin-right: 0.5%;
         &:nth-child(1) {
+            margin-left: 1%;
             width: 15%;
             > div:nth-child(1) {
                 background-color: ${colors.secondary};

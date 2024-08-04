@@ -50,6 +50,8 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
     addExerciseColumn(exercise.columnList, setColumnList, exercise.equationCountPerColumn);
   };
 
+  const columnsCanBeDeleted = exercise.columnList.length > 1;
+
   return (<ExerciseConfigWrapper>
     <div>
       <div>
@@ -103,8 +105,7 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
               deleteColumn(exercise.columnList, setColumnList, index);
             };
 
-            return (<div key={index}>
-              <div>{exercise.columnList.length > 1 ? <CrossExerciseConfig onClick={deleteColumnHandler}/> : null}</div>
+            return (<div key={column.uuid}>
               <div>
                 <InputColumnWrapper>
                   <label>{dictionary.inputLabel.type}</label>
@@ -115,17 +116,18 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
                 </InputColumnWrapper>
                 <InputColumnWrapper>
                   <label>{dictionary.inputLabel.first}</label>
-                  <InputNumber value={column.config.first} setValue={(v) => updateEquationConfigHandler(v, 'first')} />
+                  <InputNumber value={column.config.first} setValue={(v) => updateEquationConfigHandler(v, 'first')}/>
                 </InputColumnWrapper>
                 <InputColumnWrapper>
                   <label>{dictionary.inputLabel.second}</label>
-                  <InputNumber value={column.config.second} setValue={(v) => updateEquationConfigHandler(v, 'second')} />
+                  <InputNumber value={column.config.second} setValue={(v) => updateEquationConfigHandler(v, 'second')}/>
                 </InputColumnWrapper>
                 <InputColumnWrapper>
                   <label>{dictionary.inputLabel.gap}</label>
-                  <InputGap value={column.config.possibleGaps} setValue={(v) => updateEquationConfigHandler(v, 'possibleGaps')} />
+                  <InputGap value={column.config.possibleGaps} setValue={(v) => updateEquationConfigHandler(v, 'possibleGaps')}/>
                 </InputColumnWrapper>
               </div>
+              <div>{columnsCanBeDeleted ? <CrossExerciseConfig onClick={deleteColumnHandler}/> : null}</div>
             </div>);
           })}
           <div onClick={addColumnConfigHandler}>+</div>
