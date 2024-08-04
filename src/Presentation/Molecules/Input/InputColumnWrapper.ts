@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import colors from "@/Presentation/colors.ts";
+import unselectable from "@/utils/Css/unselectable.ts";
 
 export default styled.div<{$isType?: boolean}>`
     display: flex;
@@ -15,6 +16,7 @@ export default styled.div<{$isType?: boolean}>`
         color: ${colors.category1};
         width: 20%;
         text-align: center;
+        ${unselectable}
     }
     
     > div {
@@ -26,6 +28,9 @@ export default styled.div<{$isType?: boolean}>`
           color: ${colors.mainText};
           width: ${({$isType}) => $isType ? '80%' : '60%'};
           font-size: inherit;
+          &:hover {
+              cursor: pointer;
+          }
         }
   
       > input {

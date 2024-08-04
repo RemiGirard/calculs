@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react';
 import EquationConfig from '@/Domain/GenerateExercises/Entity/EquationConfig.ts';
 import { setter } from '@/utils/Type/setter.ts';
 import dictionary from "@/Presentation/dictionary.ts";
+import InputGapWrapper from "@/Presentation/Molecules/Input/InputGapWrapper.ts";
 
 type componentProps = {
   value: EquationConfig['possibleGaps'];
@@ -13,7 +14,7 @@ export default function ({ value, setValue }: componentProps) {
     const newValue = event.target.checked;
     setValue({ ...value, [key]: newValue });
   };
-  return (<div>
+  return (<InputGapWrapper>
       {(['first', 'second', 'result'] as const).map((key) => (<div key={key}>
         <label>{dictionary.inputGapLabel[key]}</label>
         <input
@@ -22,6 +23,6 @@ export default function ({ value, setValue }: componentProps) {
           checked={value[key]}
         />
       </div>))}
-    </div>
+    </InputGapWrapper>
   );
 }

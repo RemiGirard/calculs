@@ -30,6 +30,7 @@ export const ColumnConfigListWrapper = styled.div`
         border-radius: 10px;
         margin-right: 0.5%;
         width: 300px;
+        overflow: hidden;
     }
     > button:last-child {
         display: flex;

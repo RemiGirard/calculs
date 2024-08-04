@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import colors from '@/Presentation/colors.ts';
+import unselectable from "@/utils/Css/unselectable.ts";
 
 export const InputWrapper = styled.fieldset<{
   $hasUnit: boolean,
@@ -24,6 +25,7 @@ export const InputWrapper = styled.fieldset<{
     width: 100%;
     height: 30%;
     text-align: center;
+    ${unselectable}
   }
   > div {
     width: 100%;
@@ -64,6 +66,9 @@ export const InputWrapper = styled.fieldset<{
         background-color:transparent;
         outline: none;
       }
+    }
+    > span { // unit
+        ${unselectable}
     }
   }
 `;

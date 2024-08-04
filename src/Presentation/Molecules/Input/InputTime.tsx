@@ -65,7 +65,7 @@ export default function({
           onBlur={setFocusOut}
           onKeyDown={keyDownHandler}
         />
-        {unit ? <div>{unit}</div> : null}
+        {unit ? <span>{unit}</span> : null}
       </div>
     </InputWrapper>);
 }
