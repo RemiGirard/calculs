@@ -31,8 +31,13 @@ export const ColumnConfigListWrapper = styled.div`
         margin-right: 0.5%;
         width: 300px;
     }
-    > div:last-child {
+    > button:last-child {
         width: 5%;
+        background-color: ${colors.secondary};
+        border: none;
+        border-radius: 10px;
+        color: inherit;
+        font-size: 1.5em;
         justify-content: center;
         align-items: center;
         &:hover {

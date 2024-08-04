@@ -6,7 +6,7 @@ type componentProps = {
   displayDelete: boolean;
 }
 
-export default function ({ deleteExercise, displayDelete }: componentProps) {
+export default ({ deleteExercise, displayDelete }: componentProps) => {
   return (
     <BottomInputTimeButtonsWrapper>
       <div />

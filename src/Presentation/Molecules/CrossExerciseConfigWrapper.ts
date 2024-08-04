@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export default styled.div`
   position: relative;
-  > div {
+  > button {
     position: absolute;
     top: 0;
     right: 0;
@@ -10,5 +10,10 @@ export default styled.div`
     display: flex;
     justify-content: center;
     cursor: pointer;
+    // reset button style
+    border: none;
+    background: none;
+    color: inherit;
+    font-size: inherit;
   }
 `;

@@ -128,7 +128,7 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
               <div>{columnsCanBeDeleted ? <CrossExerciseConfig onClick={deleteColumnHandler}/> : null}</div>
             </div>);
           })}
-          <div onClick={addColumnConfigHandler}>+</div>
+          <button onClick={addColumnConfigHandler}>+</button>
         </ColumnConfigListWrapper>
       </DivWithScrollBar>
     </div>
