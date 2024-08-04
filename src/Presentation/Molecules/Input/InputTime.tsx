@@ -52,7 +52,6 @@ export default function({
 
   return (<InputWrapper
     onClick={setFocusIn}
-    $hasUnit={unit !== ''}
     $isFocus={isFocus}
     $labelSize={label.split('').length}
   >
@@ -65,7 +64,7 @@ export default function({
         onBlur={setFocusOut}
         onKeyDown={keyDownHandler}
       />
-      {unit ? <span>{unit}</span> : null}
+      <span>{unit ?? null}</span>
     </div>
   </InputWrapper>);
 }

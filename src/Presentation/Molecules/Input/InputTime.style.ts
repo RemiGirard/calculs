@@ -3,7 +3,6 @@ import colors from '@/Presentation/colors.ts';
 import unselectable from "@/utils/Css/unselectable.ts";
 
 export default styled.fieldset<{
-  $hasUnit: boolean,
   $isFocus: boolean,
   $labelSize: number,
 }>`
@@ -45,7 +44,7 @@ export default styled.fieldset<{
     > input {
       width: 50%;
       height: 100%;
-      text-align: ${({ $hasUnit = false }) => ($hasUnit ? 'right' : 'center')};
+      text-align: right;
       border:none;
       background-image:none;
       background-color:transparent;
@@ -68,6 +67,7 @@ export default styled.fieldset<{
       }
     }
     > span { // unit
+        width: 20%;
         ${unselectable}
     }
   }
