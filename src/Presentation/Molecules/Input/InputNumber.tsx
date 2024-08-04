@@ -1,8 +1,9 @@
-import { ChangeEvent, useState } from 'react';
+import {ChangeEvent, useState} from 'react';
 import { setter } from '@/utils/Type/setter.ts';
-import { NumberRange, NumberRangeType, numberRangeTypes } from '@/Domain/GenerateExercises/Entity/NumberRange.ts';
+import { NumberRange, numberRangeTypes } from '@/Domain/GenerateExercises/Entity/NumberRange.ts';
 import { defaultNumberGeneration } from '@/Domain/GenerateExercises/Entity/defaultExerciseList.ts';
 import typedElementIfIncludedOrUndefined from '@/utils/typedElementIfIncludedOrUndefined.ts';
+import InputInteractive from "@/Presentation/Atoms/InputInteractive.tsx";
 
 interface componentProps {
   value: NumberRange;
@@ -10,6 +11,7 @@ interface componentProps {
 }
 
 export default function ({ value, setValue } : componentProps) {
+
   const defaultLocalValue = {
     fix: value.type === 'fix' ? value.fix : defaultNumberGeneration.fix,
     min: value.type === 'range' ? value.min : defaultNumberGeneration.range[0],
@@ -20,22 +22,16 @@ export default function ({ value, setValue } : componentProps) {
 
   const [localValue, setLocalValue] = useState(defaultLocalValue);
 
-  const generateValue = (type: NumberRangeType): NumberRange => {
-    switch (type) {
-      case 'fix':
-        return { type: 'fix', fix: localValue.fix };
-      case 'range':
-        return { type: 'range', min: localValue.min, max: localValue.max };
-      case 'rangeTens':
-        return { type: 'rangeTens', min: localValue.minTens, max: localValue.maxTens };
-      default:
-        throw new Error(`Unexpected type: ${type}`);
-    }
-  };
+  const typeTable = ({
+    fix: {type: 'fix', fix: localValue.fix },
+    range: {type: 'range', min: localValue.min, max: localValue.max },
+    rangeTens: {type: 'rangeTens', min: localValue.minTens, max: localValue.maxTens },
+  } as const);
+
   const onChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     const newType = typedElementIfIncludedOrUndefined(numberRangeTypes, event.target.value);
     if (newType === undefined) return;
-    setValue(generateValue(newType));
+    setValue(typeTable[newType]);
   };
 
   const updateLocalValue = (key: 'fix'|'min'|'max', newValue: number) => {
@@ -52,8 +48,8 @@ export default function ({ value, setValue } : componentProps) {
     setLocalValue(newLocalValue);
   };
 
-  const onChangeNumberHandler = (event: ChangeEvent<HTMLInputElement>, key: 'fix'|'min'|'max') => {
-    const newValue = Number(event.target.value);
+  const setValueNumberHandler = (stringValue: string, key: 'fix'|'min'|'max') => {
+    const newValue = Number(stringValue);
     if (isNaN(newValue)) return;
 
     updateLocalValue(key, newValue);
@@ -65,16 +61,16 @@ export default function ({ value, setValue } : componentProps) {
   return (
     <div>
       <select value={value.type} onChange={onChangeHandler}>
-        {
-        numberRangeTypes.map((numberRangeType) => <option key={numberRangeType} value={numberRangeType}>{numberRangeType}</option>)
-      }
+        {numberRangeTypes.map((numberRangeType) => {
+          return <option key={numberRangeType} value={numberRangeType}>{numberRangeType}</option>
+        })}
       </select>
       {
       value.type === 'fix'
       && (
-      <input
-        value={value.fix}
-        onChange={(e) => onChangeNumberHandler(e, 'fix')}
+      <InputInteractive
+        value={String(value.fix)}
+        setValue={(v) => setValueNumberHandler(v, 'fix')}
         type="number"
       />
       )
@@ -82,23 +78,21 @@ export default function ({ value, setValue } : componentProps) {
       {
       (value.type === 'range' || value.type === 'rangeTens')
       && (
-      <input
-        value={value.min}
-        onChange={(e) => onChangeNumberHandler(e, 'min')}
+      <InputInteractive
+        value={String(value.min)}
+        setValue={(v) => setValueNumberHandler(v, 'min')}
         type="number"
       />
       )
     }
-      {
-      (value.type === 'range' || value.type === 'rangeTens')
+    {(value.type === 'range' || value.type === 'rangeTens')
       && (
-      <input
-        value={value.max}
-        onChange={(e) => onChangeNumberHandler(e, 'max')}
+      <InputInteractive
+        value={String(value.max)}
+        setValue={(v) => setValueNumberHandler(v, 'max')}
         type="number"
       />
-      )
-    }
+    )}
     </div>
   );
 }
