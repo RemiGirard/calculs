@@ -58,7 +58,7 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
         <InputTime
           label={dictionary.inputLabel.exerciseDuration}
           value={exercise.questionTime}
-          setValue={(newTime) => updateExerciseConfigHandler(newTime, 'questionTime')}
+          setValue={(newValue) => updateExerciseConfigHandler(newValue, 'questionTime')}
           unit="sec"
         />
         <InputTime

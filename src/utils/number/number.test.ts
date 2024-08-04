@@ -5,7 +5,7 @@ import {
   getRandomDivisibleNumbersInRange,
   getRandomInt,
   integerToLetter,
-} from './number';
+} from './number.ts';
 
 describe('getRandomInt', () => {
   test('positive', () => {

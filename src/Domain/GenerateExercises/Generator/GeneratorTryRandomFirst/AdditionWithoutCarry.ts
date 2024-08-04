@@ -1,4 +1,4 @@
-import {eachDigitAdditionIsInferiorToTen} from "@/utils/number.tsx";
+import {eachDigitAdditionIsInferiorToTen} from "@/utils/number/number.ts";
 import {Generator} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Generator.ts";
 import {CalcType} from "@/Domain/GenerateExercises/Entity/CalcTypeList.ts";
 import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";

@@ -25,6 +25,7 @@ type componentProps = {
 export default ({ exerciseList, setExerciseList }: componentProps) => {
   const { navigate } = useRouter();
 
+
   const clickAddExerciseHandler = () => addExercise(exerciseList, setExerciseList);
   const clickPlayHandler = () => console.log('click play');
   const clickGearHandler = () => navigate('config');
@@ -44,6 +45,7 @@ export default ({ exerciseList, setExerciseList }: componentProps) => {
     </TopBarWrapper>
     <DivWithScrollBar config={{color: colors.secondary}}>
       <ExercisesTableWrapper>
+
         {exerciseList.map((exercise, index) => {
           const deleteThisExercise = () => deleteExercise(exerciseList, setExerciseList, index);
 

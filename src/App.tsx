@@ -12,6 +12,7 @@ export default function () {
   const [config, setConfig] = useState(new Config());
   const [exerciseList, setExerciseList] = useState<Exercise[]>(defaultExerciseList);
 
+
   return (
     <ConfigContext.Provider value={config}>
       <RouterProvider>

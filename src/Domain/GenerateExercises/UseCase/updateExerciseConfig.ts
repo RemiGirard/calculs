@@ -4,11 +4,10 @@ import generateEquationListOfColumnList from "@/Domain/GenerateExercises/UseCase
 import Column from "@/Domain/GenerateExercises/Entity/Column.ts";
 
 export default <K extends keyof Exercise>(exercise: Exercise, setExercise: setter<Exercise>, newValue: Exercise[K], key: K) => {
-  const newExercise = exercise.getCopy();
-  newExercise[key] = newValue;
+  exercise[key] = newValue;
   if(key === 'equationCountPerColumn'){
-    const setColumnList = (newColumnList: Column[]) => newExercise.columnList = newColumnList;
-    generateEquationListOfColumnList(newExercise.columnList, setColumnList, newExercise.equationCountPerColumn);
+    const setColumnList = (newColumnList: Column[]) => exercise.columnList = newColumnList;
+    generateEquationListOfColumnList(exercise.columnList, setColumnList, exercise.equationCountPerColumn);
   }
-  setExercise(newExercise);
+  setExercise(exercise);
 };

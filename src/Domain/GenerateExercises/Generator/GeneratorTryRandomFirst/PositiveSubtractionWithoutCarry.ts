@@ -1,7 +1,7 @@
 import {Generator} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Generator.ts";
 import {CalcType} from "@/Domain/GenerateExercises/Entity/CalcTypeList.ts";
 import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
-import {eachDigitSubtractionIsPositive} from "@/utils/number.tsx";
+import {eachDigitSubtractionIsPositive} from "@/utils/number/number.ts";
 
 export class PositiveSubtractionWithoutCarry extends Generator {
     operation: CalcType = 'positiveSubtractionWithoutCarry';
