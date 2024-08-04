@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { InputWrapper } from './InputTime.style.ts';
+import InputWrapper from './InputTime.style.ts';
 import { setter } from '@/utils/Type/setter.ts';
 
 type componentProps= {
@@ -51,21 +51,21 @@ export default function({
   };
 
   return (<InputWrapper
-      onClick={setFocusIn}
-      $hasUnit={unit !== ''}
-      $isFocus={isFocus}
-      $labelSize={label.split('').length}
-    >
-      <label>{label}</label>
-      <div>
-        <input
-          ref={inputElement}
-          value={!isEmpty ? value.toString() : ''}
-          onChange={handleChange}
-          onBlur={setFocusOut}
-          onKeyDown={keyDownHandler}
-        />
-        {unit ? <span>{unit}</span> : null}
-      </div>
-    </InputWrapper>);
+    onClick={setFocusIn}
+    $hasUnit={unit !== ''}
+    $isFocus={isFocus}
+    $labelSize={label.split('').length}
+  >
+    <label>{label}</label>
+    <div>
+      <input
+        ref={inputElement}
+        value={!isEmpty ? value.toString() : ''}
+        onChange={handleChange}
+        onBlur={setFocusOut}
+        onKeyDown={keyDownHandler}
+      />
+      {unit ? <span>{unit}</span> : null}
+    </div>
+  </InputWrapper>);
 }

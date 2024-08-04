@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import colors from '@/Presentation/colors.ts';
 import unselectable from "@/utils/Css/unselectable.ts";
 
-export const InputWrapper = styled.fieldset<{
+export default styled.fieldset<{
   $hasUnit: boolean,
   $isFocus: boolean,
   $labelSize: number,

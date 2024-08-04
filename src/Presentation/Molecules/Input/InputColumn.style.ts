@@ -63,5 +63,4 @@ export default styled.div<{$isType?: boolean}>`
         
       > div {}
     }
-        
 `;

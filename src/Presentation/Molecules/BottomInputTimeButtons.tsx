@@ -1,4 +1,4 @@
-import BottomInputTimeButtonsWrapper from '@/Presentation/Molecules/BottomInputTimeButtonsWrapper.ts';
+import BottomInputTimeButtonsWrapper from '@/Presentation/Molecules/BottomInputTimeButtons.style.ts';
 import Trash from "@/Presentation/assets/icons/Trash.tsx";
 
 type componentProps = {

@@ -1,9 +1,9 @@
 import { setter } from '@/utils/Type/setter.ts';
 import Exercise from '@/Domain/GenerateExercises/Entity/Exercise.ts';
-import ExerciseConfigWrapper from '@/Presentation/Organisms/ExerciseConfigWrapper.ts';
+import ExerciseConfigWrapper from '@/Presentation/Organisms/ExerciseConfig.style.ts';
 import InputTime from '@/Presentation/Molecules/Input/InputTime.tsx';
-import InputColumnWrapper from '@/Presentation/Molecules/Input/InputColumnWrapper.ts';
-import {ColumnConfigListWrapper} from '@/Presentation/Molecules/ColumnConfigWrapper.ts';
+import InputColumnWrapper from '@/Presentation/Molecules/Input/InputColumn.style.ts';
+import ColumnConfigListWrapper from '@/Presentation/Molecules/ColumnConfig.style.ts';
 import dictionary from '@/Presentation/dictionary.ts';
 import InputType from '@/Presentation/Molecules/Input/InputType.tsx';
 import EquationConfig from '@/Domain/GenerateExercises/Entity/EquationConfig.ts';
