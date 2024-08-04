@@ -52,16 +52,7 @@ export default class Exercise {
     this.uuid = crypto.randomUUID();
   }
 
-  getCopy(): Exercise {
-    return new Exercise({
-      questionTime: this.questionTime,
-      answerTime: this.answerTime,
-      equationNumberPerColumn: this.equationCountPerColumn,
-      columnList: this.columnList.map((column) => column.getCopy()),
-    });
-  }
-
-  getCopyWithoutEquations(): Exercise {
+  getCopyWithoutEquationList(): Exercise {
     return new Exercise({
       questionTime: this.questionTime,
       answerTime: this.answerTime,

@@ -12,11 +12,9 @@ export default <K extends keyof EquationConfig>(
   equationList: Equation[]|null,
   setEquationList: setter<Equation[]>,
 ) => {
-  const newEquationConfig = equationConfig.getCopy();
-  newEquationConfig[key] = newValue;
-  setEquationConfig(newEquationConfig);
+  equationConfig[key] = newValue;
   if(key === 'possibleGaps' && equationList !== null){
-    const convertedGaps = newEquationConfig.getPossibleGaps().map((e) => {
+    const convertedGaps = equationConfig.getPossibleGaps().map((e) => {
       return ({
         first: '1',
         second: '2',
@@ -28,6 +26,7 @@ export default <K extends keyof EquationConfig>(
       return equation
     }));
   } else {
-    setEquationList(generateEquationList(newEquationConfig, count));
+    setEquationList(generateEquationList(equationConfig, count));
   }
+  setEquationConfig(equationConfig);
 };

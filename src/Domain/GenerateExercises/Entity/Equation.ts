@@ -40,18 +40,4 @@ export default class Equation {
   applyRandomGap(possibleGaps: ElementId[]) {
     this.gap = possibleGaps.length > 0 ? getRandomItemOfArray(possibleGaps) : 'result';
   }
-
-  getOperands(): [number, number] {
-    return [this[1], this[2]];
-  }
-
-  getCopy(): Equation {
-    return new Equation({
-      first: this[1],
-      second: this[2],
-      operation: this.operation,
-      calculateResult: false,
-      gap: this.gap,
-    });
-  }
 }

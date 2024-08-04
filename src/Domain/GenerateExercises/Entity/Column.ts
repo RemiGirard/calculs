@@ -11,14 +11,6 @@ export default class Column {
     this.uuid = crypto.randomUUID();
   }
 
-  getCopy(): Column {
-    const newColumn = new Column({
-      config: this.config.getCopy(),
-    });
-    newColumn.equationList = this.equationList ? this.equationList.map((equation) => equation.getCopy()) : null;
-    return newColumn;
-  }
-
   getCopyWithoutEquationList(): Column {
     return new Column({
       config: this.config.getCopy(),

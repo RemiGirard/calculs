@@ -35,9 +35,8 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
   };
 
   const setColumnList = (newColumnList: Column[]) => {
-    const newExercise = exercise.getCopy();
-    newExercise.columnList = newColumnList;
-    setExercise(newExercise);
+    exercise.columnList = newColumnList;
+    setExercise(exercise);
   };
 
   const setEquationConfig = (newEquationConfig: EquationConfig, index: number) => {
@@ -84,9 +83,8 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
             };
 
             const setCorrespondingEquationList = (newEquationList: Equation[]) => {
-                const newColumn = column.getCopy();
-                newColumn.equationList = newEquationList;
-                setThisColumn(newColumn);
+                column.equationList = newEquationList;
+                setThisColumn(column);
               };
 
             const updateEquationConfigHandler = <K extends keyof EquationConfig>(newValue: EquationConfig[K], key: K) => {
