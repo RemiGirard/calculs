@@ -53,7 +53,6 @@ export default function({
   return (<InputWrapper
       onClick={setFocusIn}
       $hasUnit={unit !== ''}
-      tabIndex={0}
       $isFocus={isFocus}
       $labelSize={label.split('').length}
     >
