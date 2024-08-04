@@ -12,13 +12,10 @@ export default function () {
   const [config, setConfig] = useState(new Config());
   const [exerciseList, setExerciseList] = useState<Exercise[]>(defaultExerciseList);
 
-
-  return (
-    <ConfigContext.Provider value={config}>
-      <RouterProvider>
-        <Route name="generateExercises" render={() => <GenerateExercises exerciseList={exerciseList} setExerciseList={setExerciseList} />} />
-        <Route name="config" render={() => <ConfigPage config={config} setConfig={setConfig} />} />
-      </RouterProvider>
-    </ConfigContext.Provider>
-  );
+  return (<ConfigContext.Provider value={config}>
+    <RouterProvider>
+      <Route name="generateExercises" render={() => <GenerateExercises exerciseList={exerciseList} setExerciseList={setExerciseList} />} />
+      <Route name="config" render={() => <ConfigPage config={config} setConfig={setConfig} />} />
+    </RouterProvider>
+  </ConfigContext.Provider>);
 }

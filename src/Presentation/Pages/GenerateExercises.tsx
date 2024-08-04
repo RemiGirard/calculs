@@ -45,7 +45,6 @@ export default ({ exerciseList, setExerciseList }: componentProps) => {
     </TopBarWrapper>
     <DivWithScrollBar config={{color: colors.secondary}}>
       <ExercisesTableWrapper>
-
         {exerciseList.map((exercise, index) => {
           const deleteThisExercise = () => deleteExercise(exerciseList, setExerciseList, index);
 

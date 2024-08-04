@@ -143,23 +143,4 @@ export class Generator implements GeneratorInterface {
         }
         return equationList;
     }
-    // let equations: EquationInterface[] = [];
-    // const forbidNegativeResults = ['positiveSoustraction', 'positiveSoustractionWithoutCarry','division','intDivision','modulo'].includes(columnConfig.type);
-    // const forbidNonIntResults = ['intDivision'].includes(columnConfig.type);
-    // const forbidQuotientZeroResults = ['modulo'].includes(columnConfig.type);
-    // const forbidAdditionCarry = ['additionWithoutCarry'].includes(columnConfig.type);
-    // const forbidSoustractionCarry = ['soustractionWithoutCarry', 'positiveSoustractionWithoutCarry'].includes(columnConfig.type);
-
-
-    // possibilities.forEach((possibility) => {
-    //   if(
-    //     (!forbidNegativeResults || (typeof equation.result !== 'number' || equation.result >=0) )
-    //     && (!forbidNonIntResults ||(typeof equation.result !== 'number' || Number.isInteger(equation.result)))
-    //     && (!forbidQuotientZeroResults || (typeof equation.result === 'number' || equation.result.quotient !== 0))
-    //     // && (!forbidAdditionCarry || (typeof equation.result !== 'number' || eachDigitAdditionIsInferiorToTen(equation[1], equation[2])))
-    //     && (!forbidSoustractionCarry || (typeof equation.result !== 'number' || eachDigitSoustractionIsPositive(equation[1], equation[2])))
-    //   ){
-    //     equations.push(equation);
-    //   }
-    // });
 }
