@@ -32,7 +32,8 @@ export const ColumnConfigListWrapper = styled.div`
         width: 300px;
     }
     > button:last-child {
-        width: 5%;
+        display: flex;
+        min-width: 50px;
         background-color: ${colors.secondary};
         border: none;
         border-radius: 10px;

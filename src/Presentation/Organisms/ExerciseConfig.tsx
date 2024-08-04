@@ -105,7 +105,7 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
 
             return (<div key={column.uuid}>
               <div>
-                <InputColumnWrapper>
+                <InputColumnWrapper $isType={true}>
                   <label>{dictionary.inputLabel.type}</label>
                   <InputType
                     value={column.config.type}

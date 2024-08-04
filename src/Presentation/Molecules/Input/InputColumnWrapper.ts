@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import colors from "@/Presentation/colors.ts";
 
-export default styled.div<{$hasSpaceLeft?: boolean}>`
+export default styled.div<{$isType?: boolean}>`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -19,13 +19,14 @@ export default styled.div<{$hasSpaceLeft?: boolean}>`
     
     > div {
         display: flex;
-      width: ${({$hasSpaceLeft}) => $hasSpaceLeft ? '60%' : '80%'};
-      > select {
+        width: 80%;
+        > select {
           background: none;
           border: medium;
           color: ${colors.mainText};
-          width: 40%;
-      }
+          width: ${({$isType}) => $isType ? '80%' : '60%'};
+          font-size: inherit;
+        }
   
       > input {
           background: none;
@@ -34,6 +35,7 @@ export default styled.div<{$hasSpaceLeft?: boolean}>`
           text-align: center;
           outline: none;
           width: 20%;
+          font-size: inherit;
   
           // Chromium
           &[type="number"]::-webkit-inner-spin-button,
