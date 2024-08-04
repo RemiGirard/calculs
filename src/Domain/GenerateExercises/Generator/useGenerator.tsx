@@ -1,4 +1,3 @@
-import {shuffleArray} from "@/utils/utils.ts";
 import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
 import EquationConfig from "@/Domain/GenerateExercises/Entity/EquationConfig.ts";
 import {Addition} from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/Addition";
@@ -17,7 +16,7 @@ import {
   PositiveSubtractionWithoutCarry
 } from "@/Domain/GenerateExercises/Generator/GeneratorTryRandomFirst/PositiveSubtractionWithoutCarry.ts";
 
-export const generatePossibleEquations = (equationConfig: EquationConfig, equationCount: number):Equation[] => {
+export const generateEquationList = (equationConfig: EquationConfig, equationCount: number):Equation[] => {
 
   const typeGeneratorTable: {[K in CalcType]: GeneratorType } = {
     addition: Addition,
@@ -46,8 +45,4 @@ export const generatePossibleEquations = (equationConfig: EquationConfig, equati
     equation.applyRandomGap(convertedGaps);
     return equation;
   });
-};
-
-export const generateColumn = (config: EquationConfig, equationCount: number): Equation[] => {
-  return shuffleArray(generatePossibleEquations(config, equationCount));
 };

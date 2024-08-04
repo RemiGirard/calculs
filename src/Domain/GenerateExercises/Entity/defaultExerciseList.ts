@@ -1,8 +1,9 @@
 import Exercise from '@/Domain/GenerateExercises/Entity/Exercise.ts';
-import isDevEnv from '@/Domain/isDevEnv.ts';
+import isDevEnv from '@/Domain/GenerateExercises/UseCase/isDevEnv.ts';
 import Column from '@/Domain/GenerateExercises/Entity/Column.ts';
 import EquationConfig from '@/Domain/GenerateExercises/Entity/EquationConfig.ts';
-import generateEquations from "@/Domain/GenerateExercises/UseCase/generateEquations.ts";
+import generateEquationListOfExerciseList
+  from "@/Domain/GenerateExercises/UseCase/generateEquationListOfExerciseList.ts";
 
 const defaultConfig = new EquationConfig({
   type: 'addition',
@@ -25,6 +26,7 @@ const defaultColumn = new Column({
   config: defaultConfig,
 });
 
+
 const defaultExercise = new Exercise({
   questionTime: isDevEnv ? 5 : 10,
   answerTime: isDevEnv ? 5 : 10,
@@ -33,6 +35,6 @@ const defaultExercise = new Exercise({
 });
 
 let defaultExerciseList = [defaultExercise];
-generateEquations(defaultExerciseList, (newValue)=> defaultExerciseList = newValue);
+generateEquationListOfExerciseList(defaultExerciseList, (newExerciseList)=>defaultExerciseList=newExerciseList);
 
 export default defaultExerciseList;

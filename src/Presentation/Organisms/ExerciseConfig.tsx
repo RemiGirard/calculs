@@ -11,11 +11,15 @@ import InputNumber from '@/Presentation/Molecules/Input/InputNumber.tsx';
 import InputGap from '@/Presentation/Molecules/Input/InputGap.tsx';
 import BottomInputTimeButtons from '@/Presentation/Molecules/BottomInputTimeButtons.tsx';
 import addExerciseColumn from '@/Domain/GenerateExercises/UseCase/addExerciseColumn.ts';
-import CrossExerciceConfig from '@/Presentation/Molecules/CrossExerciseConfig.tsx';
+import CrossExerciseConfig from '@/Presentation/Molecules/CrossExerciseConfig.tsx';
 import Column from "@/Domain/GenerateExercises/Entity/Column.ts";
 import deleteColumn from "@/Domain/GenerateExercises/UseCase/deleteColumn.ts";
 import DivWithScrollBar from "@/utils/Component/DivWithScrollBar/DivWithScrollBar.tsx";
 import colors from "@/Presentation/colors.ts";
+import updateExerciseConfig from "@/Domain/GenerateExercises/UseCase/updateExerciseConfig.ts";
+import updateEquationConfig from "@/Domain/GenerateExercises/UseCase/updateEquationConfig.ts";
+import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
+import setElementOfList from "@/utils/setElementOfList.ts";
 
 type componentProps = {
     exercise: Exercise;
@@ -25,98 +29,109 @@ type componentProps = {
 }
 
 export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: componentProps) {
-  const updateTimeInput = <K extends keyof Exercise>(newTime: Exercise[K], key: K) => {
+
+  const updateExerciseConfigHandler = <K extends keyof Exercise>(newValue: Exercise[K], key: K) => {
+    updateExerciseConfig(exercise, setExercise, newValue, key);
+  };
+
+  const setColumnList = (newColumnList: Column[]) => {
     const newExercise = exercise.getCopy();
-    newExercise[key] = newTime;
+    newExercise.columnList = newColumnList;
     setExercise(newExercise);
   };
 
-  const updateEquationConfig = (newEquationConfig: EquationConfig, index: number) => {
-    const newExercise = exercise.getCopy();
-    newExercise.columnList[index].config = newEquationConfig;
-    newExercise.columnList[index].equationList = null;
-    setExercise(newExercise);
+  const setEquationConfig = (newEquationConfig: EquationConfig, index: number) => {
+    const newColumnList = [...exercise.columnList];
+    newColumnList[index].config = newEquationConfig;
+    setColumnList(newColumnList);
   };
 
   const addColumnConfigHandler = () => {
-    addExerciseColumn(exercise.columnList, (newColumnList) => {
-      exercise.columnList = newColumnList;
-      setExercise(exercise);
-    });
+    addExerciseColumn(exercise.columnList, setColumnList, exercise.equationCountPerColumn);
   };
 
-  const setColumns = (newColumns: Column[]) => {
-    const newExercise = exercise.getCopy();
-    newExercise.columnList = newColumns;
-    setExercise(newExercise);
-  }
-
   return (<ExerciseConfigWrapper>
+    <div>
       <div>
-        <div>
-          <InputTime
-            label={dictionary.inputLabel.exerciseDuration}
-            value={exercise.questionTime}
-            setValue={(newTime) => updateTimeInput(newTime, 'questionTime')}
-            unit="sec"
-          />
-          <InputTime
-            label={dictionary.inputLabel.answerDuration}
-            value={exercise.answerTime}
-            setValue={(newTime) => updateTimeInput(newTime, 'answerTime')}
-            unit="sec"
-          />
-          <InputTime
-            label={dictionary.inputLabel.equationCountPerColumn}
-            value={exercise.equationCountPerColumn}
-            setValue={(newTime) => updateTimeInput(newTime, 'equationCountPerColumn')}
-          />
-        </div>
-        <BottomInputTimeButtons deleteExercise={deleteExercise} displayDelete={canBeDeleted} />
+        <InputTime
+          label={dictionary.inputLabel.exerciseDuration}
+          value={exercise.questionTime}
+          setValue={(newTime) => updateExerciseConfigHandler(newTime, 'questionTime')}
+          unit="sec"
+        />
+        <InputTime
+          label={dictionary.inputLabel.answerDuration}
+          value={exercise.answerTime}
+          setValue={(newTime) => updateExerciseConfigHandler(newTime, 'answerTime')}
+          unit="sec"
+        />
+        <InputTime
+          label={dictionary.inputLabel.equationCountPerColumn}
+          value={exercise.equationCountPerColumn}
+          setValue={(newTime) => updateExerciseConfigHandler(newTime, 'equationCountPerColumn')}
+        />
       </div>
-      <div>
-        <DivWithScrollBar config={{isHorizontal: true, color: colors.secondary}}>
-          <ColumnConfigListWrapper>
-            {exercise.columnList.map((column, index) => {
-              const updateConfig = <K extends keyof EquationConfig>(newValue: EquationConfig[K], key: K) => {
-                const newConfig = column.config.getCopy();
-                newConfig[key] = newValue;
-                updateEquationConfig(newConfig, index);
+      <BottomInputTimeButtons deleteExercise={deleteExercise} displayDelete={canBeDeleted} />
+    </div>
+    <div>
+      <DivWithScrollBar config={{isHorizontal: true, color: colors.secondary}}>
+        <ColumnConfigListWrapper>
+          {exercise.columnList.map((column, index) => {
+            const setThisColumn = (newColumn: Column) => {
+              setElementOfList(newColumn, exercise.columnList, setColumnList, index);
+            };
+
+            const setCorrespondingEquationList = (newEquationList: Equation[]) => {
+                const newColumn = column.getCopy();
+                newColumn.equationList = newEquationList;
+                setThisColumn(newColumn);
               };
 
-              const deleteColumnHandler = () => {
-                deleteColumn(exercise.columnList, setColumns, index);
-              };
+            const updateEquationConfigHandler = <K extends keyof EquationConfig>(newValue: EquationConfig[K], key: K) => {
+              updateEquationConfig(
+                column.config,
+                (newConfig) => setEquationConfig(newConfig, index),
+                newValue,
+                key,
+                exercise.equationCountPerColumn,
+                column.equationList,
+                setCorrespondingEquationList,
+              );
+            };
 
-              return (<div key={index}>
-                <div>{exercise.columnList.length > 1 ? <CrossExerciceConfig onClick={deleteColumnHandler}/> : null}</div>
-                <div>
-                  <InputColumnWrapper>
-                    <label>{dictionary.inputLabel.type}</label>
-                    <InputType
-                      value={column.config.type}
-                      setValue={(v) => updateConfig(v, 'type')}
-                    />
-                  </InputColumnWrapper>
-                  <InputColumnWrapper>
-                    <label>{dictionary.inputLabel.first}</label>
-                    <InputNumber value={column.config.first} setValue={(v) => updateConfig(v, 'first')} />
-                  </InputColumnWrapper>
-                  <InputColumnWrapper>
-                    <label>{dictionary.inputLabel.second}</label>
-                    <InputNumber value={column.config.second} setValue={(v) => updateConfig(v, 'second')} />
-                  </InputColumnWrapper>
-                  <InputColumnWrapper>
-                    <label>{dictionary.inputLabel.gap}</label>
-                    <InputGap value={column.config.possibleGaps} setValue={(v) => updateConfig(v, 'possibleGaps')} />
-                  </InputColumnWrapper>
-                </div>
-              </div>);
-            })}
-            <div onClick={addColumnConfigHandler}>+</div>
-          </ColumnConfigListWrapper>
-        </DivWithScrollBar>
-      </div>
+            const deleteColumnHandler = () => {
+              deleteColumn(exercise.columnList, setColumnList, index);
+            };
+
+            return (<div key={index}>
+              <div>{exercise.columnList.length > 1 ? <CrossExerciseConfig onClick={deleteColumnHandler}/> : null}</div>
+              <div>
+                <InputColumnWrapper>
+                  <label>{dictionary.inputLabel.type}</label>
+                  <InputType
+                    value={column.config.type}
+                    setValue={(v) => updateEquationConfigHandler(v, 'type')}
+                  />
+                </InputColumnWrapper>
+                <InputColumnWrapper>
+                  <label>{dictionary.inputLabel.first}</label>
+                  <InputNumber value={column.config.first} setValue={(v) => updateEquationConfigHandler(v, 'first')} />
+                </InputColumnWrapper>
+                <InputColumnWrapper>
+                  <label>{dictionary.inputLabel.second}</label>
+                  <InputNumber value={column.config.second} setValue={(v) => updateEquationConfigHandler(v, 'second')} />
+                </InputColumnWrapper>
+                <InputColumnWrapper>
+                  <label>{dictionary.inputLabel.gap}</label>
+                  <InputGap value={column.config.possibleGaps} setValue={(v) => updateEquationConfigHandler(v, 'possibleGaps')} />
+                </InputColumnWrapper>
+              </div>
+            </div>);
+          })}
+          <div onClick={addColumnConfigHandler}>+</div>
+        </ColumnConfigListWrapper>
+      </DivWithScrollBar>
+    </div>
     <div>
       {JSON.stringify(exercise.columnList.map((column) => column.equationList))}
     </div>

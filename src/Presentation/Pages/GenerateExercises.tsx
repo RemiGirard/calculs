@@ -1,7 +1,6 @@
 import Exercise from '@/Domain/GenerateExercises/Entity/Exercise.ts';
 import addExercise from '@/Domain/GenerateExercises/UseCase/addExercise.ts';
-import deleteExercice from '@/Domain/GenerateExercises/UseCase/deleteExercice.ts';
-import updateExercise from '@/Domain/GenerateExercises/UseCase/updateExercise.ts';
+import deleteExercise from '@/Domain/GenerateExercises/UseCase/deleteExercise.ts';
 
 import TopBarWrapper from '@/Presentation/Organisms/TopBarWrapper.ts';
 import { useRouter } from '@/Presentation/Router.tsx';
@@ -16,6 +15,7 @@ import dictionary from '@/Presentation/dictionary.ts';
 import colors from "@/Presentation/colors.ts";
 import { setter } from '@/utils/Type/setter.ts';
 import DivWithScrollBar from "@/utils/Component/DivWithScrollBar/DivWithScrollBar.tsx";
+import setElementOfList from "@/utils/setElementOfList.ts";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -25,51 +25,45 @@ type componentProps = {
 export default ({ exerciseList, setExerciseList }: componentProps) => {
   const { navigate } = useRouter();
 
-  const clickAddExerciseButton = () => addExercise(exerciseList, setExerciseList);
-  const clickPlayButton = () => {
-    console.log('click play');
-  };
-
-  const clickGearButton = () => navigate('config');
+  const clickAddExerciseHandler = () => addExercise(exerciseList, setExerciseList);
+  const clickPlayHandler = () => console.log('click play');
+  const clickGearHandler = () => navigate('config');
 
   const canDeleteExercise = exerciseList.length > 1;
 
   return (<GenerateExercisesWrapper>
-      <TopBarWrapper>
-        <TitleWrapper>
-          <h1>{dictionary.title}</h1>
-        </TitleWrapper>
-        <TopButtonsWrapper>
-          <button onClick={clickGearButton} type="button" aria-label="Config">
-            <Gear />
-          </button>
-        </TopButtonsWrapper>
-      </TopBarWrapper>
-      <DivWithScrollBar config={{color: colors.secondary}}>
-        <ExercisesTableWrapper>
-          <div>
-            {exerciseList.map((exercise, index) => {
-              const deleteThisExercise = () => {
-                deleteExercice(exerciseList, setExerciseList, index);
-              };
+    <TopBarWrapper>
+      <TitleWrapper>
+        <h1>{dictionary.title}</h1>
+      </TitleWrapper>
+      <TopButtonsWrapper>
+        <button onClick={clickGearHandler} type="button" aria-label="Config">
+          <Gear />
+        </button>
+      </TopButtonsWrapper>
+    </TopBarWrapper>
+    <DivWithScrollBar config={{color: colors.secondary}}>
+      <ExercisesTableWrapper>
+        {exerciseList.map((exercise, index) => {
+          const deleteThisExercise = () => deleteExercise(exerciseList, setExerciseList, index);
 
-              const setExercise: setter<Exercise> = (newExercise: Exercise) => {
-                updateExercise(exerciseList, setExerciseList, index, newExercise);
-              };
-              return (<ExerciseConfig
-                  key={exercise.uuid}
-                  exercise={exercise}
-                  setExercise={setExercise}
-                  deleteExercise={deleteThisExercise}
-                  canBeDeleted={canDeleteExercise}
-              />);
-            })}
-          </div>
-        </ExercisesTableWrapper>
-      </DivWithScrollBar>
-      <BottomButtonsWrapper>
-        <button onClick={clickAddExerciseButton} aria-label="add exercise" type="button">+</button>
-        <button onClick={clickPlayButton} aria-label="play" type="button">play</button>
-      </BottomButtonsWrapper>
-    </GenerateExercisesWrapper>);
+          const setThisExercise: setter<Exercise> = (newExercise) => {
+            setElementOfList(newExercise, exerciseList, setExerciseList, index);
+          };
+
+          return (<ExerciseConfig
+              key={exercise.uuid}
+              exercise={exercise}
+              setExercise={setThisExercise}
+              deleteExercise={deleteThisExercise}
+              canBeDeleted={canDeleteExercise}
+          />);
+        })}
+      </ExercisesTableWrapper>
+    </DivWithScrollBar>
+    <BottomButtonsWrapper>
+      <button onClick={clickAddExerciseHandler} aria-label="add exercise" type="button">+</button>
+      <button onClick={clickPlayHandler} aria-label="play" type="button">play</button>
+    </BottomButtonsWrapper>
+  </GenerateExercisesWrapper>);
 };

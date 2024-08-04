@@ -136,7 +136,8 @@ export class Generator implements GeneratorInterface{
             if (e instanceof MaxRerollReachedIncludesError || e instanceof MaxRerollReachedFiltersError) {
                 return shuffleArray(this.generateAll(ranges)).slice(0, count);
             }
-            throw e;
+            console.error(e);
+            return [];
         }
     }
     // let equations: EquationInterface[] = [];
