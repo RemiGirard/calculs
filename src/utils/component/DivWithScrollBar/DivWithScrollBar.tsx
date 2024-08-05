@@ -1,6 +1,6 @@
 import {ReactNode, useEffect, useRef} from "react";
-import useScrollBar from "@/utils/Component/DivWithScrollBar/useScrollBar.tsx";
-import DivWithScrollBarWrapper from "@/utils/Component/DivWithScrollBar/DivWithScrollBarWrapper.tsx";
+import useScrollBar from "@/utils/component/DivWithScrollBar/useScrollBar.tsx";
+import DivWithScrollBarWrapper from "@/utils/component/DivWithScrollBar/DivWithScrollBarWrapper.tsx";
 
 const defaultConfig = {
   isHorizontal: false,

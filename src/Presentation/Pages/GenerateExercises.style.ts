@@ -14,6 +14,8 @@ export default styled.div`
         max-height: 80%;
     }
     > div:nth-child(3) {
-        height: 10%;
+        width: 98%;
+        height: 8%;
+        padding: 0.5% 1%;
     }
 `;

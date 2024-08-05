@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import EquationConfig from '@/Domain/GenerateExercises/Entity/EquationConfig.ts';
-import { setter } from '@/utils/Type/setter.ts';
+import { setter } from '@/utils/type/setter.ts';
 import dictionary from "@/Presentation/dictionary.ts";
 import InputGapWrapper from "@/Presentation/Molecules/Input/InputGap.style.ts";
 

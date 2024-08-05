@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import setElementOfList from '@/utils/setElementOfList.ts';
+import setElementOfList from '@/utils/array/setElementOfList.ts';
 
 describe('setElementOfList', () => {
   test.each([

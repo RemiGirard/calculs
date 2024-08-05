@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { combinePossibilities } from './combinePossibilities';
+import { combinePossibilities } from './combinePossibilities.ts';
 
 describe('combinePossibilities', () => {
   test.each([

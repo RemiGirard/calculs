@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import { calcTypeList, CalcType } from '@/Domain/GenerateExercises/Entity/CalcTypeList.ts';
 import dictionary from '@/Presentation/dictionary.ts';
-import { setter } from '@/utils/Type/setter.ts';
+import { setter } from '@/utils/type/setter.ts';
 import typedElementIfIncludedOrUndefined from '@/utils/typedElementIfIncludedOrUndefined.ts';
 
 interface componentProps {

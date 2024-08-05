@@ -5,8 +5,8 @@ import {
 import {Filter} from "@/Domain/GenerateExercises/Entity/Filter";
 import Equation from "@/Domain/GenerateExercises/Entity/Equation";
 
-import {shuffleArray} from "@/utils/utils.ts";
-import {combinePossibilities} from "@/utils/combinePossibilities.ts";
+import shuffleArray from "@/utils/array/shuffleArray.ts";
+import {combinePossibilities} from "@/utils/array/combinePossibilities.ts";
 import {GeneratorInterface} from "@/Domain/GenerateExercises/Generator/GeneratorInterface";
 import {CalcType} from "@/Domain/GenerateExercises/Entity/CalcTypeList.ts";
 import {WrongRangeTypeError} from "@/Domain/GenerateExercises/Error/WrongRangeTypeError.ts";

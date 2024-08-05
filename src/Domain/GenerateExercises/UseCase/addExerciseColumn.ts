@@ -1,5 +1,5 @@
 import Column from '@/Domain/GenerateExercises/Entity/Column.ts';
-import { setter } from '@/utils/Type/setter.ts';
+import { setter } from '@/utils/type/setter.ts';
 import {generateEquationList} from "@/Domain/GenerateExercises/Generator/useGenerator.tsx";
 
 export default (columnList: Column[], setColumnList: setter<Column[]>, equationCount: number) => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import includesOneSubLvl from './includesOneSubLvl';
+import includesOneSubLvl from './includesOneSubLvl.ts';
 
 describe('includesOneSubLvl', () => {
   test.each([

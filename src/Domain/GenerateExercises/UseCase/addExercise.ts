@@ -1,5 +1,5 @@
 import Exercise from '@/Domain/GenerateExercises/Entity/Exercise.ts';
-import { setter } from '@/utils/Type/setter.ts';
+import { setter } from '@/utils/type/setter.ts';
 
 import {generateEquationList} from "@/Domain/GenerateExercises/Generator/useGenerator.tsx";
 

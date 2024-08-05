@@ -7,6 +7,7 @@ import { Route, RouterProvider } from '@/Presentation/Router.tsx';
 import ConfigContext from '@/Presentation/ConfigContext.ts';
 import GenerateExercises from '@/Presentation/Pages/GenerateExercises.tsx';
 import ConfigPage from '@/Presentation/Pages/Config.tsx';
+import Game from "@/Presentation/Pages/Game.tsx";
 
 export default function () {
   const [config, setConfig] = useState(new Config());
@@ -16,6 +17,7 @@ export default function () {
     <RouterProvider>
       <Route name="generateExercises" render={() => <GenerateExercises exerciseList={exerciseList} setExerciseList={setExerciseList} />} />
       <Route name="config" render={() => <ConfigPage config={config} setConfig={setConfig} />} />
+      <Route name="game" render={() => <Game exerciseList={exerciseList}/>} />
     </RouterProvider>
   </ConfigContext.Provider>);
 }

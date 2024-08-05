@@ -13,9 +13,11 @@ import Gear from '@/Presentation/assets/icons/Gear.tsx';
 import ExerciseConfig from '@/Presentation/Organisms/ExerciseConfig.tsx';
 import dictionary from '@/Presentation/dictionary.ts';
 import colors from "@/Presentation/colors.ts";
-import { setter } from '@/utils/Type/setter.ts';
-import DivWithScrollBar from "@/utils/Component/DivWithScrollBar/DivWithScrollBar.tsx";
-import setElementOfList from "@/utils/setElementOfList.ts";
+import { setter } from '@/utils/type/setter.ts';
+import DivWithScrollBar from "@/utils/component/DivWithScrollBar/DivWithScrollBar.tsx";
+import setElementOfList from "@/utils/array/setElementOfList.ts";
+import Plus from "@/Presentation/assets/icons/Plus.tsx";
+import Play from "@/Presentation/assets/icons/Play.tsx";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -25,9 +27,8 @@ type componentProps = {
 export default ({ exerciseList, setExerciseList }: componentProps) => {
   const { navigate } = useRouter();
 
-
   const clickAddExerciseHandler = () => addExercise(exerciseList, setExerciseList);
-  const clickPlayHandler = () => console.log('click play');
+  const clickPlayHandler = () => navigate('game');
   const clickGearHandler = () => navigate('config');
 
   const canDeleteExercise = exerciseList.length > 1;
@@ -63,8 +64,8 @@ export default ({ exerciseList, setExerciseList }: componentProps) => {
       </ExercisesTableWrapper>
     </DivWithScrollBar>
     <BottomButtonsWrapper>
-      <button onClick={clickAddExerciseHandler} aria-label="add exercise" type="button">+</button>
-      <button onClick={clickPlayHandler} aria-label="play" type="button">play</button>
+      <button onClick={clickAddExerciseHandler} aria-label="add exercise" type="button"><Plus /></button>
+      <button onClick={clickPlayHandler} aria-label="play" type="button"><Play /></button>
     </BottomButtonsWrapper>
   </GenerateExercisesWrapper>);
 };

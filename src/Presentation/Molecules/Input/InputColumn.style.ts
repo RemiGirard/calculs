@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import colors from "@/Presentation/colors.ts";
-import unselectable from "@/utils/Css/unselectable.ts";
+import unselectable from "@/utils/css/unselectable.ts";
 
 export default styled.div<{$isType?: boolean}>`
     display: flex;

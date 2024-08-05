@@ -1,4 +1,4 @@
-import CrossExerciseConfigWrapper from '@/Presentation/Molecules/CrossExerciseConfig.style.ts';
+import CrossExerciseConfigWrapper from '@/Presentation/Atoms/CrossExerciseConfig.style.ts';
 
 type componentProps = {
   onClick: () => void;

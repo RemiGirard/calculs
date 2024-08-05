@@ -1,4 +1,4 @@
-import { setter } from '@/utils/Type/setter.ts';
+import { setter } from '@/utils/type/setter.ts';
 import Exercise from '@/Domain/GenerateExercises/Entity/Exercise.ts';
 import ExerciseConfigWrapper from '@/Presentation/Organisms/ExerciseConfig.style.ts';
 import InputTime from '@/Presentation/Molecules/Input/InputTime.tsx';
@@ -11,15 +11,15 @@ import InputNumber from '@/Presentation/Molecules/Input/InputNumber.tsx';
 import InputGap from '@/Presentation/Molecules/Input/InputGap.tsx';
 import BottomInputTimeButtons from '@/Presentation/Molecules/BottomInputTimeButtons.tsx';
 import addExerciseColumn from '@/Domain/GenerateExercises/UseCase/addExerciseColumn.ts';
-import CrossExerciseConfig from '@/Presentation/Molecules/CrossExerciseConfig.tsx';
+import CrossExerciseConfig from '@/Presentation/Atoms/CrossExerciseConfig.tsx';
 import Column from "@/Domain/GenerateExercises/Entity/Column.ts";
 import deleteColumn from "@/Domain/GenerateExercises/UseCase/deleteColumn.ts";
-import DivWithScrollBar from "@/utils/Component/DivWithScrollBar/DivWithScrollBar.tsx";
+import DivWithScrollBar from "@/utils/component/DivWithScrollBar/DivWithScrollBar.tsx";
 import colors from "@/Presentation/colors.ts";
 import updateExerciseConfig from "@/Domain/GenerateExercises/UseCase/updateExerciseConfig.ts";
 import updateEquationConfig from "@/Domain/GenerateExercises/UseCase/updateEquationConfig.ts";
 import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
-import setElementOfList from "@/utils/setElementOfList.ts";
+import setElementOfList from "@/utils/array/setElementOfList.ts";
 
 type componentProps = {
     exercise: Exercise;
@@ -133,7 +133,7 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
       </DivWithScrollBar>
     </div>
     <div>
-      {JSON.stringify(exercise.columnList.map((column) => column.equationList))}
+
     </div>
   </ExerciseConfigWrapper>);
 }

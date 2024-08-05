@@ -1,5 +1,5 @@
 import {ChangeEvent, useState} from 'react';
-import { setter } from '@/utils/Type/setter.ts';
+import { setter } from '@/utils/type/setter.ts';
 import { NumberRange, numberRangeTypes } from '@/Domain/GenerateExercises/Entity/NumberRange.ts';
 import { defaultNumberGeneration } from '@/Domain/GenerateExercises/Entity/defaultExerciseList.ts';
 import typedElementIfIncludedOrUndefined from '@/utils/typedElementIfIncludedOrUndefined.ts';

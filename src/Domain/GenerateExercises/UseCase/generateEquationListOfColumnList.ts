@@ -1,4 +1,4 @@
-import type {setter} from "@/utils/Type/setter.ts";
+import type {setter} from "@/utils/type/setter.ts";
 import {generateEquationList} from "@/Domain/GenerateExercises/Generator/useGenerator.tsx";
 import Column from "@/Domain/GenerateExercises/Entity/Column.ts";
 

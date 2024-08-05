@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import InputWrapper from './InputTime.style.ts';
-import { setter } from '@/utils/Type/setter.ts';
+import { setter } from '@/utils/type/setter.ts';
 
 type componentProps= {
   value: number,
