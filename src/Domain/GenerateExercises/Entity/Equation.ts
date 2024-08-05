@@ -1,6 +1,7 @@
 import { CalcType } from '@/Domain/GenerateExercises/Entity/CalcTypeList.ts';
 import getRandomItemOfArray from "@/utils/array/getRandomItemOfArray.ts";
 import MathFunctions from '@/Domain/GenerateExercises/Entity/MathFunctions.ts';
+import dictionary from "@/Presentation/dictionary.ts";
 
 export type ModuloResult = {quotient: number, remainder:number};
 
@@ -12,6 +13,7 @@ export default class Equation {
   2: number;
   result?: number|ModuloResult;
   gap?: ElementId;
+  uuid: string = crypto.randomUUID();
 
   constructor({
     first, second, operation, possibleGaps, calculateResult = true, gap,
@@ -29,6 +31,7 @@ export default class Equation {
     if (possibleGaps) this.applyRandomGap(possibleGaps);
     if (calculateResult) this.calculateResult();
     if (gap) this.gap = gap;
+    this.uuid = crypto.randomUUID();
   }
 
   calculateResult() {
@@ -39,5 +42,14 @@ export default class Equation {
 
   applyRandomGap(possibleGaps: ElementId[]) {
     this.gap = possibleGaps.length > 0 ? getRandomItemOfArray(possibleGaps) : 'result';
+  }
+
+  getCharacterLength() {
+    if(this.result === undefined) return 1;
+    return this[1].toString().length + 2 + this[2].toString().length + 2 + this.result.toString().length;
+  }
+
+  render() {
+    return `${this[1]} ${dictionary.calcTypeSymbol[this.operation]} ${this[2]} = ${this.result}`;
   }
 }

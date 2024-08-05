@@ -1,0 +1,1 @@
+export default () => ({width: document.body.clientWidth, height: document.body.clientHeight});

@@ -60,4 +60,23 @@ export default class Exercise {
       columnList: this.columnList.map((column) => new Column({ config: column.config })),
     });
   }
+
+  getEquationMaxLength(): number {
+    return this.columnList.reduce((acc, column) => {
+      if (column.equationList === null) return acc;
+      return Math.max(acc, ...column.equationList.map((equation) => equation.getCharacterLength()));
+    }, 1);
+  }
+
+  getColumnLength(): number {
+    return this.equationCountPerColumn;
+  }
+
+  getRowLength(): number {
+    return this.getEquationMaxLength()*this.columnList.length;
+  }
+
+  getLength(): {row: number, column: number} {
+    return {row: this.getRowLength(), column: this.getColumnLength()};
+  }
 }

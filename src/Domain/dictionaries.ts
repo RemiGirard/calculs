@@ -26,5 +26,16 @@ export default {
       second: '2ème',
       result: 'résultat',
     },
+    calcTypeSymbol: {
+      addition: '+',
+      additionWithoutCarry: '+',
+      subtraction: '-',
+      positiveSubtraction: '-',
+      positiveSubtractionWithoutCarry: '-',
+      multiplication: '×',
+      division: '÷',
+      intDivision: '÷',
+      modulo: '/',
+    },
   },
 };
