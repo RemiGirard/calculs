@@ -12,7 +12,7 @@ export default styled.div`
             width: 15%;
             > div:nth-child(1) {
                 background-color: ${colors.secondary};
-                border-radius: 10px;
+                border-radius: 2px;
                 > fieldset {
                     padding-top: 5%;
                 }

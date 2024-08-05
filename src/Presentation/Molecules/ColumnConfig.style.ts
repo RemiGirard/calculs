@@ -9,7 +9,7 @@ export default styled.div`
         display: flex;
         flex-shrink: 0;
         background-color: ${colors.secondary};
-        border-radius: 10px;
+        border-radius: 2px;
         margin-right: 0.5%;
         width: 300px;
         overflow: hidden;
@@ -19,7 +19,7 @@ export default styled.div`
         min-width: 50px;
         background-color: ${colors.secondary};
         border: none;
-        border-radius: 10px;
+        border-radius: 2px;
         color: inherit;
         font-size: 1.5em;
         justify-content: center;

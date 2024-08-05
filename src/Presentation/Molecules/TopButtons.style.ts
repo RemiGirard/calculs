@@ -14,7 +14,7 @@ export default styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 5px;
+        border-radius: 2px;
         border: none;
         background-color: ${colors.main};
         cursor: pointer;

@@ -9,7 +9,7 @@ export default styled.div`
         min-width: 100px;
         background-color: ${colors.main};
         border: none;
-        border-radius: 5px;
+        border-radius: 2px;
         &:hover {
             background-color: ${colors.mainHighlight};
         }

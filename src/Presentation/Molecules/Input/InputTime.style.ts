@@ -8,7 +8,7 @@ export default styled.fieldset<{
 }>`
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: 2px;
   border: none;
   cursor: pointer;
   &:hover{
