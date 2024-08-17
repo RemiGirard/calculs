@@ -16,12 +16,13 @@ export default styled.div`
     }
     > button:last-child {
         display: flex;
-        min-width: 50px;
+        min-width: 70px;
         background-color: ${colors.secondary};
         border: none;
         border-radius: 2px;
         color: inherit;
-        font-size: 1.5em;
+        font-size: 2.5em;
+        font-weight: 1000;
         justify-content: center;
         align-items: center;
         &:hover {
