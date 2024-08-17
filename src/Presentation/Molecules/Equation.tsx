@@ -1,6 +1,7 @@
 import EquationWrapper from '@/Presentation/Molecules/Equation.style.tsx'
 import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
 import Answer from "@/Presentation/Atoms/Answer.style.ts";
+import dictionary from "@/Presentation/dictionary.ts";
 
 type componentProps = {
   equation: Equation;
@@ -26,7 +27,7 @@ export default ({equation, displayAnswer}: componentProps) => {
   }
   return (<EquationWrapper>
     <div>{valueOrGap('1')}</div>
-    <div> + </div>
+    <div> {dictionary.calcTypeSymbol[equation.operation]} </div>
     <div>{valueOrGap('2')}</div>
     <div> = </div>
     <div>{valueOrGap('result')}</div>
