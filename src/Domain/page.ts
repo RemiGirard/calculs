@@ -1,7 +1,7 @@
 export const PageNames = [
   'generateExercises',
   'game',
-  // 'finish',
+  'finish',
   'config',
   // 'pageNotFound',
 ] as const;

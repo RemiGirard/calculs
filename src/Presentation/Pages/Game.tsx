@@ -3,8 +3,12 @@ import GameWrapper from "@/Presentation/Pages/Game.style.ts";
 import {useEffect, useState} from "react";
 import getBodySize from "@/utils/getBodySize.ts";
 import {useRouter} from "@/Presentation/Router.tsx";
-import BottomAbsoluteNavigationButtons from "@/Presentation/Organisms/BottomAbsoluteNavigationButtons.tsx";
+import BottomAbsoluteNavigationButtons from "@/Presentation/Organisms/BottomAbsoluteNavigationButtons.style";
 import TopAbsoluteNavigationButtons from "@/Presentation/Organisms/TopAbsoluteNavigationButtons.tsx";
+import ArrowRight from "@/Presentation/assets/icons/ArrowRight.tsx";
+import ArrowLeft from "@/Presentation/assets/icons/ArrowLeft.tsx";
+import CloseCross from "@/Presentation/assets/icons/CloseCross.tsx";
+import Check from "@/Presentation/assets/icons/Check.tsx";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -13,8 +17,14 @@ type componentProps = {
 export default ({ exerciseList }: componentProps) => {
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [bodySize, setBodySize] = useState(getBodySize());
+  const [displayButtons, setDisplayButtons] = useState(false);
 
   const { navigate } = useRouter();
+
+  const exercise = exerciseList[exerciseIndex];
+  const length = exercise.getLength();
+  const isLastExercise = exerciseIndex === exerciseList.length - 1;
+  const isFirstExercise = exerciseIndex === 0;
 
   useEffect(() => {
     const updateSize = () => setBodySize(getBodySize());
@@ -22,16 +32,40 @@ export default ({ exerciseList }: componentProps) => {
     return () => window.removeEventListener('resize', updateSize);
   });
 
+  useEffect(() => {
+    let hideButtonsTimeout: number;
+    const showButtons = () => {
+      setDisplayButtons(true);
+      clearTimeout(hideButtonsTimeout);
+      hideButtonsTimeout = window.setTimeout(() => setDisplayButtons(false), 1000);
+    };
+    window.addEventListener('mousemove', showButtons);
+
+    return () => {
+      window.removeEventListener('mousemove', showButtons);
+      clearTimeout(hideButtonsTimeout);
+    };
+  });
+
   const pressBackButtonHandler = () => {
-    navigate('generateExercises');
+    if(isFirstExercise) {
+      navigate('generateExercises')
+    } else {
+      setExerciseIndex(exerciseIndex - 1);
+    }
   };
+
+  const pressCloseButtonHandler = () => {
+    navigate('generateExercises');
+  }
 
   const pressNextButtonHandler = () => {
-    console.log('pressNextButtonHandler');
+    if(isLastExercise) {
+      navigate('finish');
+    } else {
+      setExerciseIndex(exerciseIndex + 1);
+    }
   };
-
-  const exercise = exerciseList[exerciseIndex];
-  const length = exercise.getLength();
 
   const getFontSize = (length: {row: number, column: number}, pageSize: {width: number, height: number}) => {
     const factor = {
@@ -46,7 +80,7 @@ export default ({ exerciseList }: componentProps) => {
 
   const fontSize = getFontSize(length, bodySize);
 
-  return (<GameWrapper $fontSize={fontSize}>
+  return (<GameWrapper $fontSize={fontSize} $displayButtons={displayButtons}>
     <div>
       {exercise.columnList.map((column) => {
       if(column.equationList === null) throw new Error('EquationList is null');
@@ -57,11 +91,11 @@ export default ({ exerciseList }: componentProps) => {
     </div>
     <TopAbsoluteNavigationButtons>
       <div />
-      <button onClick={pressBackButtonHandler}>Close</button>
+      <button onClick={pressCloseButtonHandler}><CloseCross /></button>
     </TopAbsoluteNavigationButtons>
     <BottomAbsoluteNavigationButtons>
-      <button onClick={pressBackButtonHandler}>Back</button>
-      <button onClick={pressNextButtonHandler}>Next</button>
+      <button onClick={pressBackButtonHandler}><ArrowLeft /></button>
+      <button onClick={pressNextButtonHandler}>{isLastExercise ? <Check /> : <ArrowRight /> }</button>
     </BottomAbsoluteNavigationButtons>
   </GameWrapper>);
 }

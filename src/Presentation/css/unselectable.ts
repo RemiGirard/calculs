@@ -1,4 +1,4 @@
-import styleObjectToString from '@/utils/css/styleObjectToString';
+import styleObjectToString from '@/utils/css/styleObjectToString.ts';
 import {CSSProperties} from "react";
 
 const styleObject: CSSProperties = {

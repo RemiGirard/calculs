@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import colors from '@/Presentation/colors.ts';
-import unselectable from "@/utils/css/unselectable.ts";
+import unselectable from "@/Presentation/css/unselectable.ts";
 
 export default styled.fieldset<{
   $isFocus: boolean,
