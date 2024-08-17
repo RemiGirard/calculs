@@ -6,8 +6,9 @@ export default styled.div<{$isType?: boolean}>`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
+    align-items: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
     &:hover {
         background-color: ${colors.background};
     }

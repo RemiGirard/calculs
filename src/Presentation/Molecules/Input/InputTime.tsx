@@ -14,6 +14,7 @@ export default function({
   value, setValue, label = '', unit = ''
 }: componentProps) {
   const inputElement = useRef<null | HTMLInputElement>(null);
+  const wrapper = useRef<null | HTMLFieldSetElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
@@ -31,13 +32,20 @@ export default function({
 
   const setFocusIn = () => {
     inputElement?.current?.focus();
-    inputElement?.current?.select();
+    if(!isFocus) {
+      inputElement?.current?.select();
+    }
     setIsFocus(true);
   };
 
-  const setFocusOut = () => {
-    setIsFocus(false);
-    setIsEmpty(false);
+  const setFocusOut = (e: React.FocusEvent<HTMLInputElement>) => {
+    if(wrapper.current?.contains(e.target)) {
+      inputElement?.current?.focus();
+      inputElement?.current?.setSelectionRange(inputElement.current.value.length, inputElement.current.value.length);
+    } else {
+      setIsFocus(false);
+      setIsEmpty(false);
+    }
   };
 
   const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -51,6 +59,7 @@ export default function({
   };
 
   return (<InputWrapper
+    ref={wrapper}
     onClick={setFocusIn}
     $isFocus={isFocus}
     $labelSize={label.split('').length}
