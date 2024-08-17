@@ -20,6 +20,7 @@ import updateExerciseConfig from "@/Domain/GenerateExercises/UseCase/updateExerc
 import updateEquationConfig from "@/Domain/GenerateExercises/UseCase/updateEquationConfig.ts";
 import Equation from "@/Domain/GenerateExercises/Entity/Equation.ts";
 import setElementOfList from "@/utils/array/setElementOfList.ts";
+import ExerciseGame from "@/Presentation/Organisms/ExerciseGame.tsx";
 
 type componentProps = {
     exercise: Exercise;
@@ -133,7 +134,7 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
       </DivWithScrollBar>
     </div>
     <div>
-
+      <ExerciseGame exercise={exercise} displayAnswer={true} />
     </div>
   </ExerciseConfigWrapper>);
 }

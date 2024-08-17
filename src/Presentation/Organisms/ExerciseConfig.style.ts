@@ -25,10 +25,10 @@ export default styled.div`
         }
         &:nth-child(3) {
             width: 20%;
+            height: 250px;
             display: flex;
             overflow: hidden;
             margin-right: 0;
-            background-color: ${colors.secondary};
         }
     }
 `;

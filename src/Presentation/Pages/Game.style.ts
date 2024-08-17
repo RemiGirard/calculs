@@ -3,21 +3,12 @@ import colors from "@/Presentation/colors.ts";
 import slideDown from "@/Presentation/css/slideDown.ts";
 import slideUp from "@/Presentation/css/slideUp.ts";
 
-export default styled.div<{$fontSize: number, $displayButtons: boolean}>`
+export default styled.div<{$displayButtons: boolean}>`
     width: 100%;
     height: 100%;
-    background-color: ${colors.main};
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-size: ${({$fontSize}) => $fontSize}em;
-    > div:nth-child(1) {
-        display: flex;
-        justify-content: space-around;
-        > div {
-            display: table;
-        }
-    }
     > div {
         &:nth-child(2), &:nth-child(3) {
             > button {
@@ -27,7 +18,7 @@ export default styled.div<{$fontSize: number, $displayButtons: boolean}>`
                 width: 12%;
                 border: none;
                 color: ${colors.mainText};
-                background-color: ${colors.secondary};
+                background-color: ${colors.main};
                 opacity: 0.8;
                 &:hover {
                     background-color: ${colors.mainHighlight};

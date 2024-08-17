@@ -1,1 +1,1 @@
-export default () => ({width: document.body.clientWidth, height: document.body.clientHeight});
+export default (container: HTMLDivElement) => ({width: container.clientWidth, height: container.clientHeight});
