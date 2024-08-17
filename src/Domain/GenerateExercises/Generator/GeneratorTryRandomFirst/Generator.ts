@@ -14,6 +14,7 @@ import {WrongRangeTypeError} from "@/Domain/GenerateExercises/Error/WrongRangeTy
 export type GeneratorType = typeof Generator;
 export class Generator implements GeneratorInterface {
     protected filters: Filter[] = [];
+    protected randomFilters: Filter[] = [];
     protected maxRerollIncludes = 100;
     protected maxRerollFilters = 100;
     protected operation: CalcType = 'addition';
@@ -57,7 +58,7 @@ export class Generator implements GeneratorInterface {
                 second: possibility[1],
                 operation: this.operation,
             }))
-            .filter((equation) => !this.filters.some(filter => filter(equation)))
+            .filter((equation) => this.filters.every(filter => filter(equation)))
         ;
     }
 
@@ -98,8 +99,8 @@ export class Generator implements GeneratorInterface {
 
         for(let i = 0; i < count; i++) {
             let equation: Equation|undefined = undefined;
-            let included: boolean;
-            let filtered: boolean;
+            let included: boolean = false;
+            let filtered: boolean = false;
             let currentRerollIncludes = 0;
             let currentFiltersReroll = 0;
             do {
@@ -114,7 +115,10 @@ export class Generator implements GeneratorInterface {
                     operation: this.operation,
                 });
                 equation = currentEquation;
-                filtered = this.filters.length > 0 ? !this.filters.every(filter => filter(currentEquation)) : false;
+                filtered = this.filters.length > 0 ? (
+                  !this.filters.every(filter => filter(currentEquation))
+                  || !this.randomFilters.every(filter => filter(currentEquation))
+                ) : false;
                 included = filtered ? false : this.hasSameEquation(currentEquation, equations);
                 if(filtered) currentFiltersReroll++;
                 if(included) currentRerollIncludes++;
@@ -127,7 +131,7 @@ export class Generator implements GeneratorInterface {
                     break;
                 }
             } while (included || filtered);
-            if(equation !== undefined){
+            if(equation !== undefined && !filtered && !included){
                 equations.push(equation);
             }
         }

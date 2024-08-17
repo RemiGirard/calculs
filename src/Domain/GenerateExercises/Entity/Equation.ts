@@ -35,9 +35,7 @@ export default class Equation {
   }
 
   calculateResult() {
-    if (this.operation && this[1] && this[2]) {
       this.result = MathFunctions[this.operation](this[1], this[2]);
-    }
   }
 
   applyRandomGap(possibleGaps: ElementId[]) {

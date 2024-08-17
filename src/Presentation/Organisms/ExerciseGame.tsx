@@ -20,7 +20,7 @@ export default ({ exercise, displayAnswer }: componentProps) => {
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
-  });
+  }, []);
 
   const getFontSize = (length: {row: number, column: number}, pageSize: {width: number, height: number}) => {
     const factor = {
@@ -36,7 +36,7 @@ export default ({ exercise, displayAnswer }: componentProps) => {
   const fontSize = getFontSize(exerciseLength, bodySize);
 
   return (<ExerciseGameWrapper $fontSize={fontSize} ref={container}>
-      {container.current ? exercise.columnList.map((column) => {
+      {container.current !== null ? exercise.columnList.map((column) => {
       if(column.equationList === null) throw new Error('EquationList is null');
       return (<div key={column.uuid}>
         {column.equationList.map((equation) => <Equation key={equation.uuid} equation={equation} displayAnswer={displayAnswer} />)}
