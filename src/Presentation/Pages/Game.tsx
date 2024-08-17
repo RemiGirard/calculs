@@ -9,6 +9,7 @@ import ArrowRight from "@/Presentation/assets/icons/ArrowRight.tsx";
 import ArrowLeft from "@/Presentation/assets/icons/ArrowLeft.tsx";
 import CloseCross from "@/Presentation/assets/icons/CloseCross.tsx";
 import Check from "@/Presentation/assets/icons/Check.tsx";
+import Equation from "@/Presentation/Molecules/Equation.tsx";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -16,15 +17,16 @@ type componentProps = {
 
 export default ({ exerciseList }: componentProps) => {
   const [exerciseIndex, setExerciseIndex] = useState(0);
+  const [displayAnswer, setDisplayAnswer] = useState(false);
   const [bodySize, setBodySize] = useState(getBodySize());
   const [displayButtons, setDisplayButtons] = useState(false);
 
   const { navigate } = useRouter();
 
   const exercise = exerciseList[exerciseIndex];
-  const length = exercise.getLength();
-  const isLastExercise = exerciseIndex === exerciseList.length - 1;
-  const isFirstExercise = exerciseIndex === 0;
+  const exerciseLength = exercise.getLength();
+  const isLastStep = exerciseIndex === exerciseList.length - 1 && displayAnswer;
+  const isFirstStep = exerciseIndex === 0 && !displayAnswer;
 
   useEffect(() => {
     const updateSize = () => setBodySize(getBodySize());
@@ -47,29 +49,47 @@ export default ({ exerciseList }: componentProps) => {
     };
   });
 
-  const pressBackButtonHandler = () => {
-    if(isFirstExercise) {
-      navigate('generateExercises')
+  const setNextStep = () => {
+    if(isLastStep) {
+      navigate('finish');
     } else {
-      setExerciseIndex(exerciseIndex - 1);
+      if(!displayAnswer) {
+        setDisplayAnswer(true);
+      } else {
+        setDisplayAnswer(false);
+        setExerciseIndex(exerciseIndex + 1);
+      }
     }
+  }
+
+  const setPreviousStep = () => {
+    if(isFirstStep) {
+      navigate('generateExercises');
+    } else {
+      if (displayAnswer) {
+        setDisplayAnswer(false);
+      } else {
+        setDisplayAnswer(true);
+        setExerciseIndex(exerciseIndex - 1);
+      }
+    }
+  }
+
+  const pressBackButtonHandler = () => {
+    setPreviousStep();
+  };
+
+  const pressNextButtonHandler = () => {
+    setNextStep();
   };
 
   const pressCloseButtonHandler = () => {
     navigate('generateExercises');
-  }
-
-  const pressNextButtonHandler = () => {
-    if(isLastExercise) {
-      navigate('finish');
-    } else {
-      setExerciseIndex(exerciseIndex + 1);
-    }
   };
 
   const getFontSize = (length: {row: number, column: number}, pageSize: {width: number, height: number}) => {
     const factor = {
-      width: 1/15,
+      width: 1/12,
       height: 1/22,
     };
     const sizeFromWidth = factor.width*(pageSize.width/length.row);
@@ -78,14 +98,14 @@ export default ({ exerciseList }: componentProps) => {
     return Math.max(1, Math.min(sizeFromWidth, sizeFromHeight));
   }
 
-  const fontSize = getFontSize(length, bodySize);
+  const fontSize = getFontSize(exerciseLength, bodySize);
 
   return (<GameWrapper $fontSize={fontSize} $displayButtons={displayButtons}>
     <div>
       {exercise.columnList.map((column) => {
       if(column.equationList === null) throw new Error('EquationList is null');
       return (<div key={column.uuid}>
-        {column.equationList.map((equation) => <div key={equation.uuid}>{equation.render()}</div>)}
+        {column.equationList.map((equation) => <Equation key={equation.uuid} equation={equation} displayAnswer={displayAnswer} />)}
       </div>);
     })}
     </div>
@@ -95,7 +115,7 @@ export default ({ exerciseList }: componentProps) => {
     </TopAbsoluteNavigationButtons>
     <BottomAbsoluteNavigationButtons>
       <button onClick={pressBackButtonHandler}><ArrowLeft /></button>
-      <button onClick={pressNextButtonHandler}>{isLastExercise ? <Check /> : <ArrowRight /> }</button>
+      <button onClick={pressNextButtonHandler}>{isLastStep ? <Check /> : <ArrowRight /> }</button>
     </BottomAbsoluteNavigationButtons>
   </GameWrapper>);
-}
+};

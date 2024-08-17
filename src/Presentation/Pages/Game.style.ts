@@ -13,17 +13,13 @@ export default styled.div<{$fontSize: number, $displayButtons: boolean}>`
     font-size: ${({$fontSize}) => $fontSize}em;
     > div:nth-child(1) {
         display: flex;
-        flex-direction: row;
         justify-content: space-around;
-        align-items: center;
         > div {
-            display: flex;
-            flex-direction: column;
+            display: table;
         }
     }
     > div {
         &:nth-child(2), &:nth-child(3) {
-            position: fixed;
             > button {
                 min-height: 100px;
                 height: 20%;
@@ -36,7 +32,6 @@ export default styled.div<{$fontSize: number, $displayButtons: boolean}>`
                 &:hover {
                     background-color: ${colors.mainHighlight};
                 }
-
                 > svg {
                     width: 100%;
                     height: 100%;
