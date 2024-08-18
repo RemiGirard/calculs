@@ -9,6 +9,6 @@ describe('getBodySize', () => {
     [1280, 720],
   ])('getBodyRatio with width %i and height %i', (width, height) => {
     vi.stubGlobal('document', {body: { clientWidth: width, clientHeight: height }});
-    expect(getBodySize()).toEqual({width, height});
+    expect(getBodySize(document.body as HTMLDivElement)).toEqual({width, height});
   });
 });
