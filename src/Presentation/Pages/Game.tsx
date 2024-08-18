@@ -1,6 +1,6 @@
 import Exercise from "@/Domain/GenerateExercises/Entity/Exercise.ts";
 import GameWrapper from "@/Presentation/Pages/Game.style.ts";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useRouter} from "@/Presentation/Router.tsx";
 import BottomAbsoluteNavigationButtons from "@/Presentation/Organisms/BottomAbsoluteNavigationButtons.style";
 import TopAbsoluteNavigationButtons from "@/Presentation/Organisms/TopAbsoluteNavigationButtons.tsx";
@@ -9,6 +9,10 @@ import ArrowLeft from "@/Presentation/assets/icons/ArrowLeft.tsx";
 import CloseCross from "@/Presentation/assets/icons/CloseCross.tsx";
 import Check from "@/Presentation/assets/icons/Check.tsx";
 import ExerciseGame from "@/Presentation/Organisms/ExerciseGame.tsx";
+import useDisplayOnMouseMove from "@/utils/hook/useDisplayOnMouseMove.ts";
+import stepNavigator from "@/Domain/Game/UseCase/stepNavigator.ts";
+import quitGame from "@/Domain/Game/UseCase/quitGame.ts";
+import useTimeBar from "@/Presentation/hooks/useTimeBar.tsx";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -17,77 +21,50 @@ type componentProps = {
 export default ({ exerciseList }: componentProps) => {
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [displayAnswer, setDisplayAnswer] = useState(false);
-  const [displayButtons, setDisplayButtons] = useState(false);
-
+  const {display: displayButtons} = useDisplayOnMouseMove({});
   const { navigate } = useRouter();
 
-  const exercise = exerciseList[exerciseIndex];
-  const isLastStep = exerciseIndex === exerciseList.length - 1 && displayAnswer;
-  const isFirstStep = exerciseIndex === 0 && !displayAnswer;
+  const currentExercise = exerciseList[exerciseIndex];
 
-
-  useEffect(() => {
-    let hideButtonsTimeout: number;
-    const showButtons = () => {
-      setDisplayButtons(true);
-      clearTimeout(hideButtonsTimeout);
-      hideButtonsTimeout = window.setTimeout(() => setDisplayButtons(false), 1000);
-    };
-    window.addEventListener('mousemove', showButtons);
-
-    return () => {
-      window.removeEventListener('mousemove', showButtons);
-      clearTimeout(hideButtonsTimeout);
-    };
+  const {setPreviousStep, setNextStep} = stepNavigator({
+   navigate: navigate,
+   isFirstExercise: exerciseIndex === 0,
+   isLastExercise: exerciseIndex === exerciseList.length - 1,
+   isAnswerStep: displayAnswer,
+   setAnswerStep: setDisplayAnswer,
+   setPreviousExercise: () => setExerciseIndex(exerciseIndex - 1),
+   setNextExercise: () => setExerciseIndex(exerciseIndex + 1),
   });
 
-  const setNextStep = () => {
-    if(isLastStep) {
-      navigate('finish');
-    } else {
-      if(!displayAnswer) {
-        setDisplayAnswer(true);
-      } else {
-        setDisplayAnswer(false);
-        setExerciseIndex(exerciseIndex + 1);
-      }
-    }
-  }
+  const {TimeBar, restart} = useTimeBar({
+    duration: 5000,
+    callback: setNextStep,
+    reverse: true,
+    reverseDuration: 5000,
+    reverseCallBack: () => {
+      setNextStep();
+      restart();
+    },
+    color: 'red',
+  });
 
-  const setPreviousStep = () => {
-    if(isFirstStep) {
-      navigate('generateExercises');
-    } else {
-      if (displayAnswer) {
-        setDisplayAnswer(false);
-      } else {
-        setDisplayAnswer(true);
-        setExerciseIndex(exerciseIndex - 1);
-      }
-    }
-  }
-
-  const pressBackButtonHandler = () => {
-    setPreviousStep();
-  };
-
-  const pressNextButtonHandler = () => {
-    setNextStep();
-  };
-
-  const pressCloseButtonHandler = () => {
-    navigate('generateExercises');
-  };
+  const pressBackButtonHandler = () => setPreviousStep();
+  const pressNextButtonHandler = () => setNextStep();
+  const pressCloseButtonHandler = () => quitGame(navigate);
+  const displayNextOrFinish = exerciseIndex === exerciseList.length - 1 && displayAnswer;
 
   return (<GameWrapper $displayButtons={displayButtons}>
-    <ExerciseGame exercise={exercise} displayAnswer={displayAnswer} />
+    <ExerciseGame exercise={currentExercise} displayAnswer={displayAnswer} />
+    <div>
+      <TimeBar/>
+    </div>
     <TopAbsoluteNavigationButtons>
       <div />
       <button onClick={pressCloseButtonHandler}><CloseCross /></button>
     </TopAbsoluteNavigationButtons>
     <BottomAbsoluteNavigationButtons>
       <button onClick={pressBackButtonHandler}><ArrowLeft /></button>
-      <button onClick={pressNextButtonHandler}>{isLastStep ? <Check /> : <ArrowRight /> }</button>
+      <button onClick={pressNextButtonHandler}>{displayNextOrFinish ? <ArrowRight /> : <Check /> }</button>
     </BottomAbsoluteNavigationButtons>
   </GameWrapper>);
 };

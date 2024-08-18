@@ -29,6 +29,7 @@ export default styled.div`
             display: flex;
             overflow: hidden;
             margin-right: 0;
+            background-color: ${colors.secondary};
         }
     }
 `;

@@ -8,9 +8,16 @@ export default styled.div<{$displayButtons: boolean}>`
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    background-color: ${colors.secondary};
     > div {
-        &:nth-child(2), &:nth-child(3) {
+        &:nth-child(1) {
+            height: 90%;
+        }
+        &:nth-child(2) {
+            height: 10%;
+            width: 100%;
+        }
+        &:nth-child(3), &:nth-child(4) {
             > button {
                 min-height: 100px;
                 height: 20%;
@@ -30,10 +37,10 @@ export default styled.div<{$displayButtons: boolean}>`
                 }
             }
         }
-        &:nth-child(2) {
+        &:nth-child(3) {
             ${({$displayButtons}) => slideDown({$display: $displayButtons})};
         }
-        &:nth-child(3) {
+        &:nth-child(4) {
             ${({$displayButtons}) => slideUp({$display: $displayButtons})};
         }
     }

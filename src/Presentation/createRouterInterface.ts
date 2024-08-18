@@ -7,7 +7,9 @@ export type Config<PageName extends string> = {
     notFoundPage?: PageName;
 };
 
+export type navigate<PageName extends string> = (page: PageName) => void;
+
 export type createRouterInterface<PageName extends string> = (config: Config<PageName>) => {
     Provider: FC<{children: RouteElementType<PageName>[]}>;
-    useRouter: () => {page: PageName, navigate: (page: PageName) => void};
+    useRouter: () => {page: PageName, navigate: navigate<PageName>};
 };

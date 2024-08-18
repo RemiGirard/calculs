@@ -1,8 +1,9 @@
-import {CSSProperties} from "react";
-
-const uppercasePattern = /([A-Z])/g;
-const msPattern$1 = /^ms-/;
+import {CSSProperties} from 'react';
 
 export default (attribute: keyof CSSProperties): string | null => {
-  return attribute.replace(uppercasePattern, '-$1').toLowerCase().replace(msPattern$1, '-ms-');
-}
+  return attribute
+    .replace(/([A-Z])/g, '-$1')
+    .toLowerCase()
+    .replace(/^ms-/, '-ms-')
+  ;
+};
