@@ -50,8 +50,17 @@ export default ({ exerciseList }: componentProps) => {
   let barProgression = 100*time/currentDurationMs;
   if(!isAnswerStep) barProgression = 100-barProgression;
 
-  const pressBackButtonHandler = () => setPreviousStep();
-  const pressNextButtonHandler = () => setNextStep();
+  const pressBackButtonHandler = () => {
+    setPreviousStep();
+    reset();
+    start();
+  };
+  const pressNextButtonHandler = () => {
+    setNextStep();
+    reset();
+    start();
+  };
+
   const pressCloseButtonHandler = () => quitGame(navigate);
   const displayNextOrFinish = !(exerciseIndex === exerciseList.length - 1 && isAnswerStep);
 
