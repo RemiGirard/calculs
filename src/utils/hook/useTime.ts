@@ -8,45 +8,46 @@ type hookProps = {
 
 export default ({ duration = 5000, intervalDuration = 1000, callback = () => null }: hookProps = {}) => {
   const [time, setTime] = useState(0);
-  const [localDuration, setLocalDuration] = useState(duration);
-  const [isRunning, setIsRunning] = useState(false);
-  const [pauseRequested, setPauseRequested] = useState(false);
+  const [paused, setPaused] = useState(true);
   const [resetRequested, setResetRequested] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const pause = () => setPauseRequested(true);
-  const start = () => {
-    setPauseRequested(false);
-  };
-  const reset = (newDuration: number = localDuration) => {
-    setLocalDuration(newDuration);
-    setTime(0);
-    setPauseRequested(true);
+
+  const start = () => setPaused(false);
+
+  const pause = () => setPaused(true);
+
+  const reset = () => {
     setResetRequested(true);
-  }
-  const timeLeft = Math.max(0, duration - time);
+    setPaused(true);
+    setTime(0);
+  };
+
+  if(paused) clearInterval(intervalRef.current as NodeJS.Timeout);
 
   useEffect(() => {
-    if(resetRequested) setResetRequested(false);
-    if (!pauseRequested) {
-      intervalRef.current = setInterval(() => {
-        setIsRunning(true);
-        setTime((prevTime) => {
-          const newTime = prevTime + intervalDuration;
-          if (newTime >= duration) {
-            callback();
-            setIsRunning(false);
-            clearInterval(intervalRef.current!);
-          }
-          return Math.min(newTime, duration);
-        });
-      }, intervalDuration);
-    } else {
-      setIsRunning(false);
-      clearInterval(intervalRef.current!);
+    if(resetRequested) {
+      setResetRequested(false);
+      return;
     }
+    if(paused) return;
+    intervalRef.current = setInterval(() => {
+      let triggerCallback = false;
+      setTime((prevTime) => {
+        const newTime = prevTime + intervalDuration;
+        if(newTime >= duration) {
+          pause();
+          triggerCallback = true;
+        }
+        return Math.min(newTime, duration);
+      });
+      if(triggerCallback) callback();
+    }, intervalDuration);
+    return () => clearInterval(intervalRef.current as NodeJS.Timeout);
+  }, [paused, resetRequested]);
 
-    return () => clearInterval(intervalRef.current!);
-  }, [pauseRequested, resetRequested]);
+  useEffect(() => {
+    start();
+  }, []);
 
-  return { start, pause, reset, time, timeLeft, isRunning };
+  return { start, pause, reset, time, timeLeft: duration-time, isRunning: !paused };
 };

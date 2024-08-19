@@ -12,7 +12,8 @@ import ExerciseGame from "@/Presentation/Organisms/ExerciseGame.tsx";
 import useDisplayOnMouseMove from "@/utils/hook/useDisplayOnMouseMove.ts";
 import stepNavigator from "@/Domain/Game/UseCase/stepNavigator.ts";
 import quitGame from "@/Domain/Game/UseCase/quitGame.ts";
-import useTimeBar from "@/Presentation/hooks/useTimeBar.tsx";
+import useTime from "@/utils/hook/useTime.ts";
+import TimeBar from "@/Presentation/Atoms/TimeBar.style.tsx";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -20,43 +21,44 @@ type componentProps = {
 
 export default ({ exerciseList }: componentProps) => {
   const [exerciseIndex, setExerciseIndex] = useState(0);
-  const [displayAnswer, setDisplayAnswer] = useState(false);
+  const [isAnswerStep, setIsAnswerStep] = useState(false);
   const {display: displayButtons} = useDisplayOnMouseMove({});
-  const { navigate } = useRouter();
+  const {navigate} = useRouter();
 
   const currentExercise = exerciseList[exerciseIndex];
+  const currentDurationMs = (isAnswerStep ? currentExercise.answerTime : currentExercise.questionTime)*1000;
 
   const {setPreviousStep, setNextStep} = stepNavigator({
-   navigate: navigate,
-   isFirstExercise: exerciseIndex === 0,
-   isLastExercise: exerciseIndex === exerciseList.length - 1,
-   isAnswerStep: displayAnswer,
-   setAnswerStep: setDisplayAnswer,
-   setPreviousExercise: () => setExerciseIndex(exerciseIndex - 1),
-   setNextExercise: () => setExerciseIndex(exerciseIndex + 1),
+    navigate: navigate,
+    isFirstExercise: exerciseIndex === 0,
+    isLastExercise: exerciseIndex === exerciseList.length - 1,
+    isAnswerStep: isAnswerStep,
+    setAnswerStep: setIsAnswerStep,
+    setPreviousExercise: () => setExerciseIndex(exerciseIndex - 1),
+    setNextExercise: () => setExerciseIndex(exerciseIndex + 1),
   });
 
-  const {TimeBar, restart} = useTimeBar({
-    duration: 5000,
-    callback: setNextStep,
-    reverse: true,
-    reverseDuration: 5000,
-    reverseCallBack: () => {
-      setNextStep();
-      restart();
-    },
-    color: 'red',
+  const {time, reset, start} = useTime({
+   duration: currentDurationMs,
+   callback: () => {
+     setNextStep();
+     reset();
+     start();
+   },
   });
+
+  let barProgression = 100*time/currentDurationMs;
+  if(!isAnswerStep) barProgression = 100-barProgression;
 
   const pressBackButtonHandler = () => setPreviousStep();
   const pressNextButtonHandler = () => setNextStep();
   const pressCloseButtonHandler = () => quitGame(navigate);
-  const displayNextOrFinish = exerciseIndex === exerciseList.length - 1 && displayAnswer;
+  const displayNextOrFinish = !(exerciseIndex === exerciseList.length - 1 && isAnswerStep);
 
   return (<GameWrapper $displayButtons={displayButtons}>
-    <ExerciseGame exercise={currentExercise} displayAnswer={displayAnswer} />
+    <ExerciseGame exercise={currentExercise} displayAnswer={isAnswerStep} />
     <div>
-      <TimeBar/>
+      <TimeBar progressionPercentage={barProgression} />
     </div>
     <TopAbsoluteNavigationButtons>
       <div />

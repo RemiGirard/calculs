@@ -5,16 +5,10 @@ type hookProps = {
   timeout?: number,
 }
 
-const defaultProps: hookProps = {
-  elementToWatch: document.body,
-  timeout: 1000,
-};
-
-export default (passedProps: hookProps) => {
-  const {
+export default ({
     elementToWatch = document.body,
-    timeout = 1000,
-  } = {...defaultProps, ...passedProps};
+    timeout = 2000,
+  }: hookProps) => {
   const [display, setDisplay] = useState(false);
   useEffect(() => {
     let hideButtonsTimeout: number;

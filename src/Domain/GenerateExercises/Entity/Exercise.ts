@@ -7,8 +7,8 @@ const minEquationCountPerColumn = 0;
 const maxEquationCountPerColumn = 100;
 
 export default class Exercise {
-  private _questionTime!: number;
-  private _answerTime!: number;
+  private _questionTime!: number; // seconds
+  private _answerTime!: number; // seconds
   private _equationCountPerColumn!: number;
   columnList: Column[];
   uuid: string;
