@@ -31,16 +31,18 @@ export default ({ duration = 5000, intervalDuration = 1000, callback = () => nul
     }
     if(paused) return;
     intervalRef.current = setInterval(() => {
-      let triggerCallback = false;
+      let triggerEnd = false;
       setTime((prevTime) => {
         const newTime = prevTime + intervalDuration;
         if(newTime >= duration) {
-          pause();
-          triggerCallback = true;
+          triggerEnd = true;
         }
         return Math.min(newTime, duration);
       });
-      if(triggerCallback) callback();
+      if(triggerEnd) {
+        pause();
+        callback();
+      }
     }, intervalDuration);
     return () => clearInterval(intervalRef.current as NodeJS.Timeout);
   }, [paused, resetRequested]);

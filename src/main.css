@@ -17,3 +17,7 @@ body{
   font-family: 'arial-rounded-mt-bold';
   src: local('arial-rounded-mt-bold'), url(Presentation/assets/ARLRDBD.ttf) format('truetype');
 }
+
+button:hover{
+  cursor: pointer;
+}

@@ -42,6 +42,11 @@ export default styled.div<{$displayButtons: boolean}>`
         }
         &:nth-child(4) {
             ${({$displayButtons}) => slideUp({$display: $displayButtons})};
+            > button:nth-child(2) {
+                > svg {
+                    stroke-width: 0.5;
+                }
+            }
         }
     }
 `;

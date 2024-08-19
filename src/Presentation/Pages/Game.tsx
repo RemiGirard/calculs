@@ -14,6 +14,8 @@ import stepNavigator from "@/Domain/Game/UseCase/stepNavigator.ts";
 import quitGame from "@/Domain/Game/UseCase/quitGame.ts";
 import useTime from "@/utils/hook/useTime.ts";
 import TimeBar from "@/Presentation/Atoms/TimeBar.style.tsx";
+import Pause from "@/Presentation/assets/icons/Pause.tsx";
+import Play from "@/Presentation/assets/icons/Play.tsx";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -38,7 +40,7 @@ export default ({ exerciseList }: componentProps) => {
     setNextExercise: () => setExerciseIndex(exerciseIndex + 1),
   });
 
-  const {time, reset, start} = useTime({
+  const {time, reset, start, pause, isRunning} = useTime({
    duration: currentDurationMs,
    callback: () => {
      setNextStep();
@@ -55,6 +57,10 @@ export default ({ exerciseList }: componentProps) => {
     reset();
     start();
   };
+
+  const pressPauseButtonHandler = () => {
+    pause();
+  }
   const pressNextButtonHandler = () => {
     setNextStep();
     reset();
@@ -74,8 +80,12 @@ export default ({ exerciseList }: componentProps) => {
       <button onClick={pressCloseButtonHandler}><CloseCross /></button>
     </TopAbsoluteNavigationButtons>
     <BottomAbsoluteNavigationButtons>
-      <button onClick={pressBackButtonHandler}><ArrowLeft /></button>
-      <button onClick={pressNextButtonHandler}>{displayNextOrFinish ? <ArrowRight /> : <Check /> }</button>
+      <button onClick={pressBackButtonHandler}><ArrowLeft/></button>
+      {isRunning
+        ? <button onClick={pressPauseButtonHandler}><Pause/></button>
+        : <button onClick={start}><Play/></button>
+      }
+      <button onClick={pressNextButtonHandler}>{displayNextOrFinish ? <ArrowRight/> : <Check/>}</button>
     </BottomAbsoluteNavigationButtons>
   </GameWrapper>);
 };
