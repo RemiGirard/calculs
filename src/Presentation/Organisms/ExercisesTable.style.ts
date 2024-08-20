@@ -7,7 +7,7 @@ export default styled.div`
     display: flex;
     flex-direction: column;
     >div {
-        background-color: ${colors.mainAlternate};
+        background-color: ${colors.secondary};
         &:nth-child(odd) {
             background-color: ${colors.main};
         }

@@ -2,7 +2,7 @@ export default {
   main: '#263c81',
   secondary: '#0a1545',
   mainText: '#FFFFFF',
-  background: '#010727',
+  background: '#000419',
   mainTextAlternate: '#000000',
   mainHighlight: '#2952cf',
   mainAlternate: '#19286c',

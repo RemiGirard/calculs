@@ -6,7 +6,7 @@ export default styled.div`
     position: absolute;
     top: 0;
     right: 0;
-    min-width: 2em;
+    min-width: 1.5em;
     display: flex;
     justify-content: center;
     cursor: pointer;
@@ -14,6 +14,7 @@ export default styled.div`
     border: none;
     background: none;
     color: inherit;
-    font-size: inherit;
+    font-size: 1.5em;
+    border-radius: 50em;
   }
 `;
