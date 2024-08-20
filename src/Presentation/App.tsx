@@ -13,13 +13,14 @@ import Finish from "@/Presentation/Pages/Finish.tsx";
 export default function () {
   const [config, setConfig] = useState(new Config());
   const [exerciseList, setExerciseList] = useState<Exercise[]>(defaultExerciseList);
+  const numberOfCalcul = exerciseList.reduce((acc, exercise) => acc + exercise.equationCountPerColumn, 0);
 
   return (<ConfigContext.Provider value={config}>
     <RouterProvider>
       <Route name="generateExercises" render={() => <GenerateExercises exerciseList={exerciseList} setExerciseList={setExerciseList} />} />
       <Route name="config" render={() => <ConfigPage config={config} setConfig={setConfig} />} />
       <Route name="game" render={() => <Game exerciseList={exerciseList}/>} />
-      <Route name="finish" render={() => <Finish />} />
+      <Route name="finish" render={() => <Finish numberOfCalcul={numberOfCalcul}/>} />
     </RouterProvider>
   </ConfigContext.Provider>);
 }

@@ -37,5 +37,13 @@ export default {
       intDivision: '÷',
       modulo: '/',
     },
+    finishTitle: 'On monte !',
+    finishText: (steps: [number, number, number, number, number], scores: [number, number, number]) => {
+      return [
+        `de ${steps[0]} à ${steps[1]} réponses justes : tu montes de ${scores[0]}`,
+        `de ${steps[2]} à ${steps[3]} réponses justes : tu montes de ${scores[1]}`,
+        `plus de ${steps[4]} réponses justes : tu montes de ${scores[2]}`,
+      ];
+    },
   },
 };
