@@ -6,9 +6,11 @@ import dictionary from "@/Presentation/dictionary.ts";
 type componentProps = {
   equation: Equation;
   displayAnswer: boolean;
+  letter: null|string;
 }
 
-export default ({equation, displayAnswer}: componentProps) => {
+export default ({equation, displayAnswer, letter}: componentProps) => {
+
   const valueOrGap = (elementOfEquation: '1'|'2'|'result') => {
     let value = '';
     const element = equation[elementOfEquation];
@@ -26,6 +28,7 @@ export default ({equation, displayAnswer}: componentProps) => {
     return value;
   }
   return (<EquationWrapper>
+    {letter !== null ? <div className='letter'>{letter}.</div> : null}
     <div>{valueOrGap('1')}</div>
     <div> {dictionary.calcTypeSymbol[equation.operation]} </div>
     <div>{valueOrGap('2')}</div>

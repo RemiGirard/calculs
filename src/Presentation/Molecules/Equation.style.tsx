@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import colors from "@/Presentation/colors.ts";
 
 export default styled.div`
   //display as table row
@@ -7,5 +8,9 @@ export default styled.div`
         display: table-cell;
         white-space: break-spaces;
         text-align: center;
+        &.letter {
+            font-size: 0.5em;
+            color: ${colors.main};
+        }
     }
 `;

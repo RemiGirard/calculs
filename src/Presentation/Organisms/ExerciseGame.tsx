@@ -1,8 +1,9 @@
 import Exercise from "@/Domain/GenerateExercises/Entity/Exercise.ts";
-import {useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import getBodySize from "@/utils/getBodySize.ts";
 import Equation from "@/Presentation/Molecules/Equation.tsx";
 import ExerciseGameWrapper from "@/Presentation/Organisms/ExerciseGame.style.ts";
+import ConfigContext from "@/Presentation/ConfigContext.ts";
 
 type componentProps = {
   exercise: Exercise,
@@ -12,8 +13,11 @@ type componentProps = {
 export default ({ exercise, displayAnswer }: componentProps) => {
   const container = useRef<HTMLDivElement>(null);
   const [bodySize, setBodySize] = useState({width: 0, height: 0});
+  const config = useContext(ConfigContext);
+  const displayLetterId = config?.displayLetterId.value ?? false;
 
   const exerciseLength = exercise.getLength();
+  let equationGlobalIndex = 0;
 
   useEffect(() => {
     const updateSize = () => setBodySize(getBodySize(container.current as HTMLDivElement));
@@ -39,7 +43,11 @@ export default ({ exercise, displayAnswer }: componentProps) => {
       {container.current !== null ? exercise.columnList.map((column) => {
       if(column.equationList === null) throw new Error('EquationList is null');
       return (<div key={column.uuid}>
-        {column.equationList.map((equation) => <Equation key={equation.uuid} equation={equation} displayAnswer={displayAnswer} />)}
+        {column.equationList.map((equation) => {
+          equationGlobalIndex++;
+          const letter = displayLetterId ? String.fromCharCode(96 + equationGlobalIndex) : '';
+          return <Equation key={equation.uuid} equation={equation} displayAnswer={displayAnswer} letter={letter}/>
+        })}
       </div>);
     }): null}
     </ExerciseGameWrapper>);
