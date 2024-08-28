@@ -1,4 +1,4 @@
-export default {
+{
   branches: ['main'],
   plugins: [
     ['@semantic-release/commit-analyzer', {
@@ -20,4 +20,4 @@ export default {
     }],
     '@semantic-release/git',
   ]
-};
+}
