@@ -50,5 +50,9 @@ export default {
         `plus de ${steps[4]} réponses justes : tu montes de ${scores[2]}`,
       ];
     },
+    configTitle: 'Configuration',
+    configPage: {
+      exitButton: 'sortir'
+    }
   },
 };
