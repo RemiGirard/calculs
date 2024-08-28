@@ -56,6 +56,7 @@ export default styled.fieldset<{$isFocused: boolean}>`
         width: 100%;
         height: 30%;
         text-align: center;
+        padding-top: 3%;
         ${unselectable}
     }
     > div:nth-child(3) {
@@ -65,7 +66,7 @@ export default styled.fieldset<{$isFocused: boolean}>`
         justify-content: flex-end;
         > span { // unit
             width: 25%;
-            margin-top: 8%;
+            margin-top: 5%;
             ${unselectable}
         }
     }
