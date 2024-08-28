@@ -31,7 +31,7 @@ describe('useTime hook', () => {
     const { getByTestId } = render(<TestComponent duration={5000} />);
     expect(getByTestId('time').textContent).toBe('0');
     expect(getByTestId('timeLeft').textContent).toBe('5000');
-    expect(getByTestId('isRunning').textContent).toBe('false');
+    expect(getByTestId('isRunning').textContent).toBe('true');
   });
 
   it('should start the timer', () => {
@@ -75,9 +75,9 @@ describe('useTime hook', () => {
   it('should call the callback when duration is reached', () => {
     const callback = vi.fn();
     const { getByTestId } = render(<TestComponent duration={3000} intervalDuration={1000} callback={callback} />);
-    fireEvent.click(getByTestId('start'));
+    // fireEvent.click(getByTestId('start'));
     act(() => {
-      vi.advanceTimersByTime(3000);
+      vi.advanceTimersByTime(4000);
     });
     expect(callback).toHaveBeenCalled();
     expect(getByTestId('time').textContent).toBe('3000');

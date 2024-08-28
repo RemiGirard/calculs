@@ -9,8 +9,8 @@ type hookProps = {
 export default ({ duration = 5000, intervalDuration = 1000, callback = () => null }: hookProps = {}) => {
   const [time, setTime] = useState(0);
   const [paused, setPaused] = useState(true);
-  const [resetRequested, setResetRequested] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [resetRequested, setResetRequested] = useState(false); // trigger useEffect even if pause doesn't change
+  const intervalRef = useRef<ReturnType<typeof setInterval>| undefined>();
 
   const start = () => setPaused(false);
 
@@ -22,33 +22,35 @@ export default ({ duration = 5000, intervalDuration = 1000, callback = () => nul
     setTime(0);
   };
 
-  if(paused) clearInterval(intervalRef.current as NodeJS.Timeout);
+  if(paused) clearInterval(intervalRef.current);
 
   useEffect(() => {
     if(resetRequested) {
+      // return early to avoid any changes
+      // when set to false it will re-trigger the useEffect
       setResetRequested(false);
       return;
     }
     if(paused) return;
     intervalRef.current = setInterval(() => {
-      let triggerEnd = false;
       setTime((prevTime) => {
         const newTime = prevTime + intervalDuration;
         if(newTime >= duration) {
-          triggerEnd = true;
+          pause();
+          callback();
+          clearInterval(intervalRef.current as NodeJS.Timeout);
         }
         return Math.min(newTime, duration);
       });
-      if(triggerEnd) {
-        pause();
-        callback();
-      }
+
     }, intervalDuration);
-    return () => clearInterval(intervalRef.current as NodeJS.Timeout);
+    return () => {
+      clearInterval(intervalRef.current as NodeJS.Timeout)
+    };
   }, [paused, resetRequested]);
 
   useEffect(() => {
-    start();
+    start(); // start auto on loaded
   }, []);
 
   return { start, pause, reset, time, timeLeft: duration-time, isRunning: !paused };
