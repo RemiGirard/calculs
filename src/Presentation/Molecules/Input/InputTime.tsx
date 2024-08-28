@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import InputWrapper from './InputTime.style.ts';
 import { setter } from '@/utils/type/setter.ts';
 
@@ -7,18 +7,15 @@ type componentProps= {
   setValue: setter<number>,
   label?: string,
   unit?: string,
-  style?: React.CSSProperties,
 };
 
 export default function({
   value, setValue, label = '', unit = ''
 }: componentProps) {
-  const inputElement = useRef<null | HTMLInputElement>(null);
-  const wrapper = useRef<null | HTMLFieldSetElement>(null);
-  const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === '') {
       setIsEmpty(true);
       return;
@@ -30,50 +27,25 @@ export default function({
     setValue(newValue);
   };
 
-  const setFocusIn = () => {
-    inputElement?.current?.focus();
-    if(!isFocus) {
-      inputElement?.current?.select();
-    }
-    setIsFocus(true);
+  const onFocusHandler = () => setIsFocused(true);
+  const onBlurHandler = () => {
+    setIsFocused(false);
+    setIsEmpty(false);
   };
 
-  const setFocusOut = (e: React.FocusEvent<HTMLInputElement>) => {
-    if(wrapper.current?.contains(e.target)) {
-      inputElement?.current?.focus();
-      inputElement?.current?.setSelectionRange(inputElement.current.value.length, inputElement.current.value.length);
-    } else {
-      setIsFocus(false);
-      setIsEmpty(false);
-    }
-  };
-
-  const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    let newValue = value;
-    if (event.key === 'ArrowUp') {
-      newValue++;
-    } else if (event.key === 'ArrowDown') {
-      newValue--;
-    }
-    setValue(newValue);
-  };
-
-  return (<InputWrapper
-    ref={wrapper}
-    onClick={setFocusIn}
-    $isFocus={isFocus}
-    $labelSize={label.split('').length}
-  >
+  return (<InputWrapper $isFocused={isFocused}>
+    <div>
+        <input
+          value={!isEmpty ? value.toString() : ''}
+          onChange={handleChange}
+          type={'number'}
+          onFocus={onFocusHandler}
+          onBlur={onBlurHandler}
+        />
+    </div>
     <label>{label}</label>
     <div>
-      <input
-        ref={inputElement}
-        value={!isEmpty ? value.toString() : ''}
-        onChange={handleChange}
-        onBlur={setFocusOut}
-        onKeyDown={keyDownHandler}
-      />
-      <span>{unit ?? null}</span>
+      <span>{unit}</span>
     </div>
   </InputWrapper>);
 }

@@ -13,9 +13,6 @@ export default styled.div`
             > div:nth-child(1) {
                 background-color: ${colors.secondary};
                 border-radius: 2px;
-                > fieldset {
-                    padding-top: 5%;
-                }
             }
         }
         &:nth-child(2) {
