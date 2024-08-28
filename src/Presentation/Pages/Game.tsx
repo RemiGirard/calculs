@@ -16,6 +16,7 @@ import useTime from "@/utils/hook/useTime.ts";
 import TimeBar from "@/Presentation/Atoms/TimeBar.style.tsx";
 import Pause from "@/Presentation/assets/icons/Pause.tsx";
 import Play from "@/Presentation/assets/icons/Play.tsx";
+import delay from "@/utils/delay.ts";
 
 type componentProps = {
   exerciseList: Exercise[],
@@ -27,6 +28,7 @@ export default ({ exerciseList }: componentProps) => {
   const {display: displayButtons} = useDisplayOnMouseMove({});
   const {navigate} = useRouter();
 
+  const extraTime  = 500; // extra time to wait for the time bar animation before ending exercise
   const currentExercise = exerciseList[exerciseIndex];
   const currentDurationMs = (isAnswerStep ? currentExercise.answerTime : currentExercise.questionTime)*1000;
 
@@ -42,7 +44,8 @@ export default ({ exerciseList }: componentProps) => {
 
   const {time, reset, start, pause, isRunning} = useTime({
    duration: currentDurationMs,
-   callback: () => {
+   callback: async () => {
+     await delay(extraTime); // delay to wait time bar animation
      setNextStep();
      reset();
      start();
