@@ -8,7 +8,7 @@ export default styled.div`
     width: 100%;
     padding: 1% 0 0 0;
     > div {
-        width: 15%;
+        width: 30px;
         height: 35px;
         display: flex;
         justify-content: center;
