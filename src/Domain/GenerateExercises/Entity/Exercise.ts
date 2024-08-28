@@ -76,7 +76,7 @@ export default class Exercise {
     return this.getEquationMaxLength()*this.columnList.length;
   }
 
-  getLength(): {row: number, column: number} {
-    return {row: this.getRowLength(), column: this.getColumnLength()};
+  getLength(displayLetterId: boolean): {row: number, column: number} {
+    return {row: this.getRowLength()+(displayLetterId ? 1 : 0), column: this.getColumnLength()};
   }
 }

@@ -27,6 +27,7 @@ export default ({equation, displayAnswer, letter}: componentProps) => {
     }
     return value;
   }
+
   return (<EquationWrapper>
     {letter !== null ? <div className='letter'>{letter}.</div> : null}
     <div>{valueOrGap('1')}</div>

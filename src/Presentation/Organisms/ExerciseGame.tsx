@@ -16,7 +16,7 @@ export default ({ exercise, displayAnswer }: componentProps) => {
   const config = useContext(ConfigContext);
   const displayLetterId = config?.displayLetterId.value ?? false;
 
-  const exerciseLength = exercise.getLength();
+  const exerciseLength = exercise.getLength(displayLetterId);
   let equationGlobalIndex = 0;
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default ({ exercise, displayAnswer }: componentProps) => {
       return (<div key={column.uuid}>
         {column.equationList.map((equation) => {
           equationGlobalIndex++;
-          const letter = displayLetterId ? String.fromCharCode(96 + equationGlobalIndex) : '';
+          const letter = displayLetterId ? String.fromCharCode(96 + equationGlobalIndex) : null;
           return <Equation key={equation.uuid} equation={equation} displayAnswer={displayAnswer} letter={letter}/>
         })}
       </div>);
