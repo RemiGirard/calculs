@@ -2,4 +2,4 @@ services:
   calculs:
     build: ./
     ports:
-      - 5173:5173 # http port
+      - "5173:5173" # http port
