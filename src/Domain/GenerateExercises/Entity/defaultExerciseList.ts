@@ -28,8 +28,8 @@ const defaultColumn = new Column({
 
 
 const defaultExercise = new Exercise({
-  questionTime: isDevEnv ? 5 : 10,
-  answerTime: isDevEnv ? 5 : 10,
+  questionTime: isDevEnv ? 5 : 180,
+  answerTime: isDevEnv ? 5 : 60,
   equationNumberPerColumn: 6,
   columnList: [defaultColumn],
 });
