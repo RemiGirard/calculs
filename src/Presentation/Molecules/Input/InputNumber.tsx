@@ -4,6 +4,7 @@ import { NumberRange, numberRangeTypes } from '@/Domain/GenerateExercises/Entity
 import { defaultNumberGeneration } from '@/Domain/GenerateExercises/Entity/defaultExerciseList.ts';
 import typedElementIfIncludedOrUndefined from '@/utils/typedElementIfIncludedOrUndefined.ts';
 import InputInteractive from "@/Presentation/Atoms/InputInteractive.tsx";
+import dictionary from "@/Presentation/dictionary.ts";
 
 interface componentProps {
   value: NumberRange;
@@ -12,6 +13,7 @@ interface componentProps {
 
 export default function ({ value, setValue } : componentProps) {
 
+  // save values locally to don't reset them when changing the type
   const defaultLocalValue = {
     fix: value.type === 'fix' ? value.fix : defaultNumberGeneration.fix,
     min: value.type === 'range' ? value.min : defaultNumberGeneration.range[0],
@@ -58,11 +60,12 @@ export default function ({ value, setValue } : componentProps) {
       [key]: newValue,
     });
   };
+
   return (
     <div>
       <select value={value.type} onChange={onChangeHandler}>
         {numberRangeTypes.map((numberRangeType) => {
-          return <option key={numberRangeType} value={numberRangeType}>{numberRangeType}</option>
+          return <option key={numberRangeType} value={numberRangeType}>{dictionary.inputNumberType[numberRangeType]}</option>
         })}
       </select>
       {

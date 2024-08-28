@@ -49,17 +49,18 @@ export default styled.div<{$isType?: boolean}>`
         &[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
-            &:focus {
-                -webkit-appearance: initial;
-            }
+            //display: none;
+            //&:focus {
+            //    -webkit-appearance: initial;
+            //}
         }
 
         // Firefox
         &[type="number"] {
             -moz-appearance: textfield;
-            &:focus {
-                -moz-appearance: initial;
-            }
+            //&:focus {
+            //    -moz-appearance: initial;
+            //}
         }
     }
       

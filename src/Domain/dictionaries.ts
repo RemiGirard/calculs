@@ -26,6 +26,11 @@ export default {
       second: '2ème',
       result: 'résultat',
     },
+    inputNumberType: {
+      fix: 'fixe',
+      range: 'plage',
+      rangeTens: 'dizaines',
+    },
     calcTypeSymbol: {
       addition: '+',
       additionWithoutCarry: '+',

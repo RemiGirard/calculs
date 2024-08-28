@@ -7,7 +7,7 @@ export default styled.div`
     flex-direction: row;
     padding: 0.5% 0.5% 0.5% 0.5%;
     > div {
-        margin-right: 0.5%;
+        margin-right: 4px;
         &:nth-child(1) {
             width: 15%;
             > div:nth-child(1) {

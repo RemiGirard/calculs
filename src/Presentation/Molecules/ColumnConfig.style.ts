@@ -10,7 +10,7 @@ export default styled.div`
         flex-shrink: 0;
         background-color: ${colors.secondary};
         border-radius: 2px;
-        margin-right: 0.5%;
+        margin-right: 4px;
         width: 300px;
         overflow: hidden;
     }
