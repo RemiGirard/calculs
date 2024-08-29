@@ -19,5 +19,5 @@ export type componentProps = {
 };
 
 export default ({progressionPercentage = 0}: componentProps) => {
-  return (<BarWrapper $progressionPercentage={progressionPercentage} $color={colors.category1}><div></div></BarWrapper>);
+  return (<BarWrapper $progressionPercentage={progressionPercentage} $color={colors.category2}><div></div></BarWrapper>);
 };
