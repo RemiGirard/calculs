@@ -57,7 +57,7 @@ export default class Exercise {
       questionTime: this.questionTime,
       answerTime: this.answerTime,
       equationNumberPerColumn: this.equationCountPerColumn,
-      columnList: this.columnList.map((column) => new Column({ config: column.config })),
+      columnList: this.columnList.map((column) => new Column({ config: column.config.getCopy() })),
     });
   }
 
