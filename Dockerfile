@@ -1,4 +1,4 @@
-FROM node:18.16.0 AS node-with-pnpm
+FROM node:20.17.0 AS node-with-pnpm
 
 RUN apt update && apt upgrade -y
 RUN npm add -g pnpm
