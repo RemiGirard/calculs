@@ -82,8 +82,8 @@ export class Generator implements GeneratorInterface {
                     console.log('Range min is superior to max');
                     return null;
                 }
-                const min = Math.ceil(Math.max(range.min, 10)/10)*10;
-                return min + Math.floor(Math.random() * (range.max - min + 1));
+                const [rMin, rMax] = [range.min, range.max].map((v) => Math.floor(Math.max(v, 10)/10));
+                return (rMin + Math.floor(Math.random() * (rMax - rMin + 1 )))*10;
             }
         });
 
