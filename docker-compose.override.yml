@@ -4,3 +4,5 @@ services:
       - ./:/srv/app/
       - ./node_modules/:/srv/app/node_modules
     command: pnpm dev
+    ports:
+      - "5173:5173"
