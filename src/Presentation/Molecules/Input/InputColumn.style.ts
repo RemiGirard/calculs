@@ -30,6 +30,10 @@ export default styled.div<{$isType?: boolean}>`
       color: ${colors.mainText};
       width: ${({$isType}) => $isType ? '80%' : '60%'};
       font-size: inherit;
+        > option {
+            color: ${colors.mainText};
+            background-color: ${colors.secondary};
+        }
       &:hover {
           cursor: pointer;
       }
