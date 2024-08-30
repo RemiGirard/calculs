@@ -40,7 +40,7 @@ export default {
       multiplication: '×',
       division: '÷',
       intDivision: '÷',
-      modulo: '/',
+      modulo: '÷',
     },
     finishTitle: 'On monte !',
     finishText: (steps: [number, number, number, number, number], scores: [number, number, number]) => {
@@ -53,6 +53,10 @@ export default {
     configTitle: 'Configuration',
     configPage: {
       exitButton: 'sortir'
-    }
+    },
+    moduloResult: {
+      quotient: 'quotient',
+      remainder: 'reste',
+    },
   },
 };

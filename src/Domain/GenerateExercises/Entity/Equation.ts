@@ -44,7 +44,7 @@ export default class Equation {
 
   getCharacterLength() {
     if(this.result === undefined) return 1;
-    return this[1].toString().length + 2 + this[2].toString().length + 2 + this.result.toString().length;
+    return this[1].toString().length + 2 + this[2].toString().length + 2 + (this.operation === 'modulo' && typeof this.result === 'object' ? (4+this.result?.remainder.toString().length) : this.result.toString().length );
   }
 
   render() {

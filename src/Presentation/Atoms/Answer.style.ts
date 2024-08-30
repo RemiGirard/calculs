@@ -6,15 +6,16 @@ export default styled.div<{ $displayAnswer: boolean }>`
     flex-direction: row;
     justify-content: center;
     color: ${colors.category1};
-    >div:nth-child(1) {
-        display: flex;
-        justify-content: center;
-        visibility: ${({ $displayAnswer }) => $displayAnswer ? '' : 'hidden'};
-    }
-    > div:nth-child(2) {
+    > div:nth-child(1) {
         display: flex;
         justify-content: center;
         position: absolute;
         visibility: ${({ $displayAnswer }) => $displayAnswer ? 'hidden' : ''};
+    }
+    >div:nth-child(2) {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        visibility: ${({ $displayAnswer }) => $displayAnswer ? '' : 'hidden'};
     }
 `
