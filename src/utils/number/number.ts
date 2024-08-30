@@ -56,15 +56,13 @@ export const getRandomDivisibleNumbersInRange = ({ min = 0, max = 10 }): [number
   return [randomNumber, randomDivisor];
 };
 
-export const integerToLetter = (integer:number) => {
+export const integerToLetter = (integer:number): string => {
   if (integer < 1 || integer > 26) {
     return ' ';
   }
 
-  // Convert the integer to a character code by adding 64
   const charCode = integer + 96;
 
-  // Convert the character code to a letter
   return String.fromCharCode(charCode);
 };
 

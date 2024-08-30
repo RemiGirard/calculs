@@ -4,6 +4,7 @@ import getBodySize from "@/utils/getBodySize.ts";
 import Equation from "@/Presentation/Molecules/Equation.tsx";
 import ExerciseGameWrapper from "@/Presentation/Organisms/ExerciseGame.style.ts";
 import ConfigContext from "@/Presentation/ConfigContext.ts";
+import {integerToLetter} from "@/utils/number/number.ts";
 
 type componentProps = {
   exercise: Exercise,
@@ -45,7 +46,7 @@ export default ({ exercise, displayAnswer }: componentProps) => {
       return (<div key={column.uuid}>
         {column.equationList.map((equation) => {
           equationGlobalIndex++;
-          const letter = displayLetterId ? String.fromCharCode(96 + equationGlobalIndex) : null;
+          const letter = displayLetterId ? integerToLetter(equationGlobalIndex) : null;
           return <Equation key={equation.uuid} equation={equation} displayAnswer={displayAnswer} letter={letter}/>
         })}
       </div>);
