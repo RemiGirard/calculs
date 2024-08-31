@@ -53,21 +53,12 @@ export default styled.div<{$isType?: boolean}>`
         &[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
-            //display: none;
-            //&:focus {
-            //    -webkit-appearance: initial;
-            //}
         }
 
         // Firefox
         &[type="number"] {
             -moz-appearance: textfield;
-            //&:focus {
-            //    -moz-appearance: initial;
-            //}
         }
     }
-      
-    > div {}
   }
 `;

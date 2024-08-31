@@ -35,7 +35,6 @@ export default styled.fieldset<{$isFocused: boolean}>`
             // set input at the bottom
             outline: none;
             -webkit-appearance: none;
-            -moz-appearance: textfield;
             //margin: 0;
             //padding: 0;
             vertical-align: bottom;
@@ -43,6 +42,18 @@ export default styled.fieldset<{$isFocused: boolean}>`
             &:focus {
                 border: none;
                 font-weight: 1000;
+            }
+
+            // Chromium
+            &[type="number"]::-webkit-inner-spin-button,
+            &[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            // Firefox
+            &[type="number"] {
+                -moz-appearance: textfield;
             }
         }
     }
