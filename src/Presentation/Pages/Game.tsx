@@ -1,6 +1,6 @@
 import Exercise from "@/Domain/GenerateExercises/Entity/Exercise.ts";
 import GameWrapper from "@/Presentation/Pages/Game.style.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "@/Presentation/Router.tsx";
 import BottomAbsoluteNavigationButtons from "@/Presentation/Organisms/BottomAbsoluteNavigationButtons.style";
 import TopAbsoluteNavigationButtons from "@/Presentation/Organisms/TopAbsoluteNavigationButtons.tsx";
@@ -42,32 +42,57 @@ export default ({ exerciseList }: componentProps) => {
     setNextExercise: () => setExerciseIndex(exerciseIndex + 1),
   });
 
-  const {time, reset, start, pause, isRunning} = useTime({
+  const {time, reset: resetTime, start: startTime, pause, isRunning} = useTime({
    duration: currentDurationMs,
    callback: async () => {
      await delay(extraTime); // delay to wait time bar animation
      setNextStep();
-     reset();
-     start();
+     resetTime();
+     startTime();
    },
   });
+
+  const keyPressHandler = (event: KeyboardEvent) => {
+    if(event.key === 'ArrowRight') {
+      setNextStep();
+      resetTime();
+      startTime();
+    }
+    if(event.key === 'ArrowLeft') {
+      setPreviousStep();
+      resetTime();
+      startTime();
+    };
+    if(event.key === 'Escape') quitGame(navigate);
+    if(event.key === ' ') isRunning ? pause() : startTime();
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyPressHandler);
+    return () => document.removeEventListener('keydown', keyPressHandler);
+  },[keyPressHandler]);
 
   let barProgression = 100*time/currentDurationMs;
   if(!isAnswerStep) barProgression = 100-barProgression;
 
   const pressBackButtonHandler = () => {
     setPreviousStep();
-    reset();
-    start();
+    resetTime();
+    startTime();
   };
 
   const pressPauseButtonHandler = () => {
     pause();
   }
+
+  const pressPlayButtonHandler = () => {
+    startTime();
+  }
+
   const pressNextButtonHandler = () => {
     setNextStep();
-    reset();
-    start();
+    resetTime();
+    startTime();
   };
 
   const pressCloseButtonHandler = () => quitGame(navigate);
@@ -86,7 +111,7 @@ export default ({ exerciseList }: componentProps) => {
       <button onClick={pressBackButtonHandler}><ArrowLeft/></button>
       {isRunning
         ? <button onClick={pressPauseButtonHandler}><Pause/></button>
-        : <button onClick={start}><Play/></button>
+        : <button onClick={pressPlayButtonHandler}><Play/></button>
       }
       <button onClick={pressNextButtonHandler}>{displayNextOrFinish ? <ArrowRight/> : <Check/>}</button>
     </BottomAbsoluteNavigationButtons>

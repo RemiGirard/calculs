@@ -1,3 +1,4 @@
+import {useEffect} from "react";
 import Exercise from '@/Domain/GenerateExercises/Entity/Exercise.ts';
 import addExercise from '@/Domain/GenerateExercises/UseCase/addExercise.ts';
 import deleteExercise from '@/Domain/GenerateExercises/UseCase/deleteExercise.ts';
@@ -26,12 +27,26 @@ type componentProps = {
 
 export default ({ exerciseList, setExerciseList }: componentProps) => {
   const { navigate } = useRouter();
+  const canDeleteExercise = exerciseList.length > 1;
 
   const clickAddExerciseHandler = () => addExercise(exerciseList, setExerciseList);
   const clickPlayHandler = () => navigate('game');
   const clickGearHandler = () => navigate('config');
 
-  const canDeleteExercise = exerciseList.length > 1;
+  const keyPressHandler = (event: KeyboardEvent) => {
+    if((event.key === 'Enter' || event.key === ' ')
+      && event.target === document.body) {
+      navigate('game');
+    }
+    if(event.key === 'Escape') {
+      (document.activeElement as (Element & { blur?: () => void }) | null)?.blur?.();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyPressHandler);
+    return () => document.removeEventListener('keydown', keyPressHandler);
+  }, []);
 
   return (<GenerateExercisesWrapper>
     <TopBarWrapper>

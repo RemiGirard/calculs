@@ -1,3 +1,4 @@
+import {useEffect} from "react";
 import FinishWrapper from "@/Presentation/Pages/Finish.style.ts";
 import {useRouter} from "@/Presentation/Router.tsx";
 import Clapping from "@/Presentation/assets/clapping.png";
@@ -16,12 +17,20 @@ export default ({ numberOfCalcul }: componentProps) => {
   const {navigate} = useRouter();
   const {display: displayButton} = useDisplayOnMouseMove({});
 
+  const keyPressHandler = (event: KeyboardEvent) => {
+    if(event.key === 'Escape') quitGame(navigate);
+  }
   const pressCloseButtonHandler = () => quitGame(navigate);
 
   const getAnswerLineDisplay = () => {
     const [stepList, scoreList] = getStepListAndScoreList(numberOfCalcul);
     return dictionary.finishText(stepList, scoreList);
   };
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyPressHandler);
+    return () => document.removeEventListener('keydown', keyPressHandler);
+  }, []);
 
   return (<FinishWrapper $displayButton={displayButton}>
     <TopAbsoluteNavigationButtons>

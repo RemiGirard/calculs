@@ -30,6 +30,7 @@ type componentProps = {
 }
 
 export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: componentProps) {
+  const columnsCanBeDeleted = exercise.columnList.length > 1;
 
   const updateExerciseConfigHandler = <K extends keyof Exercise>(newValue: Exercise[K], key: K) => {
     updateExerciseConfig(exercise, setExercise, newValue, key);
@@ -49,8 +50,6 @@ export default function ({exercise, setExercise, deleteExercise, canBeDeleted}: 
   const addColumnConfigHandler = () => {
     addExerciseColumn(exercise.columnList, setColumnList, exercise.equationCountPerColumn);
   };
-
-  const columnsCanBeDeleted = exercise.columnList.length > 1;
 
   return (<ExerciseConfigWrapper>
     <div>
