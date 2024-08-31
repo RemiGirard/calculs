@@ -62,9 +62,9 @@ export default ({ exerciseList }: componentProps) => {
       setPreviousStep();
       resetTime();
       startTime();
-    };
+    }
     if(event.key === 'Escape') quitGame(navigate);
-    if(event.key === ' ') isRunning ? pause() : startTime();
+    if(event.key === ' ' || event.key === 'Enter') isRunning ? pause() : startTime();
   };
 
   useEffect(() => {
